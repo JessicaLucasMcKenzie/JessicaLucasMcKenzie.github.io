@@ -3,249 +3,249 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free From That — Synchronizing AI Matrix</title>
+  <title>My Recipe Maker — Global Processing Node</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Embedded Leaflet Engine Mapping Core Assets -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
   <style>
     :root {
-      --bg:        #0c1219;
-      --surface:   #131c27;
-      --surface2:  #1b2733;
-      --border:    #25323f;
-      --green:     #4caf7d;
-      --text:      #dde7f0;
-      --muted:     #6b8099;
+      --bg: #0c1219;
+      --navy-banner: #164e63;
+      --accent-yellow: #f59e0b;
+      --text: #dde7f0;
+      --muted: #94a3b8;
     }
 
     * { box-sizing: border-box; }
-    body { 
-      background: var(--bg); 
-      color: var(--text); 
-      font-family: 'Inter', sans-serif; 
-      font-size: 14px; 
-      min-height: 100vh; 
-      margin: 0; 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      overflow: hidden;
-    }
-
-    .map-container {
-      width: 100%;
-      max-width: 680px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
-      text-align: center;
-      position: relative;
-    }
-
-    /* Radar Scanning Grid Area */
-    .radar-viewport {
-      width: 100%;
-      height: 240px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .radar-viewport::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: 
-        linear-gradient(rgba(76, 175, 125, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(76, 175, 125, 0.05) 1px, transparent 1px);
-      background-size: 20px 20px;
-      background-position: center;
-    }
-
-    .radar-sweep {
-      position: absolute;
-      top: 0;
-      left: -100%;
+    body, html {
+      margin: 0;
+      padding: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(76, 175, 125, 0.15), transparent);
-      animation: sweep 3s infinite linear;
-    }
-
-    /* Pulse Dots representing live cooking nodes */
-    .node-dot {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: var(--green);
-      border-radius: 50%;
-      box-shadow: 0 0 12px var(--green);
-      animation: pulse 2s infinite ease-in-out;
-      opacity: 0;
-    }
-
-    /* Telemetry Console Log */
-    .console-box {
-      background: #080d12;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      text-align: left;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      height: 140px;
-      overflow-y: hidden;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .console-line {
-      margin-bottom: 4px;
-      white-space: nowrap;
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
       overflow: hidden;
-      border-right: 2px solid transparent;
-    }
-
-    .console-line.active {
-      color: var(--green);
-    }
-
-    .progress-wrap {
-      margin-top: 24px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+    }
+
+    /* Top Identity Bar */
+    .top-navbar {
+      background: #ffffff;
+      padding: 12px 24px;
+      display: flex;
       justify-content: space-between;
-      font-size: 12px;
-      color: var(--muted);
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .brand-group h1 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .brand-group p {
+      font-size: 11px;
+      color: #64748b;
+      margin: 2px 0 0 0;
+    }
+    .counter-badge {
+      background: #0f172a;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+    .counter-badge span {
+      color: var(--accent-yellow);
+      font-weight: 700;
     }
 
-    .progress-bar-container {
-      width: 75%;
-      height: 6px;
-      background: var(--surface2);
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid var(--border);
+    /* Core Editorial Metric Ribbon */
+    .metric-ribbon {
+      background: #1a365d; /* Rich dark blue branding tint */
+      color: #ffffff;
+      text-align: center;
+      padding: 14px 20px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    .progress-fill {
-      width: 0%;
+    /* Map Interface Viewport */
+    .map-viewport {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      background: #111;
+    }
+    #live-map {
+      width: 100%;
       height: 100%;
-      background: var(--green);
-      transition: width 0.4s ease;
-      box-shadow: 0 0 8px var(--green);
     }
 
-    /* Animations */
-    @keyframes sweep {
-      0% { left: -100%; }
-      100% { left: 100%; }
+    /* Action Presentation Control overlay */
+    .cta-container {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      text-align: center;
+      width: 100%;
+      pointer-events: none;
+    }
+    .action-btn {
+      background: #1e3a8a;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 14px 32px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      pointer-events: auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      transition: all 0.2s ease-in-out;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    .action-btn.reveal {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .action-btn:hover {
+      background: #1d4ed8;
+      box-shadow: 0 12px 30px rgba(29,78,216,0.4);
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.3; }
-      50% { transform: scale(1.6); opacity: 1; }
+    /* Custom CSS adjustments to override Leaflet default design tokens */
+    .leaflet-container { background: #0c1219 !important; }
+    .leaflet-control-attribution { background: rgba(0,0,0,0.5) !important; color: #64748b !important; font-size: 9px !important; }
+    .leaflet-control-zoom { display: none !important; } /* Hidden to maintain fixed layout integrity */
+
+    /* Custom Glowing Pulsing Marker Rings */
+    .glow-marker {
+      background: transparent;
+      border: none;
+    }
+    .marker-ring {
+      width: 16px;
+      height: 16px;
+      background: rgba(245, 158, 11, 0.4);
+      border: 2px solid var(--accent-yellow);
+      border-radius: 50%;
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      box-shadow: 0 0 14px var(--accent-yellow);
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 8px var(--accent-yellow); }
+      50% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 20px var(--accent-yellow); }
+      100% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 8px var(--accent-yellow); }
     }
   </style>
 </head>
 <body>
 
-<div class="map-container">
-  <div class="radar-viewport">
-    <div class="radar-sweep"></div>
-    <div class="node-dot" style="top: 25%; left: 18%; animation-delay: 0.2s;"></div>
-    <div class="node-dot" style="top: 65%; left: 42%; animation-delay: 0.8s;"></div>
-    <div class="node-dot" style="top: 40%; left: 78%; animation-delay: 1.4s;"></div>
-    <div class="node-dot" style="top: 80%; left: 22%; animation-delay: 0.5s;"></div>
-    <div class="node-dot" style="top: 15%; left: 60%; animation-delay: 1.9s;"></div>
-  </div>
-
-  <div class="console-box" id="console-log">
+  <!-- Top Navigation Frame -->
+  <nav class="top-navbar">
+    <div class="brand-group">
+      <h1>✨ My Recipe Maker</h1>
+      <p>Recipes cooking around the world</p>
     </div>
-
-  <div class="progress-wrap">
-    <span id="progress-status">Syncing Parameters...</span>
-    <div class="progress-bar-container">
-      <div class="progress-fill" id="progress-fill"></div>
+    <div class="counter-badge">
+      Showing <span>59</span> recipes worldwide
     </div>
-    <span id="progress-pct">0%</span>
-  </div>
-</div>
+  </nav>
 
-<script>
-  // Pull session routing strings out of the URL context safely
-  const params = new URLSearchParams(window.location.search);
-  let userEmail = "Guest Node";
-  try {
-    if (params.get('session')) userEmail = atob(params.get('session'));
-  } catch(e) {}
+  <!-- Editorial Sub-Header Banner Row -->
+  <header class="metric-ribbon">
+    Over 70 chefs worldwide have made recipes with Free From That
+  </header>
 
-  const logLines = [
-    `[INIT] Booting culinary mapping matrix...`,
-    `[AUTH] Node verified: ${userEmail}`,
-    `[NET] Connecting to primary kitchen relational datastore...`,
-    `[DATA] Appending active request parameters into target fields.`,
-    `[AI_ENG] Mapping structural recipe constraints & thresholds...`,
-    `[SYS] Instantiating text generator prompt telemetry pipeline.`,
-    `[SUCCESS] Request logged. Routing control to internal workspace.`
-  ];
+  <!-- Primary Map Section -->
+  <main class="map-viewport">
+    <div id="live-map"></div>
 
-  const consoleLog = document.getElementById('console-log');
-  const progressFill = document.getElementById('progress-fill');
-  const progressPct = document.getElementById('progress-pct');
-  const progressStatus = document.getElementById('progress-status');
+    <!-- Interactive Execution Floating Action Control -->
+    <div class="cta-container">
+      <button class="action-btn" id="trigger-cta" onclick="routeToFinalOutput()">View Your Recipe →</button>
+    </div>
+  </main>
 
-  let currentStep = 0;
+  <script>
+    // Initialize map canvas focused centrally across transatlantic vectors
+    const map = L.map('live-map', {
+      center: [34.0, -25.0],
+      zoom: 3,
+      minZoom: 2,
+      maxZoom: 5,
+      zoomControl: false,
+      attributionControl: true
+    });
 
-  function executeTelemetryStep() {
-    if (currentStep < logLines.length) {
-      // Print new trace to log view
-      const line = document.createElement('div');
-      line.className = 'console-line active';
-      line.textContent = logLines[currentStep];
-      
-      // Remove previous active highlights
-      const items = consoleLog.querySelectorAll('.console-line');
-      items.forEach(el => el.classList.remove('active'));
-      
-      consoleLog.appendChild(line);
-      consoleLog.scrollTop = consoleLog.scrollHeight;
+    // Apply high-fidelity custom dark tiles directly over the vector window 
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(map);
 
-      // Advance progress bar metric thresholds
-      currentStep++;
-      const percentValue = Math.floor((currentStep / logLines.length) * 100);
-      progressFill.style.width = `${percentValue}%`;
-      progressPct.textContent = `${percentValue}%`;
+    // Exact hot-spot coordinate nodes compiled from your layout arrays (USA, UK, Western Europe, Venezuela)
+    const activeChefNodes = [
+      [37.7749, -122.4194], // San Francisco, CA
+      [34.0522, -118.2437], // Los Angeles, CA
+      [32.7157, -117.1611], // San Diego, CA
+      [39.7392, -104.9903], // Denver, CO
+      [41.8781, -87.6298],  // Chicago, IL
+      [40.7128, -74.0060],  // New York, NY
+      [42.3601, -71.0589],  // Boston, MA
+      [30.2672, -97.7431],  // Austin, TX
+      [53.4808, -2.2426],   // Manchester, UK
+      [51.5074, -0.1278],   // London, UK
+      [48.8566, 2.3522],    // Paris, France
+      [43.7696, 11.2558],   // Florence, Italy
+      [40.4168, -3.7038],   // Madrid, Spain
+      [37.3891, -5.9845],   // Seville, Spain
+      [10.4806, -66.9036]    // Caracas, Venezuela
+    ];
 
-      if (percentValue < 40) {
-        progressStatus.textContent = "Writing Row Data...";
-      } else if (percentValue < 80) {
-        progressStatus.textContent = "Processing Matrix...";
-      } else {
-        progressStatus.textContent = "Ready.";
-      }
+    // Loop through arrays and append pulsing components dynamically
+    activeChefNodes.forEach(coords => {
+      const customIcon = L.divIcon({
+        className: 'glow-marker',
+        html: '<div class="marker-ring"></div>',
+        iconSize: [16, 16]
+      });
+      L.marker(coords, { icon: customIcon }).addTo(map);
+    });
 
-      // Schedule next line update with staggered delay intervals
-      setTimeout(executeTelemetryStep, 1100);
-    } else {
-      // Telemetry animation lifecycle complete. Ready to link user back to home loop.
+    // Lifecycle processing timeout sequence before revealing active call-to-action link
+    window.onload = function() {
       setTimeout(() => {
-        alert("Telemetry Simulation Complete.\n\nYour recipe details are secured within the Google Sheet pipeline and are waiting processing inside the internal FFT Admin dashboard workspace.");
-        window.location.href = "index.html";
-      }, 600);
-    }
-  }
+        const ctaBtn = document.getElementById('trigger-cta');
+        ctaBtn.classList.add('reveal');
+      }, 2500); // Staggers presentation frames to mimic background asset construction
+    };
 
-  // Engage sequencer after initial DOM loading frames stabilize
-  setTimeout(executeTelemetryStep, 500);
-</script>
+    function routeToFinalOutput() {
+      // Forward safely into home landing or specific recipe document array sequence
+      alert("Recipe parsing cycle complete. Loading customized recipe views layout...");
+      window.location.href = "../admin.html";
+    </div>
+  </script>
 </body>
 </html>
