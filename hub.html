@@ -53,7 +53,7 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 12px;
-transition: all 0.2s;
+      transition: all 0.2s;
     }
     .exit-btn:hover {
       border-color: var(--coral);
@@ -165,7 +165,7 @@ transition: all 0.2s;
       <!-- 1. Jeffrey Kho (Neighborhood Dental) -->
       <a href="ND.html" class="matrix-card">
         <div class="logo-wrapper">
-          <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="NEIGHBORHOOD DENTAL LOGO.png" class="logo-img">
+          <img data-src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img cache-bust">
         </div>
         <div class="card-info-block">
           <h2>JEFFREY KHO</h2>
@@ -176,7 +176,7 @@ transition: all 0.2s;
       <!-- 2. Hypetrex -->
       <a href="#" class="matrix-card" onclick="alert('Hypetrex Dashboard module initialization sequence pending deployment.')">
         <div class="logo-wrapper">
-          <img src="HYPERTRIX LOGO.png" alt="HYPERTRIX LOGO.png" class="logo-img">
+          <img data-src="HYPERTRIX LOGO.png" alt="Hypetrex" class="logo-img cache-bust">
         </div>
         <div class="card-info-block">
           <h2>HYPETREX</h2>
@@ -187,8 +187,7 @@ transition: all 0.2s;
       <!-- 3. Airbnb -->
       <a href="#" class="matrix-card" onclick="alert('Airbnb Management module initialization sequence pending deployment.')">
         <div class="logo-wrapper">
-          <!-- Fixed the extension directly here to display airbnblogo.png seamlessly -->
-          <img src="airbnblogo.png" alt="airbnblogo.png" class="logo-img">
+          <img data-src="airbnblogo.png" alt="Airbnb" class="logo-img cache-bust">
         </div>
         <div class="card-info-block">
           <h2>AIRBNB</h2>
@@ -199,7 +198,7 @@ transition: all 0.2s;
       <!-- 4. Free From That -->
       <a href="admin.html" class="matrix-card">
         <div class="logo-wrapper">
-          <img src="FFT LOGO JUNE 2026.png" alt="FFT LOGO JUNE 2026.png" class="logo-img">
+          <img data-src="FFT LOGO JUNE 2026.png" alt="Free From That" class="logo-img cache-bust">
         </div>
         <div class="card-info-block">
           <h2>FREE FROM THAT (FFT)</h2>
@@ -209,6 +208,20 @@ transition: all 0.2s;
 
     </div>
   </main>
+
+  <script>
+    // MacBook Neo Cache-Buster Engine
+    // Automatically executes upon structural rendering to append unique time stamps to all image pathways
+    document.addEventListener("DOMContentLoaded", function() {
+      const uniqueTimestamp = new Date().getTime();
+      document.querySelectorAll('.cache-bust').forEach(function(img) {
+        const rawSource = img.getAttribute('data-src');
+        if (rawSource) {
+          img.src = rawSource + "?t=" + uniqueTimestamp;
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
