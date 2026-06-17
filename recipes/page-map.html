@@ -7,16 +7,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
   
-  <!-- Secure Leaflet Mapping Engine Core CSS/JS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-
   <style>
     :root {
       --bg: #0c1219;
       --navy-banner: #1a365d;
       --accent-yellow: #f59e0b;
       --text: #dde7f0;
+      --land: #1e293b;
+      --water: #0f172a;
     }
 
     * { box-sizing: border-box; }
@@ -40,6 +38,7 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #e2e8f0;
+      z-index: 10;
     }
     .brand-group h1 {
       font-size: 16px;
@@ -78,21 +77,35 @@
       font-size: 18px;
       letter-spacing: 0.02em;
       border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 10;
     }
 
-    /* Map Viewport Container */
+    /* Map Viewport Area */
     .map-viewport {
       flex: 1;
       width: 100%;
       position: relative;
-    }
-    #live-map {
-      width: 100%;
-      height: 100%;
-      background-color: #0d1117;
+      background-color: var(--water);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    /* Action Control Overlay */
+    /* Self-Contained High-Fidelity Real World Map Graphic */
+    .world-svg-map {
+      width: 100%;
+      height: 100%;
+      max-width: 1100px;
+      max-height: 85%;
+    }
+    .land-mass {
+      fill: var(--land);
+      stroke: var(--water);
+      stroke-width: 0.8;
+    }
+
+    /* Action Presentation Control overlay */
     .cta-container {
       position: absolute;
       bottom: 40px;
@@ -101,7 +114,6 @@
       z-index: 1000;
       text-align: center;
       width: 100%;
-      pointer-events: none;
     }
     .action-btn {
       background: #1d4ed8;
@@ -112,7 +124,6 @@
       font-weight: 600;
       border-radius: 30px;
       cursor: pointer;
-      pointer-events: auto;
       box-shadow: 0 10px 25px rgba(0,0,0,0.6);
       transition: all 0.2s ease-in-out;
       opacity: 0;
@@ -127,37 +138,27 @@
       transform: scale(1.03);
     }
 
-    /* Deep Dark Map Overrides */
-    .leaflet-container { background: #0c1219 !important; }
-    .leaflet-control-zoom { display: none !important; }
-    .leaflet-control-attribution { background: rgba(0,0,0,0.4) !important; color: #475569 !important; font-size: 9px !important; }
-
-    /* Elegant Glowing Gold Marker Styles */
-    .glow-marker {
-      background: transparent;
-      border: none;
-    }
-    .marker-ring {
+    /* Custom Elegant Glowing Gold Pulse Rings */
+    .pulse-ring {
+      position: absolute;
       width: 14px;
       height: 14px;
-      background: rgba(245, 158, 11, 0.25);
+      background: rgba(245, 158, 11, 0.3);
       border: 2px solid var(--accent-yellow);
       border-radius: 50%;
-      position: absolute;
-      top: -7px;
-      left: -7px;
       box-shadow: 0 0 10px var(--accent-yellow);
-      animation: pulseGlow 2.5s infinite ease-in-out;
+      animation: goldGlowEffect 2.4s infinite ease-in-out;
     }
 
-    @keyframes pulseGlow {
-      0%, 100% { transform: scale(0.95); opacity: 0.8; box-shadow: 0 0 6px var(--accent-yellow); }
-      50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 16px var(--accent-yellow); }
+    @keyframes goldGlowEffect {
+      0%, 100% { transform: scale(0.95); opacity: 0.75; box-shadow: 0 0 6px var(--accent-yellow); }
+      50% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 16px var(--accent-yellow); }
     }
   </style>
 </head>
 <body>
 
+  <!-- Top Navigation Frame -->
   <nav class="top-navbar">
     <div class="brand-group">
       <h1>✨ My Recipe Maker</h1>
@@ -168,64 +169,64 @@
     </div>
   </nav>
 
+  <!-- Editorial Sub-Header Banner Row -->
   <header class="metric-ribbon">
     Over 70 chefs worldwide have made recipes with Free From That
   </header>
 
+  <!-- Primary Map Section -->
   <main class="map-viewport">
-    <div id="live-map"></div>
     
-    <div class="cta-container">
-      <button class="action-btn" id="trigger-cta" onclick="routeToFinalOutput()">View Your Recipe →</button>
-    </div>
+    <!-- Realistic, smooth-curve inline world vector landmasses -->
+    <svg class="world-svg-map" viewBox="0 0 1008 651" xmlns="http://www.w3.org/2000/svg">
+      <!-- North America -->
+      <path class="land-mass" d="M148,152 C152,140 174,115 198,110 C222,105 245,88 272,95 C300,102 312,122 308,138 C304,154 285,165 292,180 C300,195 320,192 318,210 C316,228 290,234 275,250 C260,266 230,295 210,340 C205,350 198,348 195,335 C190,310 182,280 168,262 C154,244 140,240 135,225 C130,210 144,192 142,178 Z" />
+      <!-- Greenland -->
+      <path class="land-mass" d="M360,70 C385,55 420,50 445,62 C470,74 465,95 440,118 C415,141 390,145 375,130 C360,115 352,90 360,70 Z" />
+      <!-- South America -->
+      <path class="land-mass" d="M212,348 C230,345 255,360 278,382 C301,404 330,440 338,470 C346,500 320,550 305,590 C298,608 288,612 284,595 C275,550 252,490 238,450 C224,410 205,375 212,348 Z" />
+      <!-- Africa -->
+      <path class="land-mass" d="M435,320 C460,290 502,285 540,305 C578,325 595,360 588,395 C581,430 555,475 538,515 C528,538 512,542 505,520 C495,490 488,440 468,410 C448,380 422,350 435,320 Z" />
+      <!-- Europe & United Kingdom -->
+      <path class="land-mass" d="M440,240 C438,210 452,185 470,175 C488,165 475,140 495,135 C515,130 540,155 555,160 C570,165 558,195 538,212 C518,229 488,235 475,252 C462,269 445,260 440,240 Z" />
+      <!-- Asia / Russia / Middle East -->
+      <path class="land-mass" d="M545,162 C570,145 610,120 660,115 C710,110 780,105 845,130 C910,155 895,210 860,255 C825,300 780,320 735,310 C690,300 660,270 632,275 C604,280 575,245 560,225 C545,205 532,180 545,162 Z" />
+      <!-- Australia -->
+      <path class="land-mass" d="M780,460 C810,450 855,462 870,485 C885,508 862,545 838,540 C814,535 775,510 765,495 C755,480 768,468 780,460 Z" />
+    </svg>
+
+    <!-- Geographic Pulse Pins accurately scaled over land configurations -->
+    <!-- California / West Coast -->
+    <div class="pulse-ring" style="top: 31%; left: 17%;"></div>
+    <div class="pulse-ring" style="top: 36%; left: 19%;"></div>
+    
+    <!-- Midwest / East Coast US -->
+    <div class="pulse-ring" style="top: 33%; left: 24%;"></div>
+    <div class="pulse-ring" style="top: 30%; left: 27%;"></div>
+    
+    <!-- South America / Venezuela -->
+    <div class="pulse-ring" style="top: 58%; left: 26%;"></div>
+
+    <!-- United Kingdom & Ireland -->
+    <div class="pulse-ring" style="top: 24%; left: 46%;"></div>
+    <div class="pulse-ring" style="top: 27%; left: 48%;"></div>
+
+    <!-- France, Spain, & Italy -->
+    <div class="pulse-ring" style="top: 29%; left: 49%;"></div>
+    <div class="pulse-ring" style="top: 33%; left: 47%;"></div>
+    <div class="pulse-ring" style="top: 32%; left: 52%;"></div>
   </main>
 
+  <!-- Interactive Execution Floating Action Control -->
+  <div class="cta-container">
+    <button class="action-btn" id="trigger-cta" onclick="routeToFinalOutput()">View Your Recipe →</button>
+  </div>
+
   <script>
-    // Initialize the real-world world map projection
-    const map = L.map('live-map', {
-      center: [35.0, -20.0],
-      zoom: 3,
-      minZoom: 2,
-      maxZoom: 6,
-      zoomControl: false,
-      attributionControl: true
-    });
-
-    // Securely stream the premium CartoDB Dark Matter map tile layers over HTTPS
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap &copy; CARTO'
-    }).addTo(map);
-
-    // Pinpoint coordinates matching your exact community distribution spots
-    const coordinates = [
-      [37.7749, -122.4194], // San Francisco
-      [34.0522, -118.2437], // Los Angeles
-      [32.7157, -117.1611], // San Diego
-      [40.7128, -74.0060],  // New York
-      [42.3601, -71.0589],  // Boston
-      [41.8781, -87.6298],  // Chicago
-      [10.4806, -66.9036],  // Caracas, Venezuela
-      [51.5074, -0.1278],   // London, UK
-      [53.4808, -2.2426],   // Manchester, UK
-      [48.8566, 2.3522],    // Paris, France
-      [40.4168, -3.7038],   // Madrid, Spain
-      [43.7696, 11.2558]    // Florence, Italy
-    ];
-
-    // Map your glowing markers onto the physical land masses
-    coordinates.forEach(coords => {
-      const goldIcon = L.divIcon({
-        className: 'glow-marker',
-        html: '<div class="marker-ring"></div>',
-        iconSize: [14, 14]
-      });
-      L.marker(coords, { icon: goldIcon }).addTo(map);
-    });
-
     window.onload = function() {
       setTimeout(() => {
         document.getElementById('trigger-cta').classList.add('reveal');
-      }, 2200);
+      }, 1500);
     };
 
     function routeToFinalOutput() {
