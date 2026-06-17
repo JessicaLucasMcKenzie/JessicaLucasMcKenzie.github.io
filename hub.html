@@ -27,7 +27,7 @@
       flex-direction: column;
     }
 
-    /* Top Subheader Status Strip */
+    /* Top Navigation Status Strip */
     .status-ribbon {
       background: #0f1620;
       border-bottom: 1px solid var(--border);
@@ -60,9 +60,9 @@
       color: var(--coral);
     }
 
-    /* Container Area */
+    /* Master Grid Boundaries Container */
     .hub-container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 60px 40px;
       width: 100%;
@@ -84,10 +84,10 @@
       font-size: 14px;
     }
 
-    /* 2x2 Clean Dashboard Grid */
+    /* 3-Column Width Workspace Row Matrix */
     .matrix-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
 
@@ -95,13 +95,12 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 32px;
+      padding: 0 0 28px 0; /* Cleans base interior edges below full-span header images */
       text-decoration: none;
       color: inherit;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
+      overflow: hidden;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     }
     .matrix-card:hover {
@@ -110,30 +109,33 @@
       box-shadow: 0 16px 40px rgba(0,0,0,0.4);
     }
 
-    /* Image Wrapper area to keep layout clean regardless of asset sizing shape */
+    /* Full-Width Image Header Block Wrapper */
     .logo-wrapper {
       width: 100%;
-      height: 120px;
-      background: #ffffff; /* Gives solid backgrounds an even canvas container */
-      border-radius: 8px;
+      height: 180px;
+      background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
-      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
       overflow: hidden;
     }
     .logo-img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Spans the entire bounding container seamlessly */
     }
 
+    .card-info-block {
+      padding: 24px 24px 0 24px;
+      text-align: center;
+    }
     .matrix-card h2 {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
     }
     .matrix-card p {
       font-size: 13px;
@@ -144,7 +146,6 @@
 </head>
 <body>
 
-  <!-- Top Connectivity Bar -->
   <div class="status-ribbon">
     <div>
       <span class="ribbon-title">Jessica Lucas McKenzie</span>
@@ -153,7 +154,6 @@
     <button class="exit-btn" onclick="window.location.href='index.html'">Log Out</button>
   </div>
 
-  <!-- Primary Hub Workspace Selector -->
   <main class="hub-container">
     <div class="hub-header">
       <h1>Select Operational Dashboard</h1>
@@ -165,39 +165,45 @@
       <!-- 1. Free From That -->
       <a href="admin.html" class="matrix-card">
         <div class="logo-wrapper">
-          <img src="FFT LOGO JUNE 2026.png" alt="Free From That Logo" class="logo-img">
+          <img src="FFT LOGO JUNE 2026_2.png" alt="FFT LOGO JUNE 2026_2.png" class="logo-img">
         </div>
-        <h2>FREE FROM THAT (FFT)</h2>
-        <p>Recipe generation metrics, operational tools, drafts, and customer requests pipeline.</p>
+        <div class="card-info-block">
+          <h2>FREE FROM THAT (FFT)</h2>
+          <p>Recipe generation metrics, operational tools, drafts, and customer requests pipeline.</p>
+        </div>
       </a>
 
       <!-- 2. Jeffrey Kho -->
       <a href="ND.html" class="matrix-card">
         <div class="logo-wrapper">
-          <img src="NEIGHBORHOOD DENTAL LOGO.jpg" alt="Neighborhood Dental Group Logo" class="logo-img">
+          <img src="NEIGHBORHOOD DENTAL LOGO_2.jpg" alt="NEIGHBORHOOD DENTAL LOGO_2.jpg" class="logo-img">
         </div>
-        <h2>JEFFREY KHO</h2>
-        <p>Neighborhood Dental Group recruitment trackers, coordination hubs, and HeyGen production queues.</p>
+        <div class="card-info-block">
+          <h2>JEFFREY KHO</h2>
+          <p>Neighborhood Dental Group recruitment trackers, coordination hubs, and HeyGen production queues.</p>
+        </div>
       </a>
 
       <!-- 3. Hypetrex -->
       <a href="#" class="matrix-card" onclick="alert('Hypetrex Dashboard module initialization sequence pending deployment.')">
-        <div class="logo-wrapper" style="background: #1e293b;">
-          <!-- Placeholder until you choose your asset file text -->
-          <div style="font-weight:700; font-size:20px; color:#fff; letter-spacing:0.05em;">HYPETREX</div>
+        <div class="logo-wrapper">
+          <img src="HYPERTRIX LOGO.png" alt="HYPERTRIX LOGO.png" class="logo-img">
         </div>
-        <h2>HYPETREX</h2>
-        <p>Operational tracking systems and administrative management panel.</p>
+        <div class="card-info-block">
+          <h2>HYPETREX</h2>
+          <p>Operational tracking systems, performance matrices, and administrative management panel.</p>
+        </div>
       </a>
 
       <!-- 4. Airbnb -->
       <a href="#" class="matrix-card" onclick="alert('Airbnb Management module initialization sequence pending deployment.')">
-        <div class="logo-wrapper" style="background: #1e293b;">
-          <!-- Placeholder until you choose your asset file text -->
-          <div style="font-weight:700; font-size:20px; color:#ff5a5f; letter-spacing:0.05em;">AIRBNB</div>
+        <div class="logo-wrapper">
+          <img src="airbnblogo.jpeg" alt="airbnblogo.jpeg" class="logo-img">
         </div>
-        <h2>AIRBNB</h2>
-        <p>Property management logs, direct logistics planning, and hospitality coordination dashboard.</p>
+        <div class="card-info-block">
+          <h2>AIRBNB</h2>
+          <p>Property management logs, direct logistics planning, and hospitality coordination dashboard.</p>
+        </div>
       </a>
 
     </div>
