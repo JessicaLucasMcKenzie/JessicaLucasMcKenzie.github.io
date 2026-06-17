@@ -1,1 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FFT Admin Console — JLM Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #0c1219;
+      --surface:   #131c27;
+      --surface2:  #1b2733;
+      --border:    #25323f;
+      --coral:     #e08b92;
+      --green:     #4caf7d;
+      --text:      #dde7f0;
+      --muted:     #6b8099;
+    }
 
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    /* Layout Header */
+    .admin-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .header-title span {
+      color: var(--coral);
+    }
+    .logout-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .logout-btn:hover {
+      border-color: var(--coral);
+      color: var(--coral);
+    }
+
+    /* Main Container */
+    .main-content {
+      padding: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .welcome-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .welcome-card h2 { margin: 0 0 8px 0; font-size: 20px; color: #fff; }
+    .welcome-card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    /* Data Table Widget */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .table-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .table-title { margin: 0; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    
+    .refresh-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .refresh-btn:hover { border-color: var(--green); }
+
+    .table-responsive { width: 100%; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+    th { background: #0f1620; padding: 14px 24px; color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+    td { padding: 16px 24px; border-bottom: 1px solid var(--border); color: var(--text); line-height: 1.4; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(25, 38, 54, 0.2); }
+
+    /* Badges */
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .status-badge.pending { background: rgba(224, 139, 146, 0.15); color: var(--coral); }
+    .status-badge.processed { background: rgba(76, 175, 125, 0.15); color: var(--green); }
+    
+    .timestamp-text { font-family: 'JetBrains Mono', monospace; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <header class="admin-header">
+    <div class="header-title">FFT <span>Admin Console</span></div>
+    <button class="logout-btn" onclick="window.location.href='index.html'">Exit Node</button>
+  </header>
+
+  <main class="main-content">
+    <div class="welcome-card">
+      <h2>Operational Dashboard</h2>
+      <p>Welcome back to the Free From That administrative interface. This node streams real-time submission data incoming from your recipe maker ingress pipeline.</p>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <h3 class="table-title">Inbound Recipe Data Streams</h3>
+        <button class="refresh-btn" onclick="loadRecipeStreams()">🔄 Refresh Live Feeds</button>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>User Node Account</th>
+              <th>Culinary Request / Prompt Parameters</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="table-feed-rows">
+            <!-- Simulated rows that match your Google Sheet input layout structure -->
+            <tr>
+              <td class="timestamp-text">2026-06-17 14:12:05</td>
+              <td>chef.manuel@domain.com</td>
+              <td>Allergen-free chocolate chip cookies using oat milk and vegan butter...</td>
+              <td><span class="status-badge pending">Pending</span></td>
+            </tr>
+            <tr>
+              <td class="timestamp-text">2026-06-17 11:34:50</td>
+              <td>test-user@freefromthat.com</td>
+              <td>Gluten-free sourdough bread crumb substitute for coatings.</td>
+              <td><span class="status-badge processed">Processed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function loadRecipeStreams() {
+      console.log("Synchronizing data arrays with tracking sheet database macro...");
+      // This function can be expanded with a fetch call to your Apps Script Web App 
+      // to read rows out of your spreadsheet dynamically.
+    }
+  </script>
+</body>
+</html>
