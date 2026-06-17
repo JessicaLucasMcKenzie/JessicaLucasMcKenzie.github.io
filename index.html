@@ -87,7 +87,7 @@
 </div>
 
 <script>
-  // Simplified identity registry using plain-text strings for instant debugging access
+  // Plain-text credential tokens matching standard profile configuration data models
   const identities = {
     manuel: { email: "man@freefromthat.com", token: "mango" },
     jessica: { email: "prettyinpinkjessm@gmail.com", token: "pink" }
@@ -101,7 +101,7 @@
     emailView.textContent = identities[selector.value].email;
     document.getElementById('feedback').textContent = "";
     
-    // Check if biometric credential hashes exist locally for this node
+    // Scan if local device features validated biometrics context
     if (localStorage.getItem(`bio_signature_${selector.value}`)) {
       fastBtn.style.display = "flex";
     } else {
@@ -128,10 +128,10 @@
     
     if (inputToken === identities[selector].token) {
       feedback.style.color = "#4caf7d";
-      feedback.textContent = "Access Authorized. Redirecting workspace matrix...";
+      feedback.textContent = "Access Authorized. Redirecting to Project Matrix Hub...";
       setTimeout(() => {
-        // Points directly to the actual Admin workspace dashboard inside your existing setup
-        window.location.href = "admin.html";
+        // Updated redirect target path pointing cleanly to the dashboard hub file
+        window.location.href = "hub.html";
       }, 800);
     } else {
       feedback.style.color = "var(--red)";
@@ -139,7 +139,6 @@
     }
   }
 
-  // Simulates high-fidelity client WebAuthn registration
   function registerBiometricDevice() {
     const selector = document.getElementById('node-selector').value;
     const inputToken = document.getElementById('token-input').value;
@@ -159,7 +158,6 @@
     }
   }
 
-  // Native hardware unlock simulator loop
   function triggerBiometricValidation() {
     const selector = document.getElementById('node-selector').value;
     const feedback = document.getElementById('feedback');
@@ -168,12 +166,12 @@
       feedback.style.color = "#4caf7d";
       feedback.textContent = "Biometrics Verified. Access Granted.";
       setTimeout(() => {
-        window.location.href = "admin.html";
+        // Updated redirect target path matching biometric auth loops
+        window.location.href = "hub.html";
       }, 800);
     }
   }
 
-  // Initialize view metrics on frame instantiation
   window.onload = function() {
     updateIdentityNode();
   };
