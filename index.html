@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JLM Solutions — Command Gateway</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0c1219;
-      /* Updated to a stunning premium light pink background palette */
       --surface: #fff0f2;
       --surface2: #ffffff;
       --border: #fbcdd3;
@@ -24,7 +23,10 @@
     body { background: var(--bg); color: var(--text-dark); font-family: 'Inter', sans-serif; font-size: 14px; min-height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; padding: 16px; }
     .gateway-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 48px 44px; width: 440px; max-width: 100%; text-align: center; box-shadow: 0 32px 80px rgba(0,0,0,0.6); }
     .logo-container { width: 100%; display: flex; justify-content: center; margin-bottom: 24px; }
-    .logo-img { height: 74px; width: auto; object-fit: contain; }
+    
+    /* Configured layout to render the branding element exactly 2x larger */
+    .logo-img { height: 148px; width: auto; object-fit: contain; }
+    
     .dev-by { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); margin-bottom: 12px; display: block; font-weight: 600; }
     .gateway-title { font-size: 32px; font-weight: 700; color: var(--text-dark); margin: 0 0 36px 0; letter-spacing: 0.12em; text-transform: uppercase; }
     .form-group { text-align: left; margin-bottom: 20px; }
@@ -51,7 +53,6 @@
 
 <div class="gateway-card">
   <div class="logo-container">
-    <!-- Updated verbatim to lower-case filename with cache-buster capability -->
     <img data-src="jlmlogo.png" alt="JLM Solutions Logo" class="logo-img cache-bust">
   </div>
   
@@ -169,7 +170,6 @@
     }
   }
 
-  // Cache-Busting Script initialization tailored for MacBook Neo browser constraints
   document.addEventListener("DOMContentLoaded", function() {
     const uniqueTimeSeed = new Date().getTime();
     document.querySelectorAll('.cache-bust').forEach(function(img) {
