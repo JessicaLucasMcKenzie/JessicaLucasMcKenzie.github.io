@@ -84,14 +84,14 @@
       font-size: 14px;
     }
 
-    /* Re-engineered 2-Column Width Workspace Matrix for Mobile Optimization */
+    /* 2-Column Width Workspace Matrix for Mobile Optimization */
     .matrix-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
 
-    /* Mobile Fallback breakpoint to stack cleanly on tiny mobile touch displays */
+    /* Mobile Fallback breakpoint to stack cleanly on mobile touch displays */
     @media (max-width: 580px) {
       .matrix-grid {
         grid-template-columns: 1fr;
@@ -195,8 +195,8 @@
         </div>
       </a>
 
-      <!-- 3. Airbnb -->
-      <a href="#" class="matrix-card" onclick="alert('Airbnb Management module initialization sequence pending deployment.')">
+      <!-- 3. Airbnb (FIXED: Linked directly to airbnb.html, script alert prompt removed) -->
+      <a href="airbnb.html" class="matrix-card">
         <div class="logo-wrapper">
           <img data-src="airbnblogo.png" alt="Airbnb" class="logo-img cache-bust">
         </div>
