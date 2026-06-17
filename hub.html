@@ -62,18 +62,18 @@
 
     /* Master Grid Boundaries Container */
     .hub-container {
-      max-width: 1400px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 60px 40px;
+      padding: 40px 24px;
       width: 100%;
       flex: 1;
     }
 
     .hub-header {
-      margin-bottom: 40px;
+      margin-bottom: 32px;
     }
     .hub-header h1 {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
       color: #fff;
       letter-spacing: -0.02em;
@@ -84,11 +84,22 @@
       font-size: 14px;
     }
 
-    /* 3-Column Width Workspace Row Matrix */
+    /* Re-engineered 2-Column Width Workspace Matrix for Mobile Optimization */
     .matrix-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
+    }
+
+    /* Mobile Fallback breakpoint to stack cleanly on tiny mobile touch displays */
+    @media (max-width: 580px) {
+      .matrix-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .status-ribbon {
+        padding: 12px 20px;
+      }
     }
 
     .matrix-card {
@@ -211,7 +222,6 @@
 
   <script>
     // MacBook Neo Cache-Buster Engine
-    // Automatically executes upon structural rendering to append unique time stamps to all image pathways
     document.addEventListener("DOMContentLoaded", function() {
       const uniqueTimestamp = new Date().getTime();
       document.querySelectorAll('.cache-bust').forEach(function(img) {
