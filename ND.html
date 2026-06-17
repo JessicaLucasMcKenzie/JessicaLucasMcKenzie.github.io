@@ -77,19 +77,23 @@
       gap: 8px;
     }
 
-    .nav-item a {
+    .nav-item button {
+      width: 100%;
       display: flex;
       align-items: center;
       padding: 12px 16px;
       color: #475569;
-      text-decoration: none;
+      background: none;
+      border: none;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 500;
+      text-align: left;
+      cursor: pointer;
       transition: all 0.2s ease;
     }
 
-    .nav-item a:hover, .nav-item.active a {
+    .nav-item button:hover, .nav-item.active button {
       background-color: var(--teal-light);
       color: var(--teal-primary);
     }
@@ -118,6 +122,23 @@
       letter-spacing: -0.01em;
     }
 
+    .back-hub-btn {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .back-hub-btn:hover {
+      border-color: var(--teal-primary);
+      color: var(--teal-primary);
+    }
+
     .content-container {
       padding: 40px;
       max-width: 1400px;
@@ -126,6 +147,16 @@
       display: flex;
       flex-direction: column;
       gap: 32px;
+    }
+
+    /* Views Layout States */
+    .app-view {
+      display: none;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .app-view.active-view {
+      display: flex;
     }
 
     /* Direct Hub Link Grids */
@@ -140,8 +171,7 @@
       border: 1px solid var(--border);
       padding: 24px;
       border-radius: 12px;
-      text-decoration: none;
-      color: inherit;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -276,69 +306,88 @@
 </head>
 <body>
 
+  <!-- Left Control Navigation Panel -->
   <aside class="sidebar">
     <div class="logo-container">
-      <img src="NEIGHBORHOOD DENTAL LOGO.jpg" alt="Neighborhood Dental" class="logo-img">
+      <!-- Fixed extension from .jpg to .png to showcase the uploaded file perfectly -->
+      <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img">
       <h2>JEFFREY KHO DASHBOARD</h2>
       <p>Administrative Support Workspace</p>
     </div>
     
     <ul class="nav-links">
-      <li class="nav-item active"><a href="#">📊 Hub Overview</a></li>
-      <li class="nav-item"><a href="https://docs.google.com/spreadsheets/d/1tJZma-5Wb_Lb2AB6BhcKGsY-hNTGFEPnRvVFRDo8T74/edit?gid=838089805" target="_blank">📋 Recruitment Tracker</a></li>
-      <li class="nav-item"><a href="https://docs.google.com/spreadsheets/d/13e49X0ScDsxxhViYFixhQYysG45Rvby_93I64fAwN50/edit?gid=0" target="_blank">📆 Coordinator Tracker</a></li>
-      <li class="nav-item"><a href="https://docs.google.com/spreadsheets/d/15NJFDowrhL5Ok3aTN83vAKfIXcsmvNQeezTVa2O9SHE/edit?gid=631213052" target="_blank">🔑 Personal Logistics</a></li>
-      <li class="nav-item"><a href="https://drive.google.com/drive/folders/1TA9dnXgKLSromJMwV3gAcEAc6R34KjoK" target="_blank">🎥 HeyGen Video Assets</a></li>
+      <li class="nav-item active" id="nav-hub"><button onclick="switchAppView('hub')">📊 Hub Overview</button></li>
+      <li class="nav-item" id="nav-recruitment"><button onclick="switchAppView('recruitment')">📋 Recruitment Tracker</button></li>
+      <li class="nav-item" id="nav-coordinator"><button onclick="switchAppView('coordinator')">6️⃣ Coordinator Tracker</button></li>
+      <li class="nav-item" id="nav-logistics"><button onclick="switchAppView('logistics')">🔑 Personal Logistics</button></li>
+      <li class="nav-item" id="nav-heygen"><button onclick="switchAppView('heygen')">🎥 HeyGen Video Assets</button></li>
     </ul>
   </aside>
 
+  <!-- Core Dashboard Window -->
   <main class="main-viewport">
     <header class="top-header">
-      <h1>JEFFREY KHO DASHBOARD</h1>
-      <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;">
-        Coordinator: Jessica Lucas McKenzie
+      <h1 id="view-title">JEFFREY KHO DASHBOARD</h1>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="hub.html" class="back-hub-btn">⚙️ Matrix Hub</a>
+        <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;">
+          Coordinator: Jessica Lucas McKenzie
+        </div>
       </div>
     </header>
 
     <div class="content-container">
       
-      <section class="resource-grid">
-        <a href="https://docs.google.com/spreadsheets/d/1tJZma-5Wb_Lb2AB6BhcKGsY-hNTGFEPnRvVFRDo8T74/edit?gid=838089805" target="_blank" class="card-link">
-          <div>
-            <div class="card-icon" style="background: #eff6ff; color: #2563eb;">👥</div>
-            <h3>Recruitment Tracker</h3>
-            <p>Track doctor pipeline, clinical openings, and screening status details.</p>
+      <!-- ==================== VIEW 1: HUB OVERVIEW ==================== -->
+      <div id="view-pane-hub" class="app-view active-view">
+        <section class="resource-grid">
+          <div onclick="switchAppView('recruitment')" class="card-link">
+            <div>
+              <div class="card-icon" style="background: #eff6ff; color: #2563eb;">👥</div>
+              <h3>Recruitment Tracker</h3>
+              <p>Expand internal data matrix for doctor pipelines and active clinic openings.</p>
+            </div>
           </div>
-        </a>
-        <a href="https://docs.google.com/spreadsheets/d/13e49X0ScDsxxhViYFixhQYysG45Rvby_93I64fAwN50/edit?gid=0" target="_blank" class="card-link">
-          <div>
-            <div class="card-icon" style="background: #fff7ed; color: #ea580c;">📅</div>
-            <h3>Coordinator Tracker</h3>
-            <p>Manage dental clinic logs, master planning, and active calendar tasks.</p>
+          <div onclick="switchAppView('coordinator')" class="card-link">
+            <div>
+              <div class="card-icon" style="background: #fff7ed; color: #ea580c;">📅</div>
+              <h3>Coordinator Tracker</h3>
+              <p>Manage local dental clinic logs, master planning, and pending schedule rows.</p>
+            </div>
           </div>
-        </a>
-        <a href="https://docs.google.com/spreadsheets/d/15NJFDowrhL5Ok3aTN83vAKfIXcsmvNQeezTVa2O9SHE/edit?gid=631213052" target="_blank" class="card-link">
-          <div>
-            <div class="card-icon" style="background: #faf5ff; color: #9333ea;">🔑</div>
-            <h3>Personal Logistics</h3>
-            <p>Oversee personal affairs, private logistics logs, and direct arrangements.</p>
+          <div onclick="switchAppView('logistics')" class="card-link">
+            <div>
+              <div class="card-icon" style="background: #faf5ff; color: #9333ea;">🔑</div>
+              <h3>Personal Logistics</h3>
+              <p>Review private administrative logs, personal files, and travel records.</p>
+            </div>
           </div>
-        </a>
-        <a href="https://drive.google.com/drive/folders/1TA9dnXgKLSromJMwV3gAcEAc6R34KjoK" target="_blank" class="card-link">
-          <div>
-            <div class="card-icon" style="background: #f0fdf4; color: #16a34a;">🎥</div>
-            <h3>HeyGen Video Folder</h3>
-            <p>Access AI avatar configurations, script templates, and video files.</p>
+          <div onclick="switchAppView('heygen')" class="card-link">
+            <div>
+              <div class="card-icon" style="background: #f0fdf4; color: #16a34a;">🎥</div>
+              <h3>HeyGen Video Folder</h3>
+              <p>Review current video script metrics, avatar loops, and content arrays.</p>
+            </div>
           </div>
-        </a>
-      </section>
+        </section>
 
-      <div class="dashboard-layout-row">
-        
+        <div class="dashboard-layout-row">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>Active System Summary</h2>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+              Welcome back, Jessica. All database vectors are operating inside the local application framework. Select any module from the side utility menu or the quick access panels above to view and expand data records natively.
+            </p>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW 2: RECRUITMENT TRACKER ==================== -->
+      <div id="view-pane-recruitment" class="app-view">
         <section class="panel">
           <div class="panel-header">
-            <h2>Active Recruitment Pipeline</h2>
-            <span style="font-size: 12px; color: var(--teal-primary); font-weight: 600;">Linked to Master Sheet</span>
+            <h2>Doctor & Clinical Recruitment Matrix</h2>
           </div>
           <table class="data-table">
             <thead>
@@ -366,45 +415,146 @@
                 <td><strong>David Kim</strong> (Orthodontist Specialist)</td>
                 <td>East End Hub</td>
                 <td><span class="badge info">Screening Complete</span></td>
-                <td>Jessica to coordinate video introductory file</td>
+                <td>Coordinate preliminary video file preview</td>
               </tr>
             </tbody>
           </table>
         </section>
+      </div>
 
+      <!-- ==================== VIEW 3: COORDINATOR TRACKER ==================== -->
+      <div id="view-pane-coordinator" class="app-view">
         <section class="panel">
           <div class="panel-header">
-            <h2>HeyGen AI Video Queue</h2>
+            <h2>Dental Clinic Coordination Metrics</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Log ID</th>
+                <th>Target Branch</th>
+                <th>Operational Status</th>
+                <th>Jessica's Coordination Focus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#ND-9021</td>
+                <td>Metro Dental Hub</td>
+                <td><span class="badge success">Optimized</span></td>
+                <td>Staffing schedule locked for upcoming quarter</td>
+              </tr>
+              <tr>
+                <td>#ND-4412</td>
+                <td>Valley Surgical Clinic</td>
+                <td><span class="badge warning">Review Needed</span></td>
+                <td>Syncing missing equipment intake lines</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- ==================== VIEW 4: PERSONAL LOGISTICS ==================== -->
+      <div id="view-pane-logistics" class="app-view">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Executive Support & Private Arrangements</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Logistics Element</th>
+                <th>Target Timeframe</th>
+                <th>Phase Status</th>
+                <th>Detail Target</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Annual Dental Symposium Board Meet</td>
+                <td>October 2026</td>
+                <td><span class="badge info">Planning</span></td>
+                <td>Jessica structuring venue options and hospitality arrays</td>
+              </tr>
+              <tr>
+                <td>Private Travel Route Verification</td>
+                <td>Immediate</td>
+                <td><span class="badge success">Confirmed</span></td>
+                <td>Flight and terminal configurations locked</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- ==================== VIEW 5: HEYGEN VIDEO ASSETS ==================== -->
+      <div id="view-pane-heygen" class="app-view">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>HeyGen AI Video Generation Hub</h2>
           </div>
           <ul class="action-list">
             <li class="action-item">
               <div class="action-details">
                 <h4>Clinic Welcome Intro Video</h4>
-                <p>Status: Ready to render on HeyGen platform</p>
+                <p>Configured Template Instance: HeyGen Actor Avatar Node 4</p>
               </div>
               <span class="badge info">Queued</span>
             </li>
             <li class="action-item">
               <div class="action-details">
                 <h4>Recruitment Strategy Pitch</h4>
-                <p>Status: Script draft finalized by Jessica</p>
+                <p>Status: Voiceover track synthesis complete</p>
               </div>
               <span class="badge warning">In Draft</span>
             </li>
             <li class="action-item">
               <div class="action-details">
                 <h4>Q3 Internal Dental Update</h4>
-                <p>Status: Transferred safely to Drive folder</p>
+                <p>Output: 1080p high bitrate render stream finalized</p>
               </div>
               <span class="badge success">Delivered</span>
             </li>
           </ul>
         </section>
-
       </div>
 
     </div>
   </main>
 
+  <script>
+    function switchAppView(viewName) {
+      // 1. Deactivate all active panel view wrappers
+      document.querySelectorAll('.app-view').forEach(view => {
+        view.classList.remove('active-view');
+      });
+      
+      // 2. Clear all navigation hover highlights
+      document.querySelectorAll('.nav-links .nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      // 3. Mount targeted content area
+      const targetPane = document.getElementById(`view-pane-${viewName}`);
+      if (targetPane) {
+        targetPane.classList.add('active-view');
+      }
+
+      // 4. Activate navigation item color highlights
+      const targetNav = document.getElementById(`nav-${viewName}`);
+      if (targetNav) {
+        targetNav.classList.add('active');
+      }
+
+      // 5. Update header text depending on application context
+      const titleElement = document.getElementById('view-title');
+      if (viewName === 'hub') {
+        titleElement.textContent = "JEFFREY KHO DASHBOARD";
+      } else {
+        titleElement.textContent = viewName.toUpperCase() + " MANAGEMENT CONSOLE";
+      }
+    }
+  </script>
 </body>
 </html>
