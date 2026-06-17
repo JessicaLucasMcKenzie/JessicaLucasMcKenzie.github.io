@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JEFFREY KHO DASHBOARD</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -44,10 +44,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
+      padding-bottom: 20px;
       text-align: center;
+    }
+
+    /* Clickable Home Link Wrapper for the Main Corporate Mark */
+    .logo-home-link {
+      display: block;
+      width: 100%;
+      cursor: pointer;
+      transition: opacity 0.15s ease-in-out;
+    }
+    .logo-home-link:hover {
+      opacity: 0.85;
     }
 
     .logo-img {
@@ -70,6 +79,24 @@
       font-size: 11px;
       color: var(--text-muted);
       margin-top: 2px;
+    }
+
+    /* Meta Divider Rule and Revision Typography Block */
+    .meta-divider {
+      width: 100%;
+      border: 0;
+      height: 1px;
+      background-color: var(--border);
+      margin: 16px 0;
+    }
+    .revision-block {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 16px;
+      text-align: center;
     }
 
     .nav-links {
@@ -317,15 +344,22 @@
   <!-- Left Control Navigation Panel -->
   <aside class="sidebar">
     <div class="logo-container">
-      <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img">
+      <!-- Clicking logo executes the home-routing macro directly inside the runtime -->
+      <a onclick="switchAppView('hub')" class="logo-home-link" title="Return to Dashboard Home">
+        <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img">
+      </a>
       <h2>JEFFREY KHO DASHBOARD</h2>
       <p>Administrative Support Workspace</p>
+      
+      <!-- Requested Separator Layout & Revision Metadata Elements -->
+      <hr class="meta-divider">
+      <div class="revision-block">Rev. 1.0.4 &bull; June 17, 2026</div>
     </div>
     
     <ul class="nav-links">
       <li class="nav-item active" id="nav-hub"><button onclick="switchAppView('hub')">📊 Hub Overview</button></li>
       <li class="nav-item" id="nav-recruitment"><button onclick="switchAppView('recruitment')">📋 Recruitment Tracker</button></li>
-      <li class="nav-item" id="nav-coordinator"><button onclick="switchAppView('coordinator')">📆 Coordinator Tracker</button></li>
+      <li class="nav-item" id="nav-coordinator"><button onclick="switchAppView('coordinator')">6️⃣ Coordinator Tracker</button></li>
       <li class="nav-item" id="nav-logistics"><button onclick="switchAppView('logistics')">🔑 Personal Logistics</button></li>
       <li class="nav-item" id="nav-heygen"><button onclick="switchAppView('heygen')">🎥 HeyGen Video Assets</button></li>
     </ul>
@@ -392,8 +426,6 @@
 
       <!-- ==================== VIEW 2: RECRUITMENT TRACKER ==================== -->
       <div id="view-pane-recruitment" class="app-view">
-        
-        <!-- Live Action Stakeholder Router Switch Strip -->
         <div class="filter-banner">
           <div class="filter-label">🎯 Active Dashboard Perspective Filter:</div>
           <div class="filter-buttons">
@@ -418,7 +450,6 @@
               </tr>
             </thead>
             <tbody id="recruitment-table-body">
-              <!-- Data rows loaded dynamically with target metadata keys -->
             </tbody>
           </table>
         </section>
@@ -526,7 +557,6 @@
   </main>
 
   <script>
-    // Real candidate dataset models compiled directly from your orange and green sheets
     const candidateDatabase = [
       {
         date: "14-Jun-2026",
@@ -582,6 +612,7 @@
 
     function renderTableRows(dataset) {
       const tableBody = document.getElementById('recruitment-table-body');
+      if (!tableBody) return;
       tableBody.innerHTML = "";
 
       if(dataset.length === 0) {
@@ -591,13 +622,10 @@
 
       dataset.forEach(candidate => {
         const row = document.createElement('tr');
-        
-        // Setup type pills
         const typePill = candidate.type === 'dentist' ? 
           `<span class="badge dentist">Dentist</span>` : 
           `<span class="badge pm">Practice Manager</span>`;
 
-        // Setup pipeline status styles
         let statusClass = "status-ident";
         if(candidate.status.includes("Scre")) statusClass = "status-screen";
         if(candidate.status.includes("Not")) statusClass = "status-notsuit";
@@ -617,11 +645,9 @@
     }
 
     function applyRecruitmentFilter(filterType, buttonElement) {
-      // Clean previous active view layout states
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active-filter'));
-      buttonElement.classList.add('active-filter');
+      if(buttonElement) buttonElement.classList.add('active-filter');
 
-      // Process logical vector filtering structures
       let filteredData = [];
       if (filterType === 'all') {
         filteredData = candidateDatabase;
@@ -656,7 +682,6 @@
       }
     }
 
-    // Initialize root execution block
     window.onload = function() {
       renderTableRows(candidateDatabase);
     };
