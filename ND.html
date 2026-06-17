@@ -1,1 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JEFFREY KHO DASHBOARD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --sidebar-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --teal-primary: #3b6e66; 
+      --teal-light: #f0f6f5;
+      --border: #e2e8f0;
+    }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Left Sidebar Navigation */
+    .sidebar {
+      width: 290px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .logo-img {
+      width: 100%;
+      max-width: 180px;
+      height: auto;
+      object-fit: contain;
+      margin-bottom: 14px;
+    }
+
+    .logo-container h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #0f172a;
+      text-transform: uppercase;
+    }
+
+    .logo-container p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: #475569;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item a:hover, .nav-item.active a {
+      background-color: var(--teal-light);
+      color: var(--teal-primary);
+    }
+
+    /* Main Content Dashboard Frame */
+    .main-viewport {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .top-header {
+      background: #ffffff;
+      padding: 22px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.01em;
+    }
+
+    .content-container {
+      padding: 40px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Direct Hub Link Grids */
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .card-link {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+      border-color: var(--teal-primary);
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .card-link h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .card-link p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Split Dashboard Panels layout */
+    .dashboard-layout-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 32px;
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .panel-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Clean Data Matrices */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .data-table th {
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background-color: #f8fafc;
+    }
+
+    .data-table td {
+      padding: 14px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      color: #334155;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 6px;
+    }
+
+    .badge.success { background-color: #e2fbe8; color: #14532d; }
+    .badge.warning { background-color: #fffbeb; color: #78350f; }
+    .badge.info { background-color: #f0fdfa; color: #115e59; }
+
+    /* Action log configurations */
+    .action-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .action-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+    }
+
+    .action-details h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .action-details p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="NEIGHBORHOOD DENTAL LOGO.jpg" alt="Neighborhood Dental" class="logo-img">
+      <h2>JEFFREY KHO DASHBOARD</h2>
+      <p>Administrative Support Workspace</p>
+    </div>
+    
+    <ul class="nav-links">
+      <li class="nav-item active"><a href="#">📊 Hub Overview</a></li>
+      <li class="nav-item"><a href="https://docs.google.com/spreadsheets/d/1tJZma-5Wb_Lb2AB6BhcKGsY-hNTGFEPnRvVFRDo8T74/edit?gid=838089805" target="_blank">📋 Recruitment Tracker</a></li>
+      <li class="nav-item"><a href="https://docs.google.com/spreadsheets/d/13e49X0ScDsxxhViYFixhQYysG45Rvby_93I64fAwN50/edit?gid=0" target="_blank">📆 Coordinator Tracker</a></li>
+      <li class="nav-item"><a href="https://docs.google.com/spreadsheets/d/15NJFDowrhL5Ok3aTN83vAKfIXcsmvNQeezTVa2O9SHE/edit?gid=631213052" target="_blank">🔑 Personal Logistics</a></li>
+      <li class="nav-item"><a href="https://drive.google.com/drive/folders/1TA9dnXgKLSromJMwV3gAcEAc6R34KjoK" target="_blank">🎥 HeyGen Video Assets</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-viewport">
+    <header class="top-header">
+      <h1>JEFFREY KHO DASHBOARD</h1>
+      <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;">
+        Coordinator: Jessica Lucas McKenzie
+      </div>
+    </header>
+
+    <div class="content-container">
+      
+      <section class="resource-grid">
+        <a href="https://docs.google.com/spreadsheets/d/1tJZma-5Wb_Lb2AB6BhcKGsY-hNTGFEPnRvVFRDo8T74/edit?gid=838089805" target="_blank" class="card-link">
+          <div>
+            <div class="card-icon" style="background: #eff6ff; color: #2563eb;">👥</div>
+            <h3>Recruitment Tracker</h3>
+            <p>Track doctor pipeline, clinical openings, and screening status details.</p>
+          </div>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/13e49X0ScDsxxhViYFixhQYysG45Rvby_93I64fAwN50/edit?gid=0" target="_blank" class="card-link">
+          <div>
+            <div class="card-icon" style="background: #fff7ed; color: #ea580c;">📅</div>
+            <h3>Coordinator Tracker</h3>
+            <p>Manage dental clinic logs, master planning, and active calendar tasks.</p>
+          </div>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/15NJFDowrhL5Ok3aTN83vAKfIXcsmvNQeezTVa2O9SHE/edit?gid=631213052" target="_blank" class="card-link">
+          <div>
+            <div class="card-icon" style="background: #faf5ff; color: #9333ea;">🔑</div>
+            <h3>Personal Logistics</h3>
+            <p>Oversee personal affairs, private logistics logs, and direct arrangements.</p>
+          </div>
+        </a>
+        <a href="https://drive.google.com/drive/folders/1TA9dnXgKLSromJMwV3gAcEAc6R34KjoK" target="_blank" class="card-link">
+          <div>
+            <div class="card-icon" style="background: #f0fdf4; color: #16a34a;">🎥</div>
+            <h3>HeyGen Video Folder</h3>
+            <p>Access AI avatar configurations, script templates, and video files.</p>
+          </div>
+        </a>
+      </section>
+
+      <div class="dashboard-layout-row">
+        
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Active Recruitment Pipeline</h2>
+            <span style="font-size: 12px; color: var(--teal-primary); font-weight: 600;">Linked to Master Sheet</span>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Candidate Profile</th>
+                <th>Target Clinic</th>
+                <th>Interview Status</th>
+                <th>Next Action Item</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Dr. Marcus Vance</strong> (Associate Dentist)</td>
+                <td>Downtown Clinic</td>
+                <td><span class="badge success">Offer Extended</span></td>
+                <td>Reviewing formal contract paperwork</td>
+              </tr>
+              <tr>
+                <td><strong>Elena Rostova</strong> (Lead Hygienist)</td>
+                <td>Northside Wellness Center</td>
+                <td><span class="badge warning">Interview Scheduled</span></td>
+                <td>Confirm Thursday calendar invitation hold</td>
+              </tr>
+              <tr>
+                <td><strong>David Kim</strong> (Orthodontist Specialist)</td>
+                <td>East End Hub</td>
+                <td><span class="badge info">Screening Complete</span></td>
+                <td>Jessica to coordinate video introductory file</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>HeyGen AI Video Queue</h2>
+          </div>
+          <ul class="action-list">
+            <li class="action-item">
+              <div class="action-details">
+                <h4>Clinic Welcome Intro Video</h4>
+                <p>Status: Ready to render on HeyGen platform</p>
+              </div>
+              <span class="badge info">Queued</span>
+            </li>
+            <li class="action-item">
+              <div class="action-details">
+                <h4>Recruitment Strategy Pitch</h4>
+                <p>Status: Script draft finalized by Jessica</p>
+              </div>
+              <span class="badge warning">In Draft</span>
+            </li>
+            <li class="action-item">
+              <div class="action-details">
+                <h4>Q3 Internal Dental Update</h4>
+                <p>Status: Transferred safely to Drive folder</p>
+              </div>
+              <span class="badge success">Delivered</span>
+            </li>
+          </ul>
+        </section>
+
+      </div>
+
+    </div>
+  </main>
+
+</body>
+</html>
