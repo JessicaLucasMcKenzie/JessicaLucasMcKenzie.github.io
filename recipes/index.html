@@ -1,1 +1,144 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free From That — AI Recipe Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #0c1219;
+      --surface:   #131c27;
+      --surface2:  #1b2733;
+      --border:    #25323f;
+      --green:     #4caf7d;
+      --green-dk:  #3b9366;
+      --text:      #dde7f0;
+      --muted:     #6b8099;
+      --red:       #e0625e;
+    }
+
+    * { box-sizing: border-box; }
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: 'Inter', sans-serif; 
+      font-size: 14px; 
+      min-height: 100vh; 
+      margin: 0; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    /* Generator Card */
+    .recipe-card { 
+      background: var(--surface); 
+      border: 1px solid var(--border); 
+      border-radius: 16px; 
+      padding: 48px 44px; 
+      width: 440px; 
+      max-width: 100%; 
+      text-align: center; 
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6); 
+    }
+
+    /* Branding Header */
+    .brand-header { margin-bottom: 28px; }
+    .brand-title { font-size: 24px; font-weight: 700; color: #fff; margin: 0 0 6px 0; letter-spacing: -0.02em; }
+    .brand-subtitle { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; }
+
+    /* Form Fields */
+    .form-group { text-align: left; margin-bottom: 18px; }
+    .field-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 8px; font-weight: 600; }
+    .field-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; color: var(--text); font-size: 15px; outline: none; transition: border-color 0.2s; }
+    .field-input:focus { border-color: var(--green); }
+    .field-textarea { resize: none; min-height: 90px; font-family: inherit; line-height: 1.5; }
+    .field-input.error { border-color: var(--red); }
+
+    /* Submit CTA */
+    .submit-btn { width: 100%; margin-top: 10px; padding: 14px; background: var(--green); color: #0c1219; border: none; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .submit-btn:hover { background: var(--green-dk); }
+    
+    .status-msg { font-size: 12px; margin-top: 14px; min-height: 16px; font-weight: 500; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="recipe-card">
+  <div class="brand-header">
+    <h1 class="brand-title">Free From That</h1>
+    <p class="brand-subtitle">Enter your ingredients or culinary request, and our custom AI chef will generate your professional recipe card.</p>
+  </div>
+
+  <form id="recipe-form" onsubmit="handleRecipeSubmit(event)">
+    <div class="form-group">
+      <label class="field-label" for="email-input">Email Address</label>
+      <input type="email" id="email-input" class="field-input" placeholder="chef@domain.com" required>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label" for="prompt-input">What are we cooking?</label>
+      <textarea id="prompt-input" class="field-input field-textarea" placeholder="e.g., Allergen-free chocolate chip cookies using oat milk and vegan butter..." required></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">Cook with AI →</button>
+  </form>
+  
+  <div id="status-feedback" class="status-msg"></div>
+</div>
+
+<script>
+  // Target API Web App endpoint that updates your secure core Google Sheet
+  const GOOGLE_DEPLOYMENT_URL = "https://script.google.com/macros/s/YOUR_MACRO_DEPLOYMENT_ID/exec";
+
+  async function handleRecipeSubmit(event) {
+    event.preventDefault();
+    
+    const emailField = document.getElementById('email-input');
+    const promptField = document.getElementById('prompt-input');
+    const feedback = document.getElementById('status-feedback');
+    
+    feedback.textContent = "";
+    emailField.classList.remove('error');
+    promptField.classList.remove('error');
+
+    const payload = {
+      email: emailField.value.trim(),
+      prompt: promptField.value.trim(),
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      feedback.style.color = "var(--muted)";
+      feedback.textContent = "Connecting to kitchen database...";
+
+      // Standard modern CORS network request to write row data into Google Sheets
+      const response = await fetch(GOOGLE_DEPLOYMENT_URL, {
+        method: "POST",
+        mode: "no-cors", 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      feedback.style.color = "var(--green)";
+      feedback.textContent = "Data synchronized. Initializing AI Chef...";
+      
+      setTimeout(() => {
+        // Safe relative navigation block pointing to next file step inside the /recipes folder
+        window.location.href = "page-map.html?session=" + btoa(payload.email);
+      }, 1000);
+
+    } catch (error) {
+      feedback.style.color = "var(--red)";
+      feedback.textContent = "Network synchronization dropped. Verify connection.";
+      emailField.classList.add('error');
+      promptField.classList.add('error');
+    }
+  }
+</script>
+</body>
+</html>
