@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FFT Admin Console — JLM Solutions</title>
+  <title>FFT Dashboard — JLM Solutions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:        #0c1219;
@@ -28,168 +28,266 @@
       min-height: 100vh;
     }
 
-    /* Layout Header */
-    .admin-header {
-      background: var(--surface);
+    /* Core Branding Header Block */
+    .brand-banner {
+      text-align: center;
+      padding: 32px 20px 20px 20px;
+    }
+    .logo-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .logo-img {
+      height: 90px;
+      width: auto;
+      object-fit: contain;
+    }
+    .dev-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin: 0 0 4px 0;
+    }
+    .dashboard-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Sub-Header Connectivity Status Ribbon */
+    .status-ribbon {
+      background: #0f1620;
+      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 20px 40px;
+      padding: 10px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 13px;
     }
-    .header-title {
-      margin: 0;
-      font-size: 18px;
+    .ribbon-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge-admin {
+      background: #f1c40f;
+      color: #0c1219;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
       text-transform: uppercase;
+    }
+    .ribbon-title {
+      font-weight: 600;
       color: #fff;
     }
-    .header-title span {
-      color: var(--coral);
+    .ribbon-meta {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
     }
-    .logout-btn {
+    .ribbon-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .connectivity-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+    }
+    .lock-btn {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--muted);
-      padding: 8px 16px;
-      border-radius: 6px;
+      padding: 4px 12px;
+      border-radius: 4px;
       cursor: pointer;
       font-size: 12px;
-      font-weight: 500;
       transition: all 0.2s;
     }
-    .logout-btn:hover {
+    .lock-btn:hover {
       border-color: var(--coral);
       color: var(--coral);
     }
 
-    /* Main Container */
-    .main-content {
-      padding: 40px;
-      max-width: 1400px;
+    /* Grid Workspace Window Area */
+    .workspace-area {
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 48px 40px;
     }
-
-    .welcome-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 32px;
-    }
-    .welcome-card h2 { margin: 0 0 8px 0; font-size: 20px; color: #fff; }
-    .welcome-card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
-
-    /* Data Table Widget */
-    .table-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .table-header {
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .table-title { margin: 0; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    
-    .refresh-btn {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .refresh-btn:hover { border-color: var(--green); }
-
-    .table-responsive { width: 100%; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-    th { background: #0f1620; padding: 14px 24px; color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
-    td { padding: 16px 24px; border-bottom: 1px solid var(--border); color: var(--text); line-height: 1.4; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(25, 38, 54, 0.2); }
-
-    /* Badges */
-    .status-badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
+    .section-headline {
+      font-size: 22px;
       font-weight: 600;
-      text-transform: uppercase;
-      font-family: 'JetBrains Mono', monospace;
+      color: #fff;
+      margin: 0 0 24px 0;
+      letter-spacing: -0.01em;
     }
-    .status-badge.pending { background: rgba(224, 139, 146, 0.15); color: var(--coral); }
-    .status-badge.processed { background: rgba(76, 175, 125, 0.15); color: var(--green); }
-    
-    .timestamp-text { font-family: 'JetBrains Mono', monospace; color: var(--muted); }
+
+    /* Twin Column / Row Tool Card Grids */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .tool-grid-wide {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .tool-card:hover {
+      transform: translateY(-2px);
+      border-color: #314254;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+    .tool-icon {
+      font-size: 24px;
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .tool-details {
+      display: flex;
+      flex-direction: column;
+    }
+    .tool-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .tool-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
 
-  <header class="admin-header">
-    <div class="header-title">FFT <span>Admin Console</span></div>
-    <button class="logout-btn" onclick="window.location.href='index.html'">Exit Node</button>
+  <!-- Top Brand Banner Segment -->
+  <header class="brand-banner">
+    <div class="logo-container">
+      <img src="jlm-logo.png" alt="Free From That Logo" class="logo-img">
+    </div>
+    <p class="dev-tag">Developed by JLM Solutions - Cyprus</p>
+    <h1 class="dashboard-title">FFT Dashboard</h1>
   </header>
 
-  <main class="main-content">
-    <div class="welcome-card">
-      <h2>Operational Dashboard</h2>
-      <p>Welcome back to the Free From That administrative interface. This node streams real-time submission data incoming from your recipe maker ingress pipeline.</p>
+  <!-- Connected Sub-Header Status Bar -->
+  <section class="status-ribbon">
+    <div class="ribbon-left">
+      <span class="badge-admin">T</span>
+      <span class="ribbon-title">Admin Console</span>
+      <span class="ribbon-meta">— Internal Use Only &nbsp;&nbsp; v2026.06.17 15:36</span>
     </div>
+    <div class="ribbon-right">
+      <div class="connectivity-indicator">
+        <span>🏠</span>
+        <div class="pulse-dot"></div>
+        <span>Connected</span>
+      </div>
+      <button class="lock-btn" onclick="window.location.href='index.html'">Lock Node</button>
+    </div>
+  </section>
 
-    <div class="table-card">
-      <div class="table-header">
-        <h3 class="table-title">Inbound Recipe Data Streams</h3>
-        <button class="refresh-btn" onclick="loadRecipeStreams()">🔄 Refresh Live Feeds</button>
+  <!-- Primary Workspace Content Panel -->
+  <main class="workspace-area">
+    <h2 class="section-headline">Choose a tool</h2>
+
+    <!-- Row 1: Regular Square Metrics Grid Tools -->
+    <div class="tool-grid">
+      <div class="tool-card" onclick="alert('Launching Broadcast Segment Engine...')">
+        <div class="tool-icon">📢</div>
+        <div class="tool-details">
+          <span class="tool-name">Broadcasts</span>
+          <span class="tool-desc">Send to a segment</span>
+        </div>
       </div>
 
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>User Node Account</th>
-              <th>Culinary Request / Prompt Parameters</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="table-feed-rows">
-            <!-- Simulated rows that match your Google Sheet input layout structure -->
-            <tr>
-              <td class="timestamp-text">2026-06-17 14:12:05</td>
-              <td>chef.manuel@domain.com</td>
-              <td>Allergen-free chocolate chip cookies using oat milk and vegan butter...</td>
-              <td><span class="status-badge pending">Pending</span></td>
-            </tr>
-            <tr>
-              <td class="timestamp-text">2026-06-17 11:34:50</td>
-              <td>test-user@freefromthat.com</td>
-              <td>Gluten-free sourdough bread crumb substitute for coatings.</td>
-              <td><span class="status-badge processed">Processed</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="tool-card" onclick="alert('Opening Analytics Dashboard Data Arrays...')">
+        <div class="tool-icon">📊</div>
+        <div class="tool-details">
+          <span class="tool-name">Analytics</span>
+          <span class="tool-desc">Opens, clicks, bounces</span>
+        </div>
+      </div>
+
+      <div class="tool-card" onclick="alert('Filtering past 10 active transaction streams...')">
+        <div class="tool-icon">⚡</div>
+        <div class="tool-details">
+          <span class="tool-name">Last 10 Active</span>
+          <span class="tool-desc">Customers with recent orders</span>
+        </div>
+      </div>
+
+      <div class="tool-card" onclick="alert('Initializing relational customer lookup index...')">
+        <div class="tool-icon">🔍</div>
+        <div class="tool-details">
+          <span class="tool-name">Search by Name / Email</span>
+          <span class="tool-desc">Find any specific customer</span>
+        </div>
+      </div>
+
+      <div class="tool-card" onclick="alert('Scanning operational sales retention leads...')">
+        <div class="tool-icon">🎯</div>
+        <div class="tool-details">
+          <span class="tool-name">Opportunities</span>
+          <span class="tool-desc">Customers needing attention</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Double-Width / Custom Horizontal Tools -->
+    <div class="tool-grid-wide">
+      <div class="tool-card" onclick="alert('Accessing email automation generation approval arrays...')">
+        <div class="tool-icon">🤖</div>
+        <div class="tool-details">
+          <span class="tool-name">AI Drafts</span>
+          <span class="tool-desc">Emails waiting approval</span>
+        </div>
+      </div>
+
+      <div class="tool-card" onclick="alert('Routing to live recipe entry logging table views...')">
+        <div class="tool-icon">📋</div>
+        <div class="tool-details">
+          <span class="tool-name">Recipe Requests</span>
+          <span class="tool-desc">Who emailed themselves a recipe</span>
+        </div>
       </div>
     </div>
   </main>
 
-  <script>
-    function loadRecipeStreams() {
-      console.log("Synchronizing data arrays with tracking sheet database macro...");
-      // This function can be expanded with a fetch call to your Apps Script Web App 
-      // to read rows out of your spreadsheet dynamically.
-    }
-  </script>
 </body>
 </html>
