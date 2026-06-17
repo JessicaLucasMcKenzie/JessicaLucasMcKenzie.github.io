@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JEFFREY KHO DASHBOARD</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <style>
@@ -39,6 +40,7 @@
       display: flex;
       flex-direction: column;
       padding: 24px;
+      flex-shrink: 0;
     }
 
     .logo-container {
@@ -132,6 +134,7 @@
       display: flex;
       flex-direction: column;
       overflow-y: auto;
+      background-color: var(--bg-main);
     }
 
     .top-header {
@@ -141,6 +144,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
     }
 
     .top-header h1 {
@@ -341,6 +345,7 @@
 </head>
 <body>
 
+  <!-- Left Control Navigation Panel -->
   <aside class="sidebar">
     <div class="logo-container">
       <a onclick="switchAppView('hub')" class="logo-home-link" title="Return to Dashboard Home">
@@ -363,6 +368,381 @@
     </ul>
   </aside>
 
+  <!-- Core Dashboard Window -->
   <main class="main-viewport">
     <header class="top-header">
-      <h
+      <h1 id="view-title">JEFFREY KHO DASHBOARD</h1>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="hub.html" class="back-hub-btn">⚙️ Matrix Hub</a>
+        <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;">
+          Coordinator: Jessica Lucas McKenzie
+        </div>
+      </div>
+    </header>
+
+    <div class="content-container">
+      
+      <!-- ==================== VIEW 1: HUB OVERVIEW ==================== -->
+      <div id="view-pane-hub" class="app-view active-view">
+        <section class="resource-grid">
+          <div onclick="switchAppView('recruitment')" class="card-link">
+            <div>
+              <div class="card-icon" style="background: #eff6ff; color: #2563eb;">👥</div>
+              <h3>Recruitment Tracker</h3>
+              <p>Filter doctor pipeline sheets and practice manager tracking records natively.</p>
+            </div>
+          </div>
+          <div onclick="switchAppView('commission')" class="card-link">
+            <div>
+              <div class="card-icon" style="background: #f5f3ff; color: #7c3aed;">📜</div>
+              <h3>Commission Terms</h3>
+              <p>Review standard placement allocations, metrics, and percentages.</p>
+            </div>
+          </div>
+          <div onclick="switchAppView('coordinator')" class="card-link">
+            <div>
+              <div class="card-icon" style="background: #fff7ed; color: #ea580c;">📅</div>
+              <h3>Coordinator Tracker</h3>
+              <p>Manage local logs, master planning, and pending schedule rows.</p>
+            </div>
+          </div>
+          <div onclick="switchAppView('logistics')" class="card-link">
+            <div>
+              <div class="card-icon" style="background: #faf5ff; color: #9333ea;">🔑</div>
+              <h3>Personal Logistics</h3>
+              <p>Review private logs, personal files, and travel records.</p>
+            </div>
+          </div>
+          <div onclick="switchAppView('heygen')" class="card-link">
+            <div>
+              <div class="card-icon" style="background: #f0fdf4; color: #16a34a;">🎥</div>
+              <h3>HeyGen Videos</h3>
+              <p>Review template script metrics and video assets.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="dashboard-layout-row">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>Active System Summary</h2>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+              Welcome back, Jessica. The active support hub handles tracking matrices across recruitment pipelines, dental logs, and commission agreements. Use the navigation panel on the left to swap sheets instantly.
+            </p>
+          </section>
+        </div>
+      </div>
+
+      <!-- ==================== VIEW 2: RECRUITMENT TRACKER ==================== -->
+      <div id="view-pane-recruitment" class="app-view">
+        <div class="filter-banner">
+          <div class="filter-label">🎯 Active Dashboard Perspective Filter:</div>
+          <div class="filter-buttons">
+            <button class="filter-btn active-filter" data-user="all" onclick="applyRecruitmentFilter('all', this)">Jessica (Show All Rows)</button>
+            <button class="filter-btn" data-user="jeff" onclick="applyRecruitmentFilter('jeff', this)">Dr. Jeff (Dentist Follow-up Y)</button>
+            <button class="filter-btn" data-user="lauraemily" onclick="applyRecruitmentFilter('lauraemily', this)">Laura & Emily (PM Selection Y)</button>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Recruitment Candidate Master Stream</h2>
+          </div>
+          <table class="data-table" id="recruitment-table">
+            <thead>
+              <tr>
+                <th>Date Entered</th>
+                <th>Candidate Name</th>
+                <th>Category</th>
+                <th>Follow-Up / Action Log Log</th>
+                <th>Pipeline Status / Details</th>
+              </tr>
+            </thead>
+            <tbody id="recruitment-table-body">
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- ==================== VIEW 3: COMMISSION AGREEMENT ==================== -->
+      <div id="view-pane-commission" class="app-view">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Placement Milestone & Payout Matrices</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tier Classification</th>
+                <th>Target Placement Profile</th>
+                <th>Base Target Threshold</th>
+                <th>Commission Payout %</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge tier">Tier 1</span></td>
+                <td>General Practitioner Dentist (Full-Time)</td>
+                <td>Standard placement validation block</td>
+                <td><strong>3.5% of placement bracket</strong></td>
+              </tr>
+              <tr>
+                <td><span class="badge tier">Tier 2</span></td>
+                <td>Senior / Specialist Clinical Lead</td>
+                <td>Advanced production metrics baseline</td>
+                <td><strong>4.0% of placement bracket</strong></td>
+              </tr>
+              <tr>
+                <td><span class="badge tier">Tier 3</span></td>
+                <td>Practice Management Executive (Regional)</td>
+                <td>Ops performance integration window</td>
+                <td><strong>5.0% flat tier rate</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- ==================== VIEW 4: COORDINATOR TRACKER ==================== -->
+      <div id="view-pane-coordinator" class="app-view">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Dental Clinic Coordination Metrics</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Log ID</th>
+                <th>Target Branch</th>
+                <th>Operational Status</th>
+                <th>Jessica's Coordination Focus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#ND-9021</td>
+                <td>Metro Dental Hub</td>
+                <td><span class="badge status-screen">Optimized</span></td>
+                <td>Staffing schedule locked for upcoming quarter</td>
+              </tr>
+              <tr>
+                <td>#ND-4412</td>
+                <td>Valley Surgical Clinic</td>
+                <td><span class="badge status-ident">Review Needed</span></td>
+                <td>Syncing missing equipment intake lines</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- ==================== VIEW 5: PERSONAL LOGISTICS ==================== -->
+      <div id="view-pane-logistics" class="app-view">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Executive Support & Private Arrangements</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Logistics Element</th>
+                <th>Target Timeframe</th>
+                <th>Phase Status</th>
+                <th>Detail Target</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Annual Dental Symposium Board Meet</td>
+                <td>October 2026</td>
+                <td><span class="badge status-screen">Planning</span></td>
+                <td>Jessica structuring venue options and hospitality arrays</td>
+              </tr>
+              <tr>
+                <td>Private Travel Route Verification</td>
+                <td>Immediate</td>
+                <td><span class="badge status-screen">Confirmed</span></td>
+                <td>Flight and terminal configurations locked</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- ==================== VIEW 6: HEYGEN VIDEO ASSETS ==================== -->
+      <div id="view-pane-heygen" class="app-view">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>HeyGen AI Video Generation Hub</h2>
+          </div>
+          <ul class="action-list">
+            <li class="action-item">
+              <div class="action-details">
+                <h4>Clinic Welcome Intro Video</h4>
+                <p>Configured Template Instance: HeyGen Actor Avatar Node 4</p>
+              </div>
+              <span class="badge status-screen">Queued</span>
+            </li>
+            <li class="action-item">
+              <div class="action-details">
+                <h4>Recruitment Strategy Pitch</h4>
+                <p>Status: Voiceover track synthesis complete</p>
+              </div>
+              <span class="badge status-ident">In Draft</span>
+            </li>
+            <li class="action-item">
+              <div class="action-details">
+                <h4>Q3 Internal Dental Update</h4>
+                <p>Output: 1080p high bitrate render stream finalized</p>
+              </div>
+              <span class="badge status-screen">Delivered</span>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const candidateDatabase = [
+      {
+        date: "14-Jun-2026",
+        name: "Alvin Wong",
+        type: "dentist",
+        jeffFollowUp: "Y",
+        lauraEmily: "N",
+        log: "Sent LinkedIn InMail (Jessica). Awaiting reply.",
+        status: "Identified",
+        notes: "Sourced via LinkedIn Sales Nav. Clinical Supervisor & Lead Dental Implant Mentor."
+      },
+      {
+        date: "14-Jun-2026",
+        name: "Rhea Menon",
+        type: "dentist",
+        jeffFollowUp: "Y",
+        lauraEmily: "N",
+        log: "Sent LinkedIn InMail (Jessica). Awaiting reply.",
+        status: "Identified",
+        notes: "Growth-stage GP dentist + UQ MBA candidate. Rich Brisbane network."
+      },
+      {
+        date: "14-Jun-2026",
+        name: "Dr. Clara Sterling",
+        type: "dentist",
+        jeffFollowUp: "N",
+        lauraEmily: "N",
+        log: "Preliminary screening call complete.",
+        status: "Screening",
+        notes: "General practitioner looking for weekend clinical slots."
+      },
+      {
+        date: "13-Jun-2026",
+        name: "Ping Chen",
+        type: "pm",
+        jeffFollowUp: "N",
+        lauraEmily: "Y",
+        log: "15 Jun 2026 - Ping confirmed Fri 19 Jun 10am for virtual interview with Laura.",
+        status: "Scre...",
+        notes: "Laura happy to interview Ping virtually this Fri. Jess emailed links."
+      },
+      {
+        date: "13-Jun-2026",
+        name: "Samy Hachchane",
+        type: "pm",
+        jeffFollowUp: "N",
+        lauraEmily: "N",
+        log: "12 Jun 2026 - SEEK inbound applicant (applied ~9 Jun). Screened.",
+        status: "Not Su...",
+        notes: "4 yrs dental PM at NZ dental school. NOT SUITABLE for Calamvale."
+      }
+    ];
+
+    function renderTableRows(dataset) {
+      const tableBody = document.getElementById('recruitment-table-body');
+      if (!tableBody) return;
+      tableBody.innerHTML = "";
+
+      if(dataset.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:32px;">No active entries match this perspective filter constraint.</td></tr>`;
+        return;
+      }
+
+      dataset.forEach(candidate => {
+        const row = document.createElement('tr');
+        const typePill = candidate.type === 'dentist' ? 
+          `<span class="badge dentist">Dentist</span>` : 
+          `<span class="badge pm">Practice Manager</span>`;
+
+        let statusClass = "status-ident";
+        if(candidate.status.includes("Scre")) statusClass = "status-screen";
+        if(candidate.status.includes("Not")) statusClass = "status-notsuit";
+
+        row.innerHTML = `
+          <td><strong>${candidate.date}</strong></td>
+          <td>
+            <div style="font-weight:700; color:#0f172a;">${candidate.name}</div>
+            <div style="margin-top:4px;">${typePill}</div>
+          </td>
+          <td><span class="badge ${statusClass}">${candidate.status}</span></td>
+          <td style="font-size:12px; color:#475569; max-width:320px;">${candidate.log}</td>
+          <td style="font-size:12px; color:var(--text-muted); max-width:300px;">${candidate.notes}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function applyRecruitmentFilter(filterType, buttonElement) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active-filter'));
+      if(buttonElement) buttonElement.classList.add('active-filter');
+
+      let filteredData = [];
+      if (filterType === 'all') {
+        filteredData = candidateDatabase; 
+      } else if (filterType === 'jeff') {
+        filteredData = candidateDatabase.filter(c => c.type === 'dentist' && c.jeffFollowUp === 'Y');
+      } else if (filterType === 'lauraemily') {
+        filteredData = candidateDatabase.filter(c => c.type === 'pm' && c.lauraEmily === 'Y');
+      }
+
+      renderTableRows(filteredData);
+    }
+
+    function switchAppView(viewName) {
+      document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active-view'));
+      document.querySelectorAll('.nav-links .nav-item').forEach(item => item.classList.remove('active'));
+
+      const targetPane = document.getElementById(`view-pane-${viewName}`);
+      if (targetPane) targetPane.classList.add('active-view');
+      
+      const targetNav = document.getElementById(`nav-${viewName}`);
+      if (targetNav) targetNav.classList.add('active');
+
+      const titleElement = document.getElementById('view-title');
+      if (viewName === 'hub') {
+        titleElement.textContent = "JEFFREY KHO DASHBOARD";
+      } else {
+        titleElement.textContent = viewName.toUpperCase() + " MANAGEMENT CONSOLE";
+      }
+
+      if (viewName === 'recruitment') {
+        const allBtn = document.querySelector('[data-user="all"]');
+        applyRecruitmentFilter('all', allBtn);
+      }
+    }
+
+    // MacBook Neo cache bypass and view preparation engine
+    document.addEventListener("DOMContentLoaded", function() {
+      const cacheSeed = new Date().getTime();
+      document.querySelectorAll('.cache-bust').forEach(function(img) {
+        const dataPath = img.getAttribute('data-src');
+        if (dataPath) {
+          img.src = dataPath + "?v=" + cacheSeed;
+        }
+      });
+      renderTableRows(candidateDatabase);
+    });
+  </script>
+</body>
+</html>
