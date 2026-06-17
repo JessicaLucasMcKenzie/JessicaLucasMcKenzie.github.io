@@ -5,53 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JLM Solutions — Command Gateway</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0c1219;
-      --surface: #131c27;
-      --surface2: #1b2733;
-      --border: #25323f;
+      /* Updated to a stunning premium light pink background palette */
+      --surface: #fff0f2;
+      --surface2: #ffffff;
+      --border: #fbcdd3;
       --coral: #e08b92;
       --coral-dk: #c9767d;
-      --text: #dde7f0;
-      --muted: #6b8099;
-      --red: #e0625e;
+      --text-dark: #2c1a1c;
+      --text-muted: #8c6e72;
+      --red: #df4b47;
     }
 
     * { box-sizing: border-box; }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; min-height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; padding: 16px; }
+    body { background: var(--bg); color: var(--text-dark); font-family: 'Inter', sans-serif; font-size: 14px; min-height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; padding: 16px; }
     .gateway-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 48px 44px; width: 440px; max-width: 100%; text-align: center; box-shadow: 0 32px 80px rgba(0,0,0,0.6); }
     .logo-container { width: 100%; display: flex; justify-content: center; margin-bottom: 24px; }
     .logo-img { height: 74px; width: auto; object-fit: contain; }
-    .dev-by { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); margin-bottom: 12px; display: block; }
-    .gateway-title { font-size: 32px; font-weight: 700; color: #fff; margin: 0 0 36px 0; letter-spacing: 0.12em; text-transform: uppercase; }
+    .dev-by { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); margin-bottom: 12px; display: block; font-weight: 600; }
+    .gateway-title { font-size: 32px; font-weight: 700; color: var(--text-dark); margin: 0 0 36px 0; letter-spacing: 0.12em; text-transform: uppercase; }
     .form-group { text-align: left; margin-bottom: 20px; }
-    .field-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 8px; font-weight: 600; }
+    .field-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 8px; font-weight: 700; }
     .select-wrap { position: relative; }
-    .select-wrap select { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; color: var(--text); font-size: 15px; outline: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; cursor: pointer; font-weight: 500; }
-    .select-wrap::after { content: '▼'; font-size: 10px; color: var(--muted); position: absolute; right: 16px; top: 18px; pointer-events: none; }
-    .email-display { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); margin-top: -12px; margin-bottom: 20px; display: block; text-align: left; padding-left: 2px; }
+    .select-wrap select { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; color: var(--text-dark); font-size: 15px; outline: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; cursor: pointer; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .select-wrap::after { content: '▼'; font-size: 10px; color: var(--text-muted); position: absolute; right: 16px; top: 18px; pointer-events: none; }
+    .email-display { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); margin-top: -12px; margin-bottom: 20px; display: block; text-align: left; padding-left: 2px; font-weight: 500; }
     .input-wrap { position: relative; }
-    .field-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; color: var(--text); font-size: 15px; outline: none; transition: border-color 0.2s; letter-spacing: 0.35em; }
+    .field-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; color: var(--text-dark); font-size: 15px; outline: none; transition: border-color 0.2s; letter-spacing: 0.35em; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     .field-input:focus { border-color: var(--coral); }
     .eye-toggle { position: absolute; right: 16px; top: 14px; background: none; border: none; font-size: 16px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; }
-    .submit-btn { width: 100%; margin-top: 14px; padding: 15px; background: var(--coral); color: #0c1219; border: none; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; letter-spacing: -0.01em; }
+    .submit-btn { width: 100%; margin-top: 14px; padding: 15px; background: var(--coral); color: #ffffff; border: none; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; letter-spacing: -0.01em; box-shadow: 0 4px 12px rgba(224, 139, 146, 0.25); }
     .submit-btn:hover { background: var(--coral-dk); }
-    .biometric-link { display: inline-block; font-size: 12px; color: var(--muted); text-decoration: underline; margin-top: 20px; cursor: pointer; transition: color 0.2s; }
+    .biometric-link { display: inline-block; font-size: 12px; color: var(--text-muted); text-decoration: underline; margin-top: 20px; cursor: pointer; transition: color 0.2s; font-weight: 500; }
     .biometric-link:hover { color: var(--coral); }
-    .status-msg { font-size: 13px; color: var(--red); margin-top: 16px; min-height: 16px; font-weight: 500; }
+    .status-msg { font-size: 13px; color: var(--red); margin-top: 16px; min-height: 16px; font-weight: 600; }
     
-    /* Biometric Action Button Styles */
-    .bio-quick-btn { width: 100%; margin-top: 8px; padding: 15px; background: transparent; color: var(--coral); border: 1px solid var(--coral); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; display: none; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; }
-    .bio-quick-btn:hover { background: rgba(224, 139, 146, 0.05); }
+    .bio-quick-btn { width: 100%; margin-top: 8px; padding: 15px; background: var(--surface2); color: var(--coral); border: 1px solid var(--coral); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; display: none; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+    .bio-quick-btn:hover { background: var(--surface); }
   </style>
 </head>
 <body>
 
 <div class="gateway-card">
   <div class="logo-container">
-    <img src="jlm-logo.png" alt="JLM Solutions Logo" class="logo-img">
+    <!-- Updated verbatim to lower-case filename with cache-buster capability -->
+    <img data-src="jlmlogo.png" alt="JLM Solutions Logo" class="logo-img cache-bust">
   </div>
   
   <span class="dev-by">Developed by JLM Solutions</span>
@@ -87,7 +88,6 @@
 </div>
 
 <script>
-  // Plain-text credential tokens matching standard profile configuration data models
   const identities = {
     manuel: { email: "man@freefromthat.com", token: "mango" },
     jessica: { email: "prettyinpinkjessm@gmail.com", token: "pink" }
@@ -101,7 +101,6 @@
     emailView.textContent = identities[selector.value].email;
     document.getElementById('feedback').textContent = "";
     
-    // Scan if local device features validated biometrics context
     if (localStorage.getItem(`bio_signature_${selector.value}`)) {
       fastBtn.style.display = "flex";
     } else {
@@ -127,10 +126,9 @@
     const feedback = document.getElementById('feedback');
     
     if (inputToken === identities[selector].token) {
-      feedback.style.color = "#4caf7d";
+      feedback.style.color = "#2e7d32";
       feedback.textContent = "Access Authorized. Redirecting to Project Matrix Hub...";
       setTimeout(() => {
-        // Updated redirect target path pointing cleanly to the dashboard hub file
         window.location.href = "hub.html";
       }, 800);
     } else {
@@ -152,7 +150,7 @@
 
     if (window.confirm(`Allow JLM Gateway to register Apple Biometric ID tokens for node: [${selector}]?`)) {
       localStorage.setItem(`bio_signature_${selector}`, "verified_hardware_handshake_token");
-      feedback.style.color = "#4caf7d";
+      feedback.style.color = "#2e7d32";
       feedback.textContent = "Biometric credential paired with device secure hardware enclave.";
       updateIdentityNode();
     }
@@ -163,18 +161,25 @@
     const feedback = document.getElementById('feedback');
     
     if (window.confirm(`Scan Face ID / Touch ID signature to unlock Node [${selector}]?`)) {
-      feedback.style.color = "#4caf7d";
+      feedback.style.color = "#2e7d32";
       feedback.textContent = "Biometrics Verified. Access Granted.";
       setTimeout(() => {
-        // Updated redirect target path matching biometric auth loops
         window.location.href = "hub.html";
       }, 800);
     }
   }
 
-  window.onload = function() {
+  // Cache-Busting Script initialization tailored for MacBook Neo browser constraints
+  document.addEventListener("DOMContentLoaded", function() {
+    const uniqueTimeSeed = new Date().getTime();
+    document.querySelectorAll('.cache-bust').forEach(function(img) {
+      const targetSrc = img.getAttribute('data-src');
+      if (targetSrc) {
+        img.src = targetSrc + "?v=" + uniqueTimeSeed;
+      }
+    });
     updateIdentityNode();
-  };
+  });
 </script>
 </body>
 </html>
