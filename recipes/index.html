@@ -91,8 +91,8 @@
 </div>
 
 <script>
-  // Target API Web App endpoint that updates your secure core Google Sheet
-  const GOOGLE_DEPLOYMENT_URL = "https://script.google.com/macros/s/YOUR_MACRO_DEPLOYMENT_ID/exec";
+  // Live Active Secure API Endpoint for your Free From That Tracking Sheet
+  const GOOGLE_DEPLOYMENT_URL = "https://script.google.com/macros/s/AKfycbzSirnvODegEE0xbyNT9VFr3lz-7ev2gt6O6dyFCgrrgTUIHT9ujAqoUxAkzyj7lw1dkA/exec";
 
   async function handleRecipeSubmit(event) {
     event.preventDefault();
@@ -115,7 +115,7 @@
       feedback.style.color = "var(--muted)";
       feedback.textContent = "Connecting to kitchen database...";
 
-      // Standard modern CORS network request to write row data into Google Sheets
+      // Asynchronous cross-origin fetch execution block 
       const response = await fetch(GOOGLE_DEPLOYMENT_URL, {
         method: "POST",
         mode: "no-cors", 
@@ -127,7 +127,7 @@
       feedback.textContent = "Data synchronized. Initializing AI Chef...";
       
       setTimeout(() => {
-        // Safe relative navigation block pointing to next file step inside the /recipes folder
+        // Handoff to our telemetry dashboard logic in Phase 2b
         window.location.href = "page-map.html?session=" + btoa(payload.email);
       }, 1000);
 
