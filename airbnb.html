@@ -1,1 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JLM Hospitality — Airbnb Management Matrix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #fcf8f8;
+      --sidebar-bg: #ffffff;
+      --text-main: #222222;
+      --text-muted: #717171;
+      --airbnb-pink: #FF385C; 
+      --airbnb-light: #FFF0F2;
+      --border: #ebebeb;
+      --green-accent: #008489;
+      --purple-accent: #6b21a8;
+    }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Left Sidebar Navigation */
+    .sidebar {
+      width: 290px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 20px;
+      text-align: center;
+    }
+
+    .logo-home-link {
+      display: block;
+      width: 100%;
+      cursor: pointer;
+      transition: opacity 0.15s ease-in-out;
+    }
+    .logo-home-link:hover { opacity: 0.85; }
+    .logo-img { width: 100%; max-width: 160px; height: auto; object-fit: contain; margin-bottom: 14px; }
+    .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; color: #222; text-transform: uppercase; }
+    .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    
+    .meta-divider { width: 100%; border: 0; height: 1px; background-color: var(--border); margin: 16px 0; }
+    .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #b0b0b0; text-transform: uppercase; margin-bottom: 16px; text-align: center; }
+
+    .nav-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .nav-item button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: #484848;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-item button:hover, .nav-item.active button {
+      background-color: var(--airbnb-light);
+      color: var(--airbnb-pink);
+    }
+
+    /* Main Content Viewport Frame */
+    .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    .top-header {
+      background: #ffffff;
+      padding: 22px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-header h1 { font-size: 20px; font-weight: 700; color: #222; }
+
+    .back-hub-btn {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #222;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .back-hub-btn:hover { border-color: var(--airbnb-pink); color: var(--airbnb-pink); }
+
+    .content-container { padding: 40px; max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+
+    /* Property Navigation Row Matrix */
+    .property-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .property-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      transition: all 0.2s ease-in-out;
+    }
+    .property-card:hover, .property-card.active-card {
+      border-color: var(--airbnb-pink);
+      box-shadow: 0 6px 16px rgba(255, 56, 92, 0.08);
+      transform: translateY(-2px);
+    }
+    .prop-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--airbnb-pink); margin-bottom: 4px; display: block; }
+    .property-card h3 { font-size: 18px; font-weight: 700; color: #222; }
+    .property-card p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Perspective Display Controls */
+    .perspective-banner {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .perspective-buttons { display: flex; gap: 10px; }
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      transition: all 0.2s;
+    }
+    .filter-btn.active-filter { background: var(--airbnb-pink); color: #fff; border-color: var(--airbnb-pink); }
+    .lang-toggle { background: var(--green-accent); color: white; border-color: var(--green-accent); display: none; }
+
+    /* Views Layout States */
+    .property-pane { display: none; flex-direction: column; gap: 32px; }
+    .property-pane.active-pane { display: flex; }
+
+    .panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .panel-header h2 { font-size: 16px; font-weight: 700; color: #222; }
+
+    /* Clean Data Tables */
+    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); background-color: #fafafa; }
+    .data-table td { padding: 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #222; line-height: 1.5; }
+
+    .badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
+    .badge.confirmed { background-color: #e2fbe8; color: #14532d; }
+    .badge.cleaning { background-color: #fffbeb; color: #78350f; }
+
+    /* Responsive adjustments for phones */
+    @media (max-width: 768px) {
+      .property-grid { grid-template-columns: 1fr; }
+      .perspective-banner { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .top-header { padding: 16px 20px; }
+      .content-container { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Left Control Navigation Panel -->
+  <aside class="sidebar">
+    <div class="logo-container">
+      <a href="hub.html" class="logo-home-link" title="Return to Master Matrix Hub">
+        <img data-src="airbnblogo.png" alt="Airbnb Hospitality" class="logo-img cache-bust">
+      </a>
+      <h2>AIRBNB DASHBOARD</h2>
+      <p>Hospitality Operations Platform</p>
+      
+      <hr class="meta-divider">
+      <div class="revision-block">Rev. 1.0.0 &bull; June 17, 2026</div>
+    </div>
+    
+    <ul class="nav-links">
+      <li class="nav-item active"><button onclick="window.location.reload();">📊 Properties Master</button></li>
+      <li class="nav-item"><a id="external-sheet-link" href="https://docs.google.com/spreadsheets/d/1jxDnZ1hORMGzdJsOemNv7sM4-bEv_J-AXNpeXhyKxW0/edit?gid=2006841082" target="_blank" style="text-decoration:none;"><button>📋 Open Source Sheet</button></a></li>
+    </ul>
+  </aside>
+
+  <!-- Core Dashboard Window -->
+  <main class="main-viewport">
+    <header class="top-header">
+      <h1 id="view-title">AIRBNB MANAGEMENT HUB</h1>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="hub.html" class="back-hub-btn">⚙️ Matrix Hub</a>
+        <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;">
+          Manager: Jessica Lucas McKenzie
+        </div>
+      </div>
+    </header>
+
+    <div class="content-container">
+      
+      <!-- Property Sizing Buttons Selection Grid -->
+      <section class="property-grid">
+        <div id="card-naxos" class="property-card active-card" onclick="selectProperty('naxos')">
+          <div>
+            <span class="prop-badge">📍 Cyclades Islands</span>
+            <h3>Naxos Villa, Greece</h3>
+            <p>Cleaner: Anela Korone</p>
+          </div>
+          <span style="font-size: 24px;">🇬🇷</span>
+        </div>
+
+        <div id="card-rosebay" class="property-card" onclick="selectProperty('rosebay')">
+          <div>
+            <span class="prop-badge">📍 Sydney Harbor</span>
+            <h3>Rosebay Harbour, Australia</h3>
+            <p>Cleaner: Khami</p>
+          </div>
+          <span style="font-size: 24px;">🇦🇺</span>
+        </div>
+      </section>
+
+      <!-- View Filtering Controls -->
+      <div class="perspective-banner">
+        <div id="perspective-title" style="font-size: 13px; font-weight: 600; color: var(--text-muted);">
+          Active Workspace View:
+        </div>
+        <div class="perspective-buttons">
+          <button id="btn-view-jess" class="filter-btn active-filter" onclick="setPerspective('jessica')">Jessica (Upcoming Bookings)</button>
+          <button id="btn-view-clean" class="filter-btn" onclick="setPerspective('cleaner')">Cleaner Operations Portal</button>
+          <button id="btn-lang-toggle" class="filter-btn lang-toggle" onclick="toggleGreekLanguage()">Translate to Greek (Ελληνικά)</button>
+        </div>
+      </div>
+
+      <!-- ==================== PANE 1: NAXOS GREECE ==================== -->
+      <div id="pane-naxos" class="property-pane active-pane">
+        <section class="panel">
+          <div class="panel-header">
+            <h2 id="naxos-table-header">Naxos Dynamic Pipeline Tracking System</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr id="naxos-table-th">
+                <th>Guest Profile</th>
+                <th>Check-In</th>
+                <th>Check-Out</th>
+                <th>Operational Status</th>
+                <th>Special Directives / Notes</th>
+              </tr>
+            </thead>
+            <tbody id="naxos-table-body">
+              <!-- Content populates dynamically depending on perspective loop -->
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- ==================== PANE 2: ROSEBAY AUSTRALIA ==================== -->
+      <div id="pane-rosebay" class="property-pane">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Rosebay Harbour Operational Matrix</h2>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
+            The active dataset for Rosebay Harbor is currently linked directly to the master source document template. Jessica can review or directly add logging rows right on the system document folder.
+          </p>
+          <a href="https://docs.google.com/document/d/1luFwvZq9WXzNNeeqRJBv9q4bHoA0sm64lb3Mt_MfZpI/edit" target="_blank" style="display:inline-block; background:var(--airbnb-pink); color:white; padding:12px 24px; border-radius:8px; font-weight:600; text-decoration:none; box-shadow: 0 4px 12px rgba(255, 56, 92, 0.2);">
+            📂 Open Rosebay Master Google Document
+          </a>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    let activeProperty = 'naxos';
+    let activePerspective = 'jessica';
+    let isGreek = false;
+
+    // Naxos Data Repository Compiled from active structures
+    const naxosData = {
+      jessica: [
+        { guest: "Liam Henderson (4 Guests)", checkin: "22-Jun-2026", checkout: "29-Jun-2026", status: "Confirmed", notes: "Requested early check-in loop. Port transfer coordinated." },
+        { guest: "Sofia Rossi (2 Guests)", checkin: "02-Jul-2026", checkout: "09-Jul-2026", status: "Confirmed", notes: "Honeymoon booking arrangement. Champagne array verified." }
+      ],
+      cleaner: {
+        en: [
+          { task: "Turnover Cleaning & Laundry", date: "29-Jun-2026", time: "11:00 AM - 3:00 PM", status: "Required", notes: "Liam Henderson checkout. Full sheet overhaul and patio preparation." },
+          { task: "Pre-Arrival Polish", date: "02-Jul-2026", time: "9:00 AM - 11:00 AM", status: "Required", notes: "Prepare unit for Sofia Rossi arrival. Confirm flower array is fresh." }
+        ],
+        el: [
+          { task: "Καθαρισμός & Πλύσιμο Ρούχων", date: "29-Ιουν-2026", time: "11:00 π.μ. - 3:00 μ.μ.", status: "Απαραίτητο", notes: "Liam Henderson αναχώρηση. Πλήρης αλλαγή σεντονιών και προετοιμασία βεράντας." },
+          { task: "Προετοιμασία Άφιξης", date: "02-Ιουλ-2026", time: "9:00 π.μ. - 11:00 π.μ.", status: "Απαραίτητο", notes: "Προετοιμασία δωματίου για την άφιξη της Sofia Rossi. Επιβεβαιώστε τα φρέσκα λουλούδια." }
+        ]
+      }
+    };
+
+    function selectProperty(property) {
+      activeProperty = property;
+      
+      document.querySelectorAll('.property-card').forEach(c => c.classList.remove('active-card'));
+      document.querySelectorAll('.property-pane').forEach(p => p.classList.remove('active-pane'));
+      
+      document.getElementById(`card-${property}`).classList.add('active-card');
+      document.getElementById(`pane-${property}`).classList.add('active-pane');
+
+      const langBtn = document.getElementById('btn-lang-toggle');
+      const extLink = document.getElementById('external-sheet-link');
+      
+      if (property === 'naxos') {
+        document.getElementById('view-title').textContent = "NAXOS MANAGEMENT MATRIX";
+        extLink.href = "https://docs.google.com/spreadsheets/d/1jxDnZ1hORMGzdJsOemNv7sM4-bEv_J-AXNpeXhyKxW0/edit?gid=2006841082";
+        if (activePerspective === 'cleaner') langBtn.style.display = 'block';
+      } else {
+        document.getElementById('view-title').textContent = "ROSEBAY OPERATIONS PANEL";
+        extLink.href = "https://docs.google.com/document/d/1luFwvZq9WXzNNeeqRJBv9q4bHoA0sm64lb3Mt_MfZpI/edit";
+        langBtn.style.display = 'none';
+      }
+      renderNaxosTable();
+    }
+
+    function setPerspective(perspective) {
+      activePerspective = perspective;
+      document.getElementById('btn-view-jess').classList.remove('active-filter');
+      document.getElementById('btn-view-clean').classList.remove('active-filter');
+      
+      if(perspective === 'jessica') {
+        document.getElementById('btn-view-jess').classList.add('active-filter');
+        document.getElementById('btn-lang-toggle').style.display = 'none';
+        isGreek = false;
+      } else {
+        document.getElementById('btn-view-clean').classList.add('active-filter');
+        if(activeProperty === 'naxos') document.getElementById('btn-lang-toggle').style.display = 'block';
+      }
+      renderNaxosTable();
+    }
+
+    function toggleGreekLanguage() {
+      isGreek = !isGreek;
+      document.getElementById('btn-lang-toggle').textContent = isGreek ? "Translate to English" : "Translate to Greek (Ελληνικά)";
+      renderNaxosTable();
+    }
+
+    function renderNaxosTable() {
+      const tbody = document.getElementById('naxos-table-body');
+      const thRow = document.getElementById('naxos-table-th');
+      const headerTitle = document.getElementById('naxos-table-header');
+      tbody.innerHTML = "";
+
+      if (activePerspective === 'jessica') {
+        headerTitle.textContent = "Upcoming Guest Reservation Pipeline";
+        thRow.innerHTML = `<th>Guest Profile</th><th>Check-In</th><th>Check-Out</th><th>Operational Status</th><th>Special Directives / Notes</th>`;
+        
+        naxosData.jessica.forEach(row => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td><strong>${row.guest}</strong></td><td>${row.checkin}</td><td>${row.checkout}</td><td><span class="badge confirmed">${row.status}</span></td><td>${row.notes}</td>`;
+          tbody.appendChild(tr);
+        });
+      } else {
+        headerTitle.textContent = isGreek ? "Πρόγραμμα Εργασιών Καθαρισμού (Anela Korone)" : "Cleaning Requirements & Schedule (Anela Korone)";
+        
+        if (isGreek) {
+          thRow.innerHTML = `<th>Εργασία Καθαρισμού</th><th>Ημερομηνία</th><th>Ώρα</th><th>Κατάσταση</th><th>Οδηγίες Καθαρισμού</th>`;
+          naxosData.cleaner.el.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td><strong>${row.task}</strong></td><td>${row.date}</td><td>${row.time}</td><td><span class="badge cleaning">${row.status}</span></td><td>${row.notes}</td>`;
+            tbody.appendChild(tr);
+          });
+        } else {
+          thRow.innerHTML = `<th>Cleaning Task</th><th>Target Date</th><th>Time Window</th><th>Status</th><th>Jessica's Instructions</th>`;
+          naxosData.cleaner.en.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td><strong>${row.task}</strong></td><td>${row.date}</td><td>${row.time}</td><td><span class="badge cleaning">${row.status}</span></td><td>${row.notes}</td>`;
+            tbody.appendChild(tr);
+          });
+        }
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const cacheSeed = new Date().getTime();
+      document.querySelectorAll('.cache-bust').forEach(function(img) {
+        const dataPath = img.getAttribute('data-src');
+        if (dataPath) img.src = dataPath + "?v=" + cacheSeed;
+      });
+      renderNaxosTable();
+    });
+  </script>
+</body>
+</html>
