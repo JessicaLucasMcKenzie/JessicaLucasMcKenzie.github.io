@@ -1,1 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free From That — Synchronizing AI Matrix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #0c1219;
+      --surface:   #131c27;
+      --surface2:  #1b2733;
+      --border:    #25323f;
+      --green:     #4caf7d;
+      --text:      #dde7f0;
+      --muted:     #6b8099;
+    }
 
+    * { box-sizing: border-box; }
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: 'Inter', sans-serif; 
+      font-size: 14px; 
+      min-height: 100vh; 
+      margin: 0; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .map-container {
+      width: 100%;
+      max-width: 680px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+      text-align: center;
+      position: relative;
+    }
+
+    /* Radar Scanning Grid Area */
+    .radar-viewport {
+      width: 100%;
+      height: 240px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .radar-viewport::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(76, 175, 125, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(76, 175, 125, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+      background-position: center;
+    }
+
+    .radar-sweep {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(76, 175, 125, 0.15), transparent);
+      animation: sweep 3s infinite linear;
+    }
+
+    /* Pulse Dots representing live cooking nodes */
+    .node-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--green);
+      animation: pulse 2s infinite ease-in-out;
+      opacity: 0;
+    }
+
+    /* Telemetry Console Log */
+    .console-box {
+      background: #080d12;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      height: 140px;
+      overflow-y: hidden;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .console-line {
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid transparent;
+    }
+
+    .console-line.active {
+      color: var(--green);
+    }
+
+    .progress-wrap {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .progress-bar-container {
+      width: 75%;
+      height: 6px;
+      background: var(--surface2);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--green);
+      transition: width 0.4s ease;
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    /* Animations */
+    @keyframes sweep {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.3; }
+      50% { transform: scale(1.6); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="map-container">
+  <div class="radar-viewport">
+    <div class="radar-sweep"></div>
+    <div class="node-dot" style="top: 25%; left: 18%; animation-delay: 0.2s;"></div>
+    <div class="node-dot" style="top: 65%; left: 42%; animation-delay: 0.8s;"></div>
+    <div class="node-dot" style="top: 40%; left: 78%; animation-delay: 1.4s;"></div>
+    <div class="node-dot" style="top: 80%; left: 22%; animation-delay: 0.5s;"></div>
+    <div class="node-dot" style="top: 15%; left: 60%; animation-delay: 1.9s;"></div>
+  </div>
+
+  <div class="console-box" id="console-log">
+    </div>
+
+  <div class="progress-wrap">
+    <span id="progress-status">Syncing Parameters...</span>
+    <div class="progress-bar-container">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <span id="progress-pct">0%</span>
+  </div>
+</div>
+
+<script>
+  // Pull session routing strings out of the URL context safely
+  const params = new URLSearchParams(window.location.search);
+  let userEmail = "Guest Node";
+  try {
+    if (params.get('session')) userEmail = atob(params.get('session'));
+  } catch(e) {}
+
+  const logLines = [
+    `[INIT] Booting culinary mapping matrix...`,
+    `[AUTH] Node verified: ${userEmail}`,
+    `[NET] Connecting to primary kitchen relational datastore...`,
+    `[DATA] Appending active request parameters into target fields.`,
+    `[AI_ENG] Mapping structural recipe constraints & thresholds...`,
+    `[SYS] Instantiating text generator prompt telemetry pipeline.`,
+    `[SUCCESS] Request logged. Routing control to internal workspace.`
+  ];
+
+  const consoleLog = document.getElementById('console-log');
+  const progressFill = document.getElementById('progress-fill');
+  const progressPct = document.getElementById('progress-pct');
+  const progressStatus = document.getElementById('progress-status');
+
+  let currentStep = 0;
+
+  function executeTelemetryStep() {
+    if (currentStep < logLines.length) {
+      // Print new trace to log view
+      const line = document.createElement('div');
+      line.className = 'console-line active';
+      line.textContent = logLines[currentStep];
+      
+      // Remove previous active highlights
+      const items = consoleLog.querySelectorAll('.console-line');
+      items.forEach(el => el.classList.remove('active'));
+      
+      consoleLog.appendChild(line);
+      consoleLog.scrollTop = consoleLog.scrollHeight;
+
+      // Advance progress bar metric thresholds
+      currentStep++;
+      const percentValue = Math.floor((currentStep / logLines.length) * 100);
+      progressFill.style.width = `${percentValue}%`;
+      progressPct.textContent = `${percentValue}%`;
+
+      if (percentValue < 40) {
+        progressStatus.textContent = "Writing Row Data...";
+      } else if (percentValue < 80) {
+        progressStatus.textContent = "Processing Matrix...";
+      } else {
+        progressStatus.textContent = "Ready.";
+      }
+
+      // Schedule next line update with staggered delay intervals
+      setTimeout(executeTelemetryStep, 1100);
+    } else {
+      // Telemetry animation lifecycle complete. Ready to link user back to home loop.
+      setTimeout(() => {
+        alert("Telemetry Simulation Complete.\n\nYour recipe details are secured within the Google Sheet pipeline and are waiting processing inside the internal FFT Admin dashboard workspace.");
+        window.location.href = "index.html";
+      }, 600);
+    }
+  }
+
+  // Engage sequencer after initial DOM loading frames stabilize
+  setTimeout(executeTelemetryStep, 500);
+</script>
+</body>
+</html>
