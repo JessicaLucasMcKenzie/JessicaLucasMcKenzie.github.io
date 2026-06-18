@@ -6,7 +6,7 @@
   <title>JEFFREY KHO DASHBOARD</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&family=JetBrains+Mono:wght=400;500&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -19,7 +19,6 @@
       --border: #e2e8f0;
       --orange-accent: #ea580c;
       --green-accent: #16a34a;
-      --purple-accent: #7c3aed;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +31,6 @@
       overflow: hidden;
     }
 
-    /* Left Sidebar Navigation */
     .sidebar {
       width: 290px;
       background-color: var(--sidebar-bg);
@@ -41,8 +39,6 @@
       flex-direction: column;
       padding: 24px;
       flex-shrink: 0;
-      transition: transform 0.3s ease-in-out;
-      z-index: 1000;
     }
 
     .logo-container {
@@ -53,13 +49,6 @@
       text-align: center;
     }
 
-    .logo-home-link {
-      display: block;
-      width: 100%;
-      cursor: pointer;
-      transition: opacity 0.15s ease-in-out;
-    }
-    .logo-home-link:hover { opacity: 0.85; }
     .logo-img { width: 100%; max-width: 180px; height: auto; object-fit: contain; margin-bottom: 14px; }
     .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #0f172a; text-transform: uppercase; }
     .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
@@ -81,31 +70,13 @@
       font-weight: 500;
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
     .nav-item button:hover, .nav-item.active button {
       background-color: var(--teal-light);
       color: var(--teal-primary);
     }
 
-    .hamburger-menu {
-      display: none;
-      font-size: 26px;
-      background: none;
-      border: none;
-      color: var(--text-main);
-      cursor: pointer;
-      margin-right: 16px;
-    }
-    .mobile-header-logo { display: none; height: 38px; width: auto; object-fit: contain; }
-
-    .main-viewport {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-    }
-
+    .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
     .top-header {
       background: #ffffff;
       padding: 22px 40px;
@@ -113,68 +84,38 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-shrink: 0;
     }
-    .header-left-cluster { display: flex; align-items: center; }
-    .top-header h1 { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.01em; }
-
-    .back-hub-btn {
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-main);
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .back-hub-btn:hover { border-color: var(--teal-primary); color: var(--teal-primary); }
+    .top-header h1 { font-size: 20px; font-weight: 700; color: #0f172a; }
+    .back-hub-btn { background: var(--bg-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); text-decoration: none; }
 
     .content-container { padding: 40px; max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
-
     .app-view { display: none; flex-direction: column; gap: 32px; }
     .app-view.active-view { display: flex !important; }
 
     .filter-banner { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
     .filter-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
     .filter-buttons { display: flex; gap: 10px; }
-    .filter-btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: #ffffff; color: var(--text-main); transition: all 0.2s; }
-    .filter-btn.active-filter[data-user="all"] { background: var(--teal-primary); color: #fff; border-color: var(--teal-primary); }
-    .filter-btn.active-filter[data-user="jeff"] { background: var(--orange-accent); color: #fff; border-color: var(--orange-accent); }
-    .filter-btn.active-filter[data-user="lauraemily"] { background: var(--green-accent); color: #fff; border-color: var(--green-accent); }
-
-    .resource-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
-    .card-link { background: white; border: 1px solid var(--border); padding: 20px 16px; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); transition: transform 0.2s, box-shadow 0.2s; }
-    .card-link:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.04); border-color: var(--teal-primary); }
-    .card-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; }
-    .card-link h3 { font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 4px; }
-    .card-link p { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+    .filter-btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: #ffffff; color: var(--text-main); }
+    .filter-btn.active-filter { background: var(--teal-primary); color: #fff; border-color: var(--teal-primary); }
 
     .panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .panel-header h2 { font-size: 16px; font-weight: 700; color: #0f172a; }
 
-    .api-status-strip { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .api-status-strip { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center; gap: 10px; }
 
-    .table-scroll-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .table-scroll-wrapper { width: 100%; overflow-x: auto; }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
     .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); background-color: #f8fafc; }
-    
-    .data-table tbody tr { cursor: pointer; transition: background-color 0.15s ease-in-out; }
-    .data-table tbody tr:hover { background-color: #f8fafc; }
     .data-table td { padding: 18px 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #334155; line-height: 1.5; }
 
     .badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
     .badge.dentist { background-color: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
     .badge.pm { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-    .badge.tier { background-color: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
     .badge.status-screen { background-color: #e0f2fe; color: #0369a1; }
     .badge.status-notsuit { background-color: #fee2e2; color: #991b1b; }
     .badge.status-ident { background-color: #f3f4f6; color: #4b5563; }
 
-    /* Profile Document Sheet Overlay Panel Drawer */
     .crm-drawer { position: fixed; top: 0; right: 0; width: 480px; max-width: 100vw; height: 100vh; background: #ffffff; box-shadow: -10px 0 40px rgba(15, 23, 42, 0.15); transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000; display: flex; flex-direction: column; }
     .crm-drawer.drawer-open { transform: translateX(0); }
     .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
@@ -185,151 +126,66 @@
     .doc-section { display: flex; flex-direction: column; gap: 6px; }
     .doc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
     .doc-content-box { background: #f8fafc; border: 1px solid var(--border); padding: 12px; border-radius: 8px; font-size: 13px; color: #334155; line-height: 1.5; }
-    
-    .interactive-field { width: 100%; border: 1px solid var(--border); padding: 10px 12px; border-radius: 8px; font-size: 13px; outline: none; font-family: inherit; color: #0f172a; background: #f8fafc; }
-
-    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.3); backdrop-filter: blur(1px); z-index: 999; }
-
-    @media (max-width: 992px) {
-      .sidebar { position: fixed; top: 0; left: 0; height: 100vh; transform: translateX(-100%); }
-      .sidebar.menu-open { transform: translateX(0); }
-      .sidebar-overlay.menu-open { display: block; }
-      .hamburger-menu { display: block; }
-      .mobile-header-logo { display: block; }
-      .top-header { padding: 16px 20px; }
-      .content-container { padding: 20px; gap: 24px; }
-      .resource-grid { grid-template-columns: repeat(2, 1fr); }
-      .filter-banner { flex-direction: column; gap: 14px; align-items: flex-start; }
-      .crm-drawer { width: 100%; }
-    }
+    .interactive-field { width: 100%; border: 1px solid var(--border); padding: 10px 12px; border-radius: 8px; font-size: 13px; color: #0f172a; background: #f8fafc; }
   </style>
 </head>
 <body>
 
-  <div class="sidebar-overlay" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
-
-  <!-- Left Sidebar Layout Frame -->
-  <aside class="sidebar" id="app-sidebar">
+  <aside class="sidebar">
     <div class="logo-container">
-      <a onclick="switchAppView('hub');" class="logo-home-link">
-        <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img">
-      </a>
+      <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img">
       <h2>JEFFREY KHO DASHBOARD</h2>
       <p>Support Workspace</p>
       <hr class="meta-divider">
       <div class="revision-block">Rev. 2.0.0 &bull; LIVE SHEET SYNC</div>
     </div>
-    
     <ul class="nav-links">
       <li class="nav-item active" id="nav-hub"><button onclick="switchAppView('hub');">📊 Hub Overview</button></li>
       <li class="nav-item" id="nav-recruitment"><button onclick="switchAppView('recruitment');">📋 Recruitment Tracker</button></li>
-      <li class="nav-item" id="nav-commission"><button onclick="switchAppView('commission');">📜 Commission Agreement</button></li>
-      <li class="nav-item" id="nav-coordinator"><button onclick="switchAppView('coordinator');">6️⃣ Coordinator Tracker</button></li>
-      <li class="nav-item" id="nav-logistics"><button onclick="switchAppView('logistics');">🔑 Personal Logistics</button></li>
-      <li class="nav-item" id="nav-heygen"><button onclick="switchAppView('heygen');">🎥 HeyGen Video Assets</button></li>
     </ul>
   </aside>
 
-  <!-- Sliding CRM Profile Document Sheet Drawer -->
   <div class="crm-drawer" id="profile-drawer">
     <div class="drawer-header">
       <h3 id="drawer-candidate-name">Candidate Profile Document</h3>
       <button class="close-drawer-btn" onclick="closeProfileDrawer()">✕</button>
     </div>
-    <div class="drawer-body" id="drawer-document-content">
-    </div>
+    <div class="drawer-body" id="drawer-document-content"></div>
   </div>
 
-  <!-- Main Viewport context shell -->
   <main class="main-viewport">
     <header class="top-header">
-      <div class="header-left-cluster">
-        <button class="hamburger-menu" onclick="toggleMobileSidebar()">☰</button>
-        <h1 id="view-title">JEFFREY KHO DASHBOARD</h1>
-      </div>
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <span class="coordinator-meta-text" style="font-size: 13px; color: var(--text-muted); font-weight: 500;">Coordinator: Jessica Lucas McKenzie</span>
-        <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
-        <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="mobile-header-logo">
-      </div>
+      <h1 id="view-title">JEFFREY KHO DASHBOARD</h1>
+      <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
     </header>
 
     <div class="content-container">
-      
-      <!-- API Pipeline Status Monitor Strip -->
-      <div class="api-status-strip" id="api-status">
-        📡 Syncing Pipeline Status: Initializing connection...
-      </div>
+      <div class="api-status-strip" id="api-status">📡 Syncing Pipeline Status: Initializing connection...</div>
 
-      <!-- ==================== VIEW 1: HUB OVERVIEW ==================== -->
-      <div id="view-pane-hub" class="app-view active-view" style="display: flex;">
-        <section class="resource-grid">
-          <div onclick="switchAppView('recruitment')" class="card-link">
-            <div>
-              <div class="card-icon" style="background: #eff6ff; color: #2563eb;">👥</div>
-              <h3>Recruitment Tracker</h3>
-              <p>Filter doctor pipeline sheets and practice manager tracking records natively.</p>
-            </div>
-          </div>
-          <div onclick="switchAppView('commission')" class="card-link">
-            <div>
-              <div class="card-icon" style="background: #f5f3ff; color: #7c3aed;">📜</div>
-              <h3>Commission Terms</h3>
-              <p>Review standard placement allocations, metrics, and percentages.</p>
-            </div>
-          </div>
-          <div onclick="switchAppView('coordinator')" class="card-link">
-            <div>
-              <div class="card-icon" style="background: #fff7ed; color: #ea580c;">📅</div>
-              <h3>Coordinator Tracker</h3>
-              <p>Manage local logs, master planning, and pending schedule rows.</p>
-            </div>
-          </div>
-          <div onclick="switchAppView('logistics')" class="card-link">
-            <div>
-              <div class="card-icon" style="background: #faf5ff; color: #9333ea;">🔑</div>
-              <h3>Personal Logistics</h3>
-              <p>Review private logs, personal files, and travel records.</p>
-            </div>
-          </div>
-          <div onclick="switchAppView('heygen')" class="card-link">
-            <div>
-              <div class="card-icon" style="background: #f0fdf4; color: #16a34a;">🎥</div>
-              <h3>HeyGen Videos</h3>
-              <p>Review template script metrics and video assets.</p>
-            </div>
-          </div>
+      <!-- VIEW 1: HUB -->
+      <div id="view-pane-hub" class="app-view active-view">
+        <section class="panel">
+          <h2>Active System Summary</h2>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 10px;">
+            Welcome back, Jessica. Click on Recruitment Tracker on the left sidebar to access live data streams.
+          </p>
         </section>
-
-        <div class="dashboard-layout-row">
-          <section class="panel">
-            <div class="panel-header">
-              <h2>Active System Summary</h2>
-            </div>
-            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
-              Welcome back, Jessica. The active support hub handles tracking matrices across recruitment pipelines, dental logs, and commission agreements. Click individual candidate rows inside the console to access deep-dive documentation tabs.
-            </p>
-          </section>
-        </div>
       </div>
 
-      <!-- ==================== VIEW 2: RECRUITMENT TRACKER ==================== -->
+      <!-- VIEW 2: RECRUITMENT -->
       <div id="view-pane-recruitment" class="app-view">
         <div class="filter-banner">
           <div class="filter-label">🎯 Active Dashboard Perspective Filter:</div>
           <div class="filter-buttons">
-            <button class="filter-btn active-filter" data-user="all" onclick="applyRecruitmentFilter('all', this)">Jessica (Show All Rows)</button>
-            <button class="filter-btn" data-user="jeff" onclick="applyRecruitmentFilter('jeff', this)">DR. JEFF (DENTISTS)</button>
-            <button class="filter-btn" data-user="lauraemily" onclick="applyRecruitmentFilter('lauraemily', this)">LAURA/EMILY (PM)</button>
+            <button class="filter-btn active-filter" onclick="applyRecruitmentFilter('all', this)">Jessica (Show All Rows)</button>
+            <button class="filter-btn" onclick="applyRecruitmentFilter('jeff', this)">DR. JEFF (DENTISTS)</button>
+            <button class="filter-btn" onclick="applyRecruitmentFilter('lauraemily', this)">LAURA/EMILY (PM)</button>
           </div>
         </div>
 
         <section class="panel">
-          <div class="panel-header">
-            <h2>Recruitment Candidate Master Stream (Click name to review complete profile)</h2>
-          </div>
           <div class="table-scroll-wrapper">
-            <table class="data-table" id="recruitment-table">
+            <table class="data-table">
               <thead>
                 <tr>
                   <th>Date Entered</th>
@@ -340,161 +196,12 @@
                 </tr>
               </thead>
               <tbody id="recruitment-table-body">
-                <tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">Loading data streams from Google Sheets...</td></tr>
+                <tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">Loading live data streams from Google Sheets...</td></tr>
               </tbody>
             </table>
           </div>
         </section>
       </div>
-
-      <!-- ==================== VIEW 3: COMMISSION AGREEMENT ==================== -->
-      <div id="view-pane-commission" class="app-view">
-        <section class="panel">
-          <div class="panel-header">
-            <h2>Placement Milestone & Payout Matrices</h2>
-          </div>
-          <div class="table-scroll-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Tier Classification</th>
-                  <th>Target Placement Profile</th>
-                  <th>Base Target Threshold</th>
-                  <th>Commission Payout %</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><span class="badge tier">Tier 1</span></td>
-                  <td>General Practitioner Dentist (Full-Time)</td>
-                  <td>Standard placement validation block</td>
-                  <td><strong>3.5% of placement bracket</strong></td>
-                </tr>
-                <tr>
-                  <td><span class="badge tier">Tier 2</span></td>
-                  <td>Senior / Specialist Clinical Lead</td>
-                  <td>Advanced production metrics baseline</td>
-                  <td><strong>4.0% of placement bracket</strong></td>
-                </tr>
-                <tr>
-                  <td><span class="badge tier">Tier 3</span></td>
-                  <td>Practice Management Executive (Regional)</td>
-                  <td>Ops performance integration window</td>
-                  <td><strong>5.0% flat tier rate</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-
-      <!-- ==================== VIEW 4: COORDINATOR TRACKER ==================== -->
-      <div id="view-pane-coordinator" class="app-view">
-        <section class="panel">
-          <div class="panel-header">
-            <h2>Dental Clinic Coordination Metrics</h2>
-          </div>
-          <div class="table-scroll-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Log ID</th>
-                  <th>Target Branch</th>
-                  <th>Operational Status</th>
-                  <th>Jessica's Coordination Focus</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>#ND-9021</td>
-                  <td>Metro Dental Hub</td>
-                  <td><span class="badge status-screen">Optimized</span></td>
-                  <td>Staffing schedule locked for upcoming quarter</td>
-                </tr>
-                <tr>
-                  <td>#ND-4412</td>
-                  <td>Valley Surgical Clinic</td>
-                  <td><span class="badge status-ident">Review Needed</span></td>
-                  <td>Syncing missing equipment intake lines</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-
-      <!-- ==================== VIEW 5: PERSONAL LOGISTICS ==================== -->
-      <div id="view-pane-logistics" class="app-view">
-        <section class="panel">
-          <div class="panel-header">
-            <h2>Executive Support & Private Arrangements</h2>
-          </div>
-          <div class="table-scroll-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Logistics Element</th>
-                  <th>Target Timeframe</th>
-                  <th>Phase Status</th>
-                  <th>Detail Target</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Annual Dental Symposium Board Meet</td>
-                  <td>October 2026</td>
-                  <td><span class="badge status-screen">Planning</span></td>
-                  <td>Jessica structuring venue options and hospitality arrays</td>
-                </tr>
-                <tr>
-                  <td>Private Travel Route Verification</td>
-                  <td>Immediate</td>
-                  <td><span class="badge status-screen">Confirmed</span></td>
-                  <td>Flight and terminal configurations locked</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-
-      <!-- ==================== VIEW 6: HEYGEN VIDEO ASSETS ==================== -->
-      <div id="view-pane-heygen" class="app-view">
-        <section class="panel">
-          <div class="panel-header">
-            <h2>HeyGen AI Video Generation Hub</h2>
-          </div>
-          <div class="table-scroll-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Asset Template Name</th>
-                  <th>Configuration Details</th>
-                  <th>Render Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Clinic Welcome Intro Video</strong></td>
-                  <td>HeyGen Actor Avatar Node 4 — Active pipeline sync</td>
-                  <td><span class="badge status-screen">Queued</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Recruitment Strategy Pitch</strong></td>
-                  <td>Voiceover track synthesis complete; waiting feedback node</td>
-                  <td><span class="badge status-ident">In Draft</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Q3 Internal Dental Update</strong></td>
-                  <td>1080p high bitrate render stream finalized and signed off</td>
-                  <td><span class="badge status-screen">Delivered</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-
     </div>
   </main>
 
@@ -503,17 +210,9 @@
     var candidateDatabaseGlobal = [];
     var currentFilter = 'all';
 
-    function toggleMobileSidebar() {
-      var s = document.getElementById('app-sidebar');
-      var o = document.getElementById('mobile-overlay');
-      if (s) s.classList.toggle('menu-open');
-      if (o) o.classList.toggle('menu-open');
-    }
-
-    // Live Multi-Tab Synchronization Engine
     function loadLiveRecruitmentStreams() {
       var statusBox = document.getElementById('api-status');
-      candidateDatabaseGlobal = []; // Clear current cache
+      candidateDatabaseGlobal = [];
       
       var urlDentists = "https://docs.google.com/spreadsheets/d/" + SPREADSHEET_ID + "/gviz/tq?tqx=out:json&sheet=Dentists";
       var urlPM = "https://docs.google.com/spreadsheets/d/" + SPREADSHEET_ID + "/gviz/tq?tqx=out:json&sheet=PM";
@@ -523,34 +222,26 @@
         fetch(urlPM).then(function(r) { return r.text(); })
       ])
       .then(function(results) {
-        // Process Dentists Tab
-        var dataDentist = JSON.parse(results[0].substr(47).slice(0, -2));
-        processTabRows(dataDentist.table.rows, 'dentist');
+        processTabRows(JSON.parse(results[0].substr(47).slice(0, -2)).table.rows, 'dentist');
+        processTabRows(JSON.parse(results[1].substr(47).slice(0, -2)).table.rows, 'pm');
 
-        // Process Practice Managers Tab
-        var dataPM = JSON.parse(results[1].substr(47).slice(0, -2));
-        processTabRows(dataPM.table.rows, 'pm');
-
-        if(statusBox) {
-          statusBox.innerHTML = "✅ API Status: Connection verified. Successfully imported " + candidateDatabaseGlobal.length + " candidates dynamically across dental tabs.";
-        }
+        if(statusBox) statusBox.innerHTML = "✅ API Status: Success. Loaded " + candidateDatabaseGlobal.length + " candidates from Google Sheets.";
         applyRecruitmentFilter(currentFilter, document.querySelector('.filter-btn.active-filter'));
       })
       .catch(function(err) {
         console.error(err);
-        if(statusBox) statusBox.innerHTML = "❌ API Error: Stream failed. Verify that spreadsheet General Access is set to Public Viewer.";
+        if(statusBox) statusBox.innerHTML = "❌ API Error: Stream failed. Verify spreadsheet settings.";
       });
     }
 
     function processTabRows(rows, typeLabel) {
       if (!rows) return;
       rows.forEach(function(row, index) {
-        // Skip header lines safely
         if (index === 0) return;
         var cells = row.c;
-        if (!cells || !cells[1] || !cells[1].v) return; // Must have candidate name
+        if (!cells || !cells[1] || !cells[1].v) return;
 
-        var item = {
+        candidateDatabaseGlobal.push({
           id: candidateDatabaseGlobal.length + 1,
           date: (cells[0] && cells[0].v !== null) ? cells[0].f || cells[0].v : "",
           name: cells[1].v.toString(),
@@ -567,8 +258,7 @@
           phone: (cells[11] && cells[11].v !== null) ? cells[11].v.toString() : "",
           bestComms: (cells[12] && cells[12].v !== null) ? cells[12].v.toString() : "Email",
           callTime: (cells[13] && cells[13].v !== null) ? cells[13].f || cells[13].v : "Not specified"
-        };
-        candidateDatabaseGlobal.push(item);
+        });
       });
     }
 
@@ -577,45 +267,17 @@
       if (!candidate) return;
 
       document.getElementById('drawer-candidate-name').textContent = candidate.name.toUpperCase();
-      
-      var bodyContainer = document.getElementById('drawer-document-content');
-      bodyContainer.innerHTML = [
-        '<div class="doc-section">',
-          '<span class="doc-label">Sourcing Channel / Found Via</span>',
-          '<div class="doc-content-box">' + (candidate.found || 'Not logged') + '</div>',
-        '</div>',
-        '<div class="doc-section">',
-          '<span class="doc-label">Professional Background</span>',
-          '<div class="doc-content-box">' + (candidate.background || 'No background records loaded') + '</div>',
-        '</div>',
-        '<div class="doc-section">',
-          '<span class="doc-label">Discussions & Activity Logs</span>',
-          '<div class="doc-content-box">' + (candidate.discussions || 'No conversation log entered') + '</div>',
-        '</div>',
-        '<div class="doc-section">',
-          '<span class="doc-label">Direct Email Address</span>',
-          '<div class="interactive-field">' + (candidate.email || 'None registered') + '</div>',
-        '</div>',
-        '<div class="doc-section">',
-          '<span class="doc-label">Direct Phone Number</span>',
-          '<div class="interactive-field">' + (candidate.phone || 'None registered') + '</div>',
-        '</div>',
-        '<div class="doc-section">',
-          '<span class="doc-label">Best Way To Call / Connect</span>',
-          '<div class="interactive-field">' + (candidate.bestComms || 'Not specified') + '</div>',
-        '</div>',
-        '<div class="doc-section">',
-          '<span class="doc-label">Best Time To Call</span>',
-          '<div class="interactive-field">' + (candidate.callTime || 'Not specified') + '</div>',
-        '</div>'
+      document.getElementById('drawer-document-content').innerHTML = [
+        '<div class="doc-section"><span class="doc-label">Sourcing Channel</span><div class="doc-content-box">' + candidate.found + '</div></div>',
+        '<div class="doc-section"><span class="doc-label">Professional Background</span><div class="doc-content-box">' + candidate.background + '</div></div>',
+        '<div class="doc-section"><span class="doc-label">Discussions & Activity Logs</span><div class="doc-content-box">' + candidate.discussions + '</div></div>',
+        '<div class="doc-section"><span class="doc-label">Direct Email</span><div class="interactive-field">' + candidate.email + '</div></div>',
+        '<div class="doc-section"><span class="doc-label">Direct Phone</span><div class="interactive-field">' + candidate.phone + '</div></div>'
       ].join('');
-
       document.getElementById('profile-drawer').classList.add('drawer-open');
     }
 
-    function closeProfileDrawer() {
-      document.getElementById('profile-drawer').classList.remove('drawer-open');
-    }
+    function closeProfileDrawer() { document.getElementById('profile-drawer').classList.remove('drawer-open'); }
 
     function renderTableRows(dataset) {
       var tableBody = document.getElementById('recruitment-table-body');
@@ -623,34 +285,27 @@
       tableBody.innerHTML = "";
 
       if(dataset.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">No candidates currently match this tracking perspective.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">No records match this tracking perspective.</td></tr>';
         return;
       }
 
       dataset.forEach(function(candidate) {
-        var row = document.createElement('tr');
-        row.setAttribute('onclick', 'openProfileDrawer(' + candidate.id + ')');
+        var tr = document.createElement('tr');
+        tr.setAttribute('onclick', 'openProfileDrawer(' + candidate.id + ')');
         
-        var typePill = candidate.type === 'dentist' ? 
-          '<span class="badge dentist">Dentist</span>' : 
-          '<span class="badge pm">Practice Manager</span>';
-
+        var typePill = candidate.type === 'dentist' ? '<span class="badge dentist">Dentist</span>' : '<span class="badge pm">Practice Manager</span>';
         var statusClass = "status-ident";
-        var normStatus = candidate.status.toLowerCase();
-        if(normStatus.includes("scre")) statusClass = "status-screen";
-        if(normStatus.includes("not") || normStatus.includes("suit")) statusClass = "status-notsuit";
+        if(candidate.status.toLowerCase().includes("scre")) statusClass = "status-screen";
+        if(candidate.status.toLowerCase().includes("not") || candidate.status.toLowerCase().includes("suit")) statusClass = "status-notsuit";
 
-        row.innerHTML = [
+        tr.innerHTML = [
           '<td><strong>' + candidate.date + '</strong></td>',
-          '<td>',
-            '<div style="font-weight:700; color:#0f172a; white-space:nowrap;">' + candidate.name + '</div>',
-            '<div style="margin-top:4px;">' + typePill + '</div>',
-          '</td>',
+          '<td><div style="font-weight:700; color:#0f172a;">' + candidate.name + '</div><div style="margin-top:4px;">' + typePill + '</div></td>',
           '<td><span class="badge ' + statusClass + '">' + candidate.status + '</span></td>',
-          '<td style="font-size:12px; color:#475569; min-width:240px;">' + candidate.log + '</td>',
-          '<td style="font-size:12px; color:var(--text-muted); min-width:240px;">' + candidate.notes + '</td>'
+          '<td>' + candidate.log + '</td>',
+          '<td>' + candidate.notes + '</td>'
         ].join('');
-        tableBody.appendChild(row);
+        tableBody.appendChild(tr);
       });
     }
 
@@ -659,35 +314,20 @@
       document.querySelectorAll('.filter-btn').forEach(function(btn) { btn.classList.remove('active-filter'); });
       if(buttonElement) buttonElement.classList.add('active-filter');
 
-      var filteredData = [];
-      if (filterType === 'all') {
-        filteredData = candidateDatabaseGlobal;
-      } else if (filterType === 'jeff') {
-        filteredData = candidateDatabaseGlobal.filter(function(c) { return c.type === 'dentist' && c.jeffFollowUp === 'Y'; });
-      } else if (filterType === 'lauraemily') {
-        filteredData = candidateDatabaseGlobal.filter(function(c) { return c.type === 'pm' && c.lauraEmily === 'Y'; });
-      }
-
-      renderTableRows(filteredData);
+      var filtered = candidateDatabaseGlobal;
+      if (filterType === 'jeff') filtered = candidateDatabaseGlobal.filter(function(c) { return c.type === 'dentist' && c.jeffFollowUp === 'Y'; });
+      if (filterType === 'lauraemily') filtered = candidateDatabaseGlobal.filter(function(c) { return c.type === 'pm' && c.lauraEmily === 'Y'; });
+      renderTableRows(filtered);
     }
 
     function switchAppView(viewName) {
       document.querySelectorAll('.app-view').forEach(function(view) { view.style.display = 'none'; view.classList.remove('active-view'); });
-      document.querySelectorAll('.nav-links .nav-item').forEach(function(item) { item.classList.remove('active'); });
-      
-      var targetPane = document.getElementById('view-pane-' + viewName);
-      if (targetPane) { targetPane.style.display = 'flex'; targetPane.classList.add('active-view'); }
-      
-      var targetNav = document.getElementById('nav-' + viewName);
-      if (targetNav) targetNav.classList.add('active');
-      
+      var pane = document.getElementById('view-pane-' + viewName);
+      if (pane) { pane.style.display = 'flex'; pane.classList.add('active-view'); }
       document.getElementById('view-title').textContent = (viewName === 'hub') ? "JEFFREY KHO DASHBOARD" : viewName.toUpperCase() + " MANAGEMENT CONSOLE";
-      if (viewName === 'recruitment') applyRecruitmentFilter(currentFilter, document.querySelector('.filter-btn[data-user="' + currentFilter + '"]'));
     }
 
-    window.onload = function() {
-      loadLiveRecruitmentStreams();
-    };
+    window.onload = function() { loadLiveRecruitmentStreams(); };
   </script>
 </body>
 </html>
