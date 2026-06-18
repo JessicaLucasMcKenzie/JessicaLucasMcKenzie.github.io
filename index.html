@@ -57,8 +57,46 @@
     p { 
       color: var(--text-muted); 
       font-size: 15px; 
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       line-height: 1.5;
+    }
+
+    .selector-group {
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    .selector-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .user-select {
+      width: 100%;
+      padding: 14px 16px;
+      background-color: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 500;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 16px;
+    }
+
+    .user-select:focus {
+      border-color: var(--teal);
     }
 
     .enter-btn { 
@@ -72,6 +110,7 @@
       text-decoration: none; 
       transition: background 0.15s ease; 
       width: 100%; 
+      text-align: center;
     }
 
     .enter-btn:hover { 
@@ -86,8 +125,32 @@
   <div class="card">
     <h1>MASTER MANAGEMENT WORKSPACE</h1>
     <p>Operational Dashboard Ecosystem Pipeline Hub</p>
-    <a href="hub.html" class="enter-btn">Initialize Central Hub Matrix</a>
+    
+    <div class="selector-group">
+      <label class="selector-label">Select Active Operator Profile</label>
+      <select class="user-select" id="operator-dropdown">
+        <option value="jessica">Jessica Lucas McKenzie (Operations)</option>
+        <option value="jeffrey">Jeffrey Kho (Clinical Support)</option>
+      </select>
+    </div>
+
+    <a href="hub.html" class="enter-btn" onclick="saveActiveSession()">Initialize Central Hub Matrix</a>
   </div>
+
+  <script>
+    function saveActiveSession() {
+      var selectedUser = document.getElementById('operator-dropdown').value;
+      localStorage.setItem('active_matrix_operator', selectedUser);
+    }
+    
+    // Auto-select previously saved user if available
+    window.onload = function() {
+      var saved = localStorage.getItem('active_matrix_operator');
+      if (saved) {
+        document.getElementById('operator-dropdown').value = saved;
+      }
+    };
+  </script>
 
 </body>
 </html>
