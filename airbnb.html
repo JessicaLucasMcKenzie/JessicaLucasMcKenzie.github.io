@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JLM Hospitality — Airbnb Management Matrix</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <style>
@@ -17,7 +18,6 @@
       --airbnb-light: #FFF0F2;
       --border: #ebebeb;
       --green-accent: #008489;
-      --purple-accent: #6b21a8;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +30,7 @@
       overflow: hidden;
     }
 
-    /* Left Sidebar Navigation */
+    /* Left Sidebar Panel Wrapper */
     .sidebar {
       width: 290px;
       background-color: var(--sidebar-bg);
@@ -38,6 +38,9 @@
       display: flex;
       flex-direction: column;
       padding: 24px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
     }
 
     .logo-container {
@@ -55,7 +58,7 @@
       transition: opacity 0.15s ease-in-out;
     }
     .logo-home-link:hover { opacity: 0.85; }
-    .logo-img { width: 100%; max-width: 160px; height: auto; object-fit: contain; margin-bottom: 14px; }
+    .logo-img { width: 100%; max-width: 140px; height: auto; object-fit: contain; margin-bottom: 14px; }
     .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; color: #222; text-transform: uppercase; }
     .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
     
@@ -83,6 +86,25 @@
       color: var(--airbnb-pink);
     }
 
+    /* Mobile Header Layout Mechanics */
+    .hamburger-menu {
+      display: none;
+      font-size: 26px;
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      margin-right: 16px;
+      padding: 4px;
+    }
+
+    .mobile-header-logo {
+      display: none;
+      height: 28px;
+      width: auto;
+      object-fit: contain;
+    }
+
     /* Main Content Viewport Frame */
     .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
     .top-header {
@@ -93,6 +115,7 @@
       justify-content: space-between;
       align-items: center;
     }
+    .header-left-cluster { display: flex; align-items: center; }
     .top-header h1 { font-size: 20px; font-weight: 700; color: #222; }
 
     .back-hub-btn {
@@ -111,54 +134,22 @@
 
     .content-container { padding: 40px; max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
 
-    /* Property Navigation Row Matrix */
+    /* Property Layout Matrix */
     .property-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .property-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-      transition: all 0.2s ease-in-out;
-    }
-    .property-card:hover, .property-card.active-card {
-      border-color: var(--airbnb-pink);
-      box-shadow: 0 6px 16px rgba(255, 56, 92, 0.08);
-      transform: translateY(-2px);
-    }
+    .property-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s ease-in-out; }
+    .property-card:hover, .property-card.active-card { border-color: var(--airbnb-pink); box-shadow: 0 6px 16px rgba(255, 56, 92, 0.08); transform: translateY(-2px); }
     .prop-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--airbnb-pink); margin-bottom: 4px; display: block; }
     .property-card h3 { font-size: 18px; font-weight: 700; color: #222; }
     .property-card p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 
-    /* Perspective Display Controls */
-    .perspective-banner {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    /* Perspective Display Box Controls */
+    .perspective-banner { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
     .perspective-buttons { display: flex; gap: 10px; }
-    .filter-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: #ffffff;
-      transition: all 0.2s;
-    }
+    .filter-btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: #ffffff; transition: all 0.2s; }
     .filter-btn.active-filter { background: var(--airbnb-pink); color: #fff; border-color: var(--airbnb-pink); }
     .lang-toggle { background: var(--green-accent); color: white; border-color: var(--green-accent); display: none; }
 
-    /* Views Layout States */
+    /* Structural Data Views */
     .property-pane { display: none; flex-direction: column; gap: 32px; }
     .property-pane.active-pane { display: flex; }
 
@@ -166,37 +157,49 @@
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .panel-header h2 { font-size: 16px; font-weight: 700; color: #222; }
 
-    /* Clean Data Tables */
+    .table-scroll-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); background-color: #fafafa; }
+    .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); background-color: #fafafa; white-space: nowrap; }
     .data-table td { padding: 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #222; line-height: 1.5; }
 
     .badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
     .badge.confirmed { background-color: #e2fbe8; color: #14532d; }
     .badge.cleaning { background-color: #fffbeb; color: #78350f; }
 
-    /* Responsive adjustments for phones */
-    @media (max-width: 768px) {
-      .property-grid { grid-template-columns: 1fr; }
-      .perspective-banner { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(2px); z-index: 999; }
+
+    /* Responsive Mobile UI Rules Breakpoint Engine */
+    @media (max-width: 992px) {
+      .sidebar { position: fixed; top: 0; left: 0; height: 100vh; transform: translateX(-100%); box-shadow: 20px 0 40px rgba(0,0,0,0.1); }
+      .sidebar.menu-open { transform: translateX(0); }
+      .sidebar-overlay.menu-open { display: block; }
+      .hamburger-menu { display: block; }
+      .mobile-header-logo { display: block; }
       .top-header { padding: 16px 20px; }
       .content-container { padding: 20px; }
+      .property-grid { grid-template-columns: 1fr; gap: 16px; }
+      .perspective-banner { flex-direction: column; gap: 14px; align-items: flex-start; }
+      .perspective-buttons { flex-direction: column; width: 100%; gap: 8px; }
+      .filter-btn { width: 100%; text-align: center; }
+      .manager-meta-text { display: none; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Sidebar Overlay Mask for Mobile Tap Away Closure -->
+  <div class="sidebar-overlay" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
+
   <!-- Left Control Navigation Panel -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="app-sidebar">
     <div class="logo-container">
-      <a href="hub.html" class="logo-home-link" title="Return to Master Matrix Hub">
-        <img data-src="airbnblogo.png" alt="Airbnb Hospitality" class="logo-img cache-bust">
+      <a href="hub.html" class="logo-home-link">
+        <img src="airbnblogo.png" alt="Airbnb Hospitality" class="logo-img">
       </a>
       <h2>AIRBNB DASHBOARD</h2>
       <p>Hospitality Operations Platform</p>
-      
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 1.0.0 &bull; June 17, 2026</div>
+      <div class="revision-block">Rev. 1.0.1 &bull; June 18, 2026</div>
     </div>
     
     <ul class="nav-links">
@@ -208,18 +211,19 @@
   <!-- Core Dashboard Window -->
   <main class="main-viewport">
     <header class="top-header">
-      <h1 id="view-title">AIRBNB MANAGEMENT HUB</h1>
+      <div class="header-left-cluster">
+        <button class="hamburger-menu" onclick="toggleMobileSidebar()">☰</button>
+        <h1 id="view-title">AIRBNB MANAGEMENT HUB</h1>
+      </div>
       <div style="display: flex; align-items: center; gap: 20px;">
-        <a href="hub.html" class="back-hub-btn">⚙️ Matrix Hub</a>
-        <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;">
-          Manager: Jessica Lucas McKenzie
-        </div>
+        <span class="manager-meta-text" style="font-size: 13px; color: var(--text-muted); font-weight: 500;">Manager: Jessica Lucas McKenzie</span>
+        <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
+        <img src="airbnblogo.png" alt="Airbnb" class="mobile-header-logo">
       </div>
     </header>
 
     <div class="content-container">
       
-      <!-- Property Sizing Buttons Selection Grid -->
       <section class="property-grid">
         <div id="card-naxos" class="property-card active-card" onclick="selectProperty('naxos')">
           <div>
@@ -240,11 +244,8 @@
         </div>
       </section>
 
-      <!-- View Filtering Controls -->
       <div class="perspective-banner">
-        <div id="perspective-title" style="font-size: 13px; font-weight: 600; color: var(--text-muted);">
-          Active Workspace View:
-        </div>
+        <div id="perspective-title" style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Active Workspace View:</div>
         <div class="perspective-buttons">
           <button id="btn-view-jess" class="filter-btn active-filter" onclick="setPerspective('jessica')">Jessica (Upcoming Bookings)</button>
           <button id="btn-view-clean" class="filter-btn" onclick="setPerspective('cleaner')">Cleaner Operations Portal</button>
@@ -258,20 +259,21 @@
           <div class="panel-header">
             <h2 id="naxos-table-header">Naxos Dynamic Pipeline Tracking System</h2>
           </div>
-          <table class="data-table">
-            <thead>
-              <tr id="naxos-table-th">
-                <th>Guest Profile</th>
-                <th>Check-In</th>
-                <th>Check-Out</th>
-                <th>Operational Status</th>
-                <th>Special Directives / Notes</th>
-              </tr>
-            </thead>
-            <tbody id="naxos-table-body">
-              <!-- Content populates dynamically depending on perspective loop -->
-            </tbody>
-          </table>
+          <div class="table-scroll-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr id="naxos-table-th">
+                  <th>Guest Profile</th>
+                  <th>Check-In</th>
+                  <th>Check-Out</th>
+                  <th>Operational Status</th>
+                  <th>Special Directives / Notes</th>
+                </tr>
+              </thead>
+              <tbody id="naxos-table-body">
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
 
@@ -298,7 +300,6 @@
     let activePerspective = 'jessica';
     let isGreek = false;
 
-    // Naxos Data Repository Compiled from active structures
     const naxosData = {
       jessica: [
         { guest: "Liam Henderson (4 Guests)", checkin: "22-Jun-2026", checkout: "29-Jun-2026", status: "Confirmed", notes: "Requested early check-in loop. Port transfer coordinated." },
@@ -316,12 +317,15 @@
       }
     };
 
+    function toggleMobileSidebar() {
+      document.getElementById('app-sidebar').classList.toggle('menu-open');
+      document.getElementById('mobile-overlay').classList.toggle('menu-open');
+    }
+
     function selectProperty(property) {
       activeProperty = property;
-      
       document.querySelectorAll('.property-card').forEach(c => c.classList.remove('active-card'));
       document.querySelectorAll('.property-pane').forEach(p => p.classList.remove('active-pane'));
-      
       document.getElementById(`card-${property}`).classList.add('active-card');
       document.getElementById(`pane-${property}`).classList.add('active-pane');
 
@@ -366,12 +370,12 @@
       const tbody = document.getElementById('naxos-table-body');
       const thRow = document.getElementById('naxos-table-th');
       const headerTitle = document.getElementById('naxos-table-header');
+      if (!tbody) return;
       tbody.innerHTML = "";
 
       if (activePerspective === 'jessica') {
         headerTitle.textContent = "Upcoming Guest Reservation Pipeline";
         thRow.innerHTML = `<th>Guest Profile</th><th>Check-In</th><th>Check-Out</th><th>Operational Status</th><th>Special Directives / Notes</th>`;
-        
         naxosData.jessica.forEach(row => {
           const tr = document.createElement('tr');
           tr.innerHTML = `<td><strong>${row.guest}</strong></td><td>${row.checkin}</td><td>${row.checkout}</td><td><span class="badge confirmed">${row.status}</span></td><td>${row.notes}</td>`;
@@ -379,7 +383,6 @@
         });
       } else {
         headerTitle.textContent = isGreek ? "Πρόγραμμα Εργασιών Καθαρισμού (Anela Korone)" : "Cleaning Requirements & Schedule (Anela Korone)";
-        
         if (isGreek) {
           thRow.innerHTML = `<th>Εργασία Καθαρισμού</th><th>Ημερομηνία</th><th>Ώρα</th><th>Κατάσταση</th><th>Οδηγίες Καθαρισμού</th>`;
           naxosData.cleaner.el.forEach(row => {
@@ -398,14 +401,7 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-      const cacheSeed = new Date().getTime();
-      document.querySelectorAll('.cache-bust').forEach(function(img) {
-        const dataPath = img.getAttribute('data-src');
-        if (dataPath) img.src = dataPath + "?v=" + cacheSeed;
-      });
-      renderNaxosTable();
-    });
+    renderNaxosTable();
   </script>
 </body>
 </html>
