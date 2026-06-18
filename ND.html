@@ -49,16 +49,13 @@
       text-align: center;
     }
 
-    /* Interactive Home Logo Link Rules */
     .logo-home-link {
       display: block;
       width: 100%;
       cursor: pointer;
       transition: opacity 0.15s ease-in-out;
     }
-    .logo-home-link:hover {
-      opacity: 0.8;
-    }
+    .logo-home-link:hover { opacity: 0.8; }
 
     .logo-img { width: 100%; max-width: 180px; height: auto; object-fit: contain; margin-bottom: 14px; }
     .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #0f172a; text-transform: uppercase; }
@@ -97,6 +94,33 @@
       align-items: center;
     }
     .top-header h1 { font-size: 20px; font-weight: 700; color: #0f172a; }
+    
+    .header-actions-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Minimal White Home Action Button */
+    .home-icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      font-size: 16px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+    }
+    .home-icon-btn:hover {
+      background: #f8fafc;
+      border-color: var(--teal-primary);
+    }
+
     .back-hub-btn { background: var(--bg-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); text-decoration: none; }
 
     .content-container { padding: 40px; max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
@@ -147,14 +171,13 @@
 
   <aside class="sidebar">
     <div class="logo-container">
-      <!-- Wrapped neighborhood dental logo directly inside the central hub anchor routing context -->
       <a href="hub.html" class="logo-home-link">
         <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img">
       </a>
       <h2>JEFFREY KHO DASHBOARD</h2>
       <p>Support Workspace</p>
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 2.2.2 &bull; 6-TAB MATRIX</div>
+      <div class="revision-block">Rev. 2.2.3 &bull; 6-TAB MATRIX</div>
     </div>
     <ul class="nav-links">
       <li class="nav-item" id="nav-hub"><button onclick="switchAppView('hub');">📊 Hub Overview</button></li>
@@ -173,7 +196,11 @@
   <main class="main-viewport">
     <header class="top-header">
       <h1 id="view-title">JEFFREY KHO DASHBOARD</h1>
-      <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
+      <div class="header-actions-cluster">
+        <!-- Added minimal white home button icon structure -->
+        <a href="hub.html" class="home-icon-btn" title="Return to Central Matrix Hub">🏠</a>
+        <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
+      </div>
     </header>
 
     <div class="content-container">
