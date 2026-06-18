@@ -4,83 +4,141 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JEFFREY KHO DASHBOARD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
-  <script>
-    (function() {
-      var currentVersion = "v2.2.7_purge";
-      if (localStorage.getItem("nd_tracker_version") !== currentVersion) {
-        localStorage.setItem("nd_tracker_version", currentVersion);
-        window.location.reload(true);
-      }
-    })();
-  </script>
-
   <style>
     :root {
-      --bg-main: #f8fafc; --sidebar-bg: #ffffff; --text-main: #1e293b; --text-muted: #64748b; --primary: #0f172a; --border: #e2e8f0; --teal-accent: #2d6a4f; --teal-light: #e8f5e9;
-      --dark-bg: #0b131a; --dark-card: #111c24; --dark-border: #1e2d38; --dark-text-main: #f1f5f9; --dark-text-muted: #94a3b8; --dark-accent-blue: #38bdf8;
+      --bg-main: #f8fafc;
+      --sidebar-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --primary: #0f172a;
+      --border: #e2e8f0;
+      --teal-accent: #2d6a4f;
+      --teal-light: #e8f5e9;
+      
+      /* Dark Profile Theme Rules */
+      --dark-bg: #0b131a;
+      --dark-card: #111c24;
+      --dark-border: #1e2d38;
+      --dark-text-main: #f1f5f9;
+      --dark-text-muted: #94a3b8;
+      --dark-accent-blue: #38bdf8;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg-main); color: var(--text-main); }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+    }
+
+    /* Primary Dashboard Structure */
     .app-wrapper { display: flex; height: 100vh; overflow: hidden; }
-    .sidebar { width: 290px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px; flex-shrink: 0; }
+    
+    .sidebar {
+      width: 290px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      flex-shrink: 0;
+    }
     .logo-img { width: 100%; max-width: 180px; height: auto; margin-bottom: 14px; align-self: center; }
     .sidebar h2 { font-size: 13px; font-weight: 700; text-align: center; color: var(--primary); letter-spacing: 0.08em; text-transform: uppercase; }
     .sidebar p { font-size: 11px; text-align: center; color: var(--text-muted); margin-bottom: 20px; }
     .meta-divider { border: 0; height: 1px; background-color: var(--border); margin: 16px 0; }
-    .rev-tag { font-family: monospace; font-size: 10px; color: #94a3b8; text-align: center; margin-bottom: 24px; }
+    .rev-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; text-align: center; margin-bottom: 24px; }
+    
     .nav-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .nav-item button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: #475569; background: none; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; text-align: left; cursor: pointer; }
+    .nav-item button {
+      width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+      color: #475569; background: none; border: none; border-radius: 8px;
+      font-size: 14px; font-weight: 500; text-align: left; cursor: pointer;
+    }
     .nav-item.active button { background-color: #f1f5f9; color: var(--primary); font-weight: 600; }
+
     .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 40px; }
     .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
     .top-header h1 { font-size: 20px; font-weight: 700; color: var(--primary); }
+    
     .header-actions-cluster { display: flex; align-items: center; gap: 12px; }
-    .home-icon-btn { display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 6px; font-size: 16px; text-decoration: none; cursor: pointer; }
+    .home-icon-btn { display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 6px; font-size: 16px; text-decoration: none; cursor: pointer; transition: all 0.15s ease-in-out; }
     .home-icon-btn:hover { background: #f8fafc; border-color: var(--teal-accent); }
-    .hub-btn { background: var(--bg-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); text-decoration: none; }
-    .status-banner { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 14px 20px; border-radius: 8px; font-family: monospace; font-size: 12px; margin-bottom: 24px; }
+    .hub-btn { background: var(--bg-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; color: var(--text-main); }
+
+    .status-banner { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 14px 20px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-bottom: 24px; }
     .panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+    .panel h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .panel p { color: var(--text-muted); font-size: 14px; }
+
+    /* Filtering Control Grid Layout */
     .filter-cluster { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
     .filter-title { font-size: 13px; font-weight: 600; color: #475569; }
     .filter-btn { background: #ffffff; border: 1px solid var(--border); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.15s; }
     .filter-btn.active { background: #2d6a4f; color: #ffffff; border-color: #2d6a4f; }
+
+    /* Candidate Ledger Table */
     .data-table { width: 100%; border-collapse: collapse; text-align: left; margin-top: 16px; }
     .data-table th { padding: 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); background-color: #f8fafc; }
     .data-table td { padding: 18px 14px; font-size: 13px; border-bottom: 1px solid var(--border); color: #334155; vertical-align: top; }
     .data-table tr.interactive-row { cursor: pointer; }
     .data-table tr.interactive-row:hover { background-color: #f8fafc; }
+    
     .role-badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background-color: var(--teal-light); color: var(--teal-accent); text-transform: capitalize; margin-top: 4px; }
-    .link-string { font-family: monospace; font-size: 11px; color: var(--text-muted); word-break: break-all; max-width: 450px; display: block; }
-    .profile-viewport-container { display: none; background-color: var(--dark-bg); color: var(--dark-text-main); min-height: 100vh; overflow-y: auto; padding: 40px; }
+    .link-string { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); word-break: break-all; max-width: 450px; display: block; }
+
+    /* Dynamic Candidate Deep-Profile Slate Page Styling */
+    .profile-viewport-container {
+      display: none; 
+      background-color: var(--dark-bg);
+      color: var(--dark-text-main);
+      min-height: 100vh;
+      overflow-y: auto;
+      padding: 40px;
+    }
+    
     .profile-header-meta { text-align: center; margin-bottom: 24px; }
     .profile-header-meta .sub-label { font-size: 11px; font-weight: 600; color: var(--dark-text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
     .profile-header-meta h2 { font-size: 26px; font-weight: 700; color: #ffffff; letter-spacing: 1px; }
     .profile-header-meta .admin-tag { font-size: 12px; color: var(--dark-text-muted); margin-top: 6px; }
+
     .back-menu-link { display: inline-block; color: #22d3ee; text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 16px; cursor: pointer; }
-    .back-menu-link:hover { text-decoration: underline; }
+    .back-menu-link:hover { text-underline-position: under; text-decoration: underline; }
+
     .profile-hero-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
     .profile-hero-row h3 { font-size: 28px; font-weight: 700; color: #ffffff; }
     .profile-hero-row .role-right-indicator { font-size: 14px; font-weight: 500; color: var(--dark-text-muted); }
+
     .badge-pill-cluster { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
     .profile-badge { background-color: #1e2d38; color: var(--dark-text-muted); padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
     .profile-badge.badge-green { background-color: #112a24; color: #4ade80; border: 1px solid #164e3a; }
+
     .profile-contact-section { margin-bottom: 24px; }
     .profile-contact-section h4 { font-size: 14px; font-weight: 600; color: #22d3ee; text-transform: capitalize; margin-bottom: 12px; border-bottom: 1px solid var(--dark-border); padding-bottom: 6px; }
-    .profile-contact-val { font-size: 15px; margin-bottom: 12px; font-family: monospace; }
+    .profile-contact-val { font-size: 15px; margin-bottom: 12px; font-family: 'JetBrains Mono', monospace; }
+    
     .action-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
     .action-btn { background-color: #11222f; border: 1px solid var(--dark-border); color: #38bdf8; padding: 12px; border-radius: 6px; text-align: center; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .action-btn:hover { background-color: #162e3f; }
     .action-btn.btn-wide { grid-column: span 2; }
+
     .all-details-card { background-color: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 8px; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
     .all-details-card h4 { font-size: 15px; font-weight: 600; color: #22d3ee; margin-bottom: -4px; }
+    
     .detail-doc-block { display: flex; flex-direction: column; gap: 6px; }
     .detail-doc-label { font-size: 10px; font-weight: 700; color: var(--dark-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
     .detail-doc-value { font-size: 14px; color: var(--dark-text-main); line-height: 1.6; word-break: break-word; }
     .detail-doc-value a { color: #38bdf8; text-decoration: none; }
+    .detail-doc-value a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
+
+  <!-- Screen State 1: Master Log View -->
   <div class="app-wrapper" id="workspace-state-view">
     <aside class="sidebar">
       <a href="hub.html" style="display: block; width: 100%;">
@@ -89,7 +147,7 @@
       <h2>JEFFREY KHO DASHBOARD</h2>
       <p>Support Workspace</p>
       <hr class="meta-divider">
-      <div class="rev-tag">REV. 2.2.7 &bull; 6-TAB MATRIX</div>
+      <div class="rev-tag">REV. 2.2.5 &bull; 6-TAB MATRIX</div>
       <ul class="nav-links">
         <li class="nav-item"><button onclick="location.href='hub.html'">📊 Hub Overview</button></li>
         <li class="nav-item active"><button>📋 Recruitment Tracker</button></li>
@@ -137,6 +195,8 @@
     </main>
   </div>
 
+
+  <!-- Screen State 2: Candidate Dark Profile View -->
   <div class="profile-viewport-container" id="profile-state-view">
     <center>
       <div class="profile-header-meta">
@@ -148,18 +208,22 @@
         <div class="admin-tag">Signed in as Jeff Kho &bull; admin</div>
       </div>
     </center>
+
     <div style="max-width: 800px; margin: 0 auto;">
       <a class="back-menu-link" onclick="switchToWorkspaceLog()">← Back to menu</a>
+      
       <div class="profile-hero-row">
         <h3 id="prof-hero-name">Candidate Name</h3>
         <div class="role-right-indicator" id="prof-hero-role">Role Category</div>
       </div>
+
       <div class="badge-pill-cluster">
         <div class="profile-badge" id="prof-badge-type">Candidate</div>
         <div class="profile-badge badge-green" id="prof-badge-status">🟢 Contacted</div>
         <div class="profile-badge">📞 Phone on file</div>
         <div class="profile-badge">✉️ Email on file</div>
       </div>
+
       <div class="profile-contact-section">
         <h4>Phone</h4>
         <div class="profile-contact-val" id="prof-phone-num">0434 487 106</div>
@@ -168,6 +232,7 @@
           <a class="action-btn" id="link-call">📞 Call</a>
         </div>
       </div>
+
       <div class="profile-contact-section">
         <h4>Email</h4>
         <div class="profile-contact-val" id="prof-email-address">candidate@domain.com</div>
@@ -175,12 +240,14 @@
           <a class="action-btn btn-wide" id="link-email-mailto">✉️ Email from ea@jeffreykho.com</a>
         </div>
       </div>
+
       <div class="all-details-card">
         <h4>All details</h4>
         <div id="prof-metadata-grid-target" style="display: flex; flex-direction: column; gap: 20px;"></div>
       </div>
     </div>
   </div>
+
 
   <script>
     var EXCEL_SPREADSHEET_KEY = "1tJZma-5Wb_Lb2AB6BhcKGsY-hNTGFEPnRvVFRDo8T74";
@@ -190,6 +257,8 @@
     function loadCandidateWorkbookPipeline() {
       var syncBanner = document.getElementById('sync-status-strip');
       localCandidatesMasterArray = [];
+
+      // Cleaned target array querying operational data tabs explicitly
       var tabsToFetch = [
         { name: "A-Player Dentist", category: "Dentist" },
         { name: "Calamvale PM", category: "Calamvale PM" },
@@ -200,63 +269,162 @@
       ];
 
       var loopPromises = tabsToFetch.map(function(tab) {
-        var bust = new Date().getTime();
-        var tabQueryUrl = "https://docs.google.com/spreadsheets/d/" + EXCEL_SPREADSHEET_KEY + "/gviz/tq?tqx=out:json&sheet=" + encodeURIComponent(tab.name) + "&_=" + bust;
+        var tabQueryUrl = "https://docs.google.com/spreadsheets/d/" + EXCEL_SPREADSHEET_KEY + "/gviz/tq?tqx=out:json&sheet=" + encodeURIComponent(tab.name);
+        
         return fetch(tabQueryUrl)
           .then(function(res) { return res.text(); })
           .then(function(rawText) {
             try {
               var cleanJson = JSON.parse(rawText.substr(47).slice(0, -2));
               transformTabRows(cleanJson.table.rows, tab.category);
-            } catch(err) {}
+            } catch(err) { console.warn("Skipping tab configuration payload context: ", tab.name); }
           });
       });
 
-      Promise.all(loopPromises).then(function() {
-        renderWorkspaceTable();
-        if(syncBanner) syncBanner.innerHTML = "✅ API Status: Success. Synced " + localCandidatesMasterArray.length + " pipeline records.";
-      });
+      Promise.all(loopPromises)
+        .then(function() {
+          renderWorkspaceTable();
+          if(syncBanner) {
+            syncBanner.innerHTML = "✅ API Status: Success. Synced " + localCandidatesMasterArray.length + " pipeline records cleanly across all remaining tabs.";
+          }
+        })
+        .catch(function(error) {
+          console.error("Pipeline breakdown:", error);
+          if(syncBanner) {
+            syncBanner.innerHTML = "❌ API Error: Connection loop interrupted. Double check spreadsheet permissions settings.";
+          }
+        });
     }
 
     function transformTabRows(rows, tabCategoryName) {
       if (!rows) return;
+
       rows.forEach(function(row, idx) {
         if (idx === 0) return; 
         var c = row.c;
         if (!c || !c[1] || c[1].v === null) return; 
-        var safeVal = function(index) { return (c[index] && c[index].v !== null) ? c[index].f || c[index].v.toString() : "TBC"; };
+
+        var safeVal = function(index) {
+          return (c[index] && c[index].v !== null) ? c[index].f || c[index].v.toString() : "TBC";
+        };
+
         localCandidatesMasterArray.push({
-          uid: localCandidatesMasterArray.length + 1, dateEntered: safeVal(0), name: safeVal(1), categoryRole: tabCategoryName, followUp: safeVal(4), pipelineStatus: safeVal(5), profileUrl: safeVal(7), background: safeVal(8), discussions: safeVal(9), email: safeVal(10) !== "TBC" ? safeVal(10) : "pingchenxm@yahoo.com.au", phone: safeVal(11) !== "TBC" ? safeVal(11) : "0434 487 106"
+          uid: localCandidatesMasterArray.length + 1,
+          dateEntered: safeVal(0),
+          name: safeVal(1),
+          categoryRole: tabCategoryName,
+          followUp: safeVal(4), 
+          pipelineStatus: safeVal(5), 
+          profileUrl: safeVal(7), 
+          background: safeVal(8),
+          discussions: safeVal(9),
+          email: safeVal(10) !== "TBC" ? safeVal(10) : "pingchenxm@yahoo.com.au",
+          phone: safeVal(11) !== "TBC" ? safeVal(11) : "0434 487 106"
         });
       });
     }
 
     function renderWorkspaceTable() {
-      var targetBody = document.getElementById('candidate-rows-target'); if(!targetBody) return; targetBody.innerHTML = "";
-      var filtered = localCandidatesMasterArray.filter(function(i) { return currentActiveRoleFilter === "all" || i.categoryRole.toLowerCase().trim() === currentActiveRoleFilter.toLowerCase().trim(); });
-      filtered.forEach(function(cand) {
-        var tr = document.createElement('tr'); tr.className = "interactive-row"; tr.setAttribute('onclick', 'switchToCandidateProfile(' + cand.uid + ')');
-        tr.innerHTML = ['<td style="font-weight:600; color:#475569;">' + cand.dateEntered + '</td>','<td><div style="font-weight:700; color:var(--primary);">' + cand.name + '</div><span class="role-badge">' + cand.categoryRole + '</span></td>','<td><span class="link-string">' + (cand.profileUrl !== "TBC" ? cand.profileUrl : "No sourcing URL logged.") + '</span></td>'].join('');
+      var targetBody = document.getElementById('candidate-rows-target');
+      if(!targetBody) return;
+      targetBody.innerHTML = "";
+
+      var filteredCollection = localCandidatesMasterArray.filter(function(item) {
+        if (currentActiveRoleFilter === "all") return true;
+        return item.categoryRole.toLowerCase().trim() === currentActiveRoleFilter.toLowerCase().trim();
+      });
+
+      if (filteredCollection.length === 0) {
+        targetBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted); padding: 40px;">No candidates found matched to this position criteria loop.</td></tr>';
+        return;
+      }
+
+      filteredCollection.forEach(function(cand) {
+        var tr = document.createElement('tr');
+        tr.className = "interactive-row";
+        tr.setAttribute('onclick', 'switchToCandidateProfile(' + cand.uid + ')');
+
+        tr.innerHTML = [
+          '<td style="font-weight: 600; color: #475569;">' + cand.dateEntered + '</td>',
+          '<td>',
+            '<div style="font-weight: 700; color: var(--primary); font-size: 14px;">' + cand.name + '</div>',
+            '<span class="role-badge">' + cand.categoryRole + '</span>',
+          '</td>',
+          '<td><span class="link-string">' + (cand.profileUrl !== "TBC" ? cand.profileUrl : "No custom sourcing URL string logged.") + '</span></td>'
+        ].join('');
+
         targetBody.appendChild(tr);
       });
     }
 
-    function applyRoleFilter(r) { currentActiveRoleFilter = r; document.querySelectorAll('#filter-pillbox .filter-btn').forEach(function(b) { b.classList.remove('active'); }); event.target.classList.add('active'); renderWorkspaceTable(); }
-    function switchToCandidateProfile(id) {
-      var p = localCandidatesMasterArray.find(function(item) { return item.uid === id; }); if(!p) return;
-      document.getElementById('workspace-state-view').style.display = 'none'; document.getElementById('profile-state-view').style.display = 'block'; window.scrollTo(0,0);
-      document.getElementById('prof-hero-name').textContent = p.name; document.getElementById('prof-hero-role').textContent = p.categoryRole; document.getElementById('prof-badge-type').textContent = p.categoryRole + " candidate";
-      document.getElementById('prof-badge-status').textContent = "🟢 " + (p.pipelineStatus !== "TBC" ? p.pipelineStatus : "Contacted");
-      document.getElementById('prof-phone-num').textContent = p.phone; document.getElementById('prof-email-address').textContent = p.email;
-      document.getElementById('link-facetime').href = "facetime://" + p.phone; document.getElementById('link-call').href = "tel:" + p.phone;
-      document.getElementById('link-email-mailto').href = "mailto:" + p.email + "?cc=ea@jeffreykho.com&subject=Neighborhood Dental Recruitment - " + p.name;
-      var grid = document.getElementById('prof-metadata-grid-target'); grid.innerHTML = "";
-      [{l:"DATE ENTERED",v:p.dateEntered},{l:"NAME",v:p.name},{l:"CATEGORY ROLE",v:p.categoryRole},{l:"FOLLOW UP",v:p.followUp},{l:"STATUS",v:p.pipelineStatus},{l:"PROFILE URL",v:p.profileUrl,k:p.profileUrl.startsWith('http')},{l:"BACKGROUND",v:p.background},{l:"DISCUSSIONS LOG",v:p.discussions}].forEach(function(f){
-        var b = document.createElement('div'); b.className = "detail-doc-block"; b.innerHTML = '<span class="detail-doc-label">'+f.l+'</span><div class="detail-doc-value">'+(f.k?'<a href="' + f.v + '" target="_blank">' + f.v + '</a>':f.v)+'</div>'; grid.appendChild(b);
+    function applyRoleFilter(roleKey) {
+      currentActiveRoleFilter = roleKey;
+      var buttons = document.querySelectorAll('#filter-pillbox .filter-btn');
+      buttons.forEach(function(btn) { btn.classList.remove('active'); });
+      
+      event.target.classList.add('active');
+      renderWorkspaceTable();
+    }
+
+    function switchToCandidateProfile(uniqueRowId) {
+      var profile = localCandidatesMasterArray.find(function(item) { return item.uid === uniqueRowId; });
+      if(!profile) return;
+
+      document.getElementById('workspace-state-view').style.display = 'none';
+      var container = document.getElementById('profile-state-view');
+      container.style.display = 'block';
+      window.scrollTo(0, 0);
+
+      document.getElementById('prof-hero-name').textContent = profile.name;
+      document.getElementById('prof-hero-role').textContent = profile.categoryRole;
+      document.getElementById('prof-badge-type').textContent = profile.categoryRole + " candidate";
+      document.getElementById('prof-badge-status').textContent = "🟢 " + (profile.pipelineStatus !== "TBC" ? profile.pipelineStatus : "Contacted");
+      document.getElementById('prof-phone-num').textContent = profile.phone;
+      document.getElementById('prof-email-address').textContent = profile.email;
+
+      document.getElementById('link-facetime').href = "facetime://" + profile.phone;
+      document.getElementById('link-call').href = "tel:" + profile.phone;
+      document.getElementById('link-email-mailto').href = "mailto:" + profile.email + "?cc=ea@jeffreykho.com&subject=Neighborhood Dental Recruitment - " + profile.name;
+
+      var fieldsList = [
+        { label: "DATE ENTERED", val: profile.dateEntered },
+        { label: "NAME", val: profile.name },
+        { label: "CATEGORY ROLE", val: profile.categoryRole },
+        { label: "FOLLOW UP / ACTION LOG", val: profile.followUp },
+        { label: "PIPELINE STATUS", val: profile.pipelineStatus },
+        { label: "PROFILE URL", val: profile.profileUrl, isLink: profile.profileUrl.startsWith('http') },
+        { label: "BACKGROUND ASSESSMENT SUMMARY", val: profile.background },
+        { label: "DETAILED DISCUSSIONS LOG", val: profile.discussions }
+      ];
+
+      var metadataTarget = document.getElementById('prof-metadata-grid-target');
+      metadataTarget.innerHTML = "";
+
+      fieldsList.forEach(function(f) {
+        var block = document.createElement('div');
+        block.className = "detail-doc-block";
+        
+        var displayValue = f.val;
+        if (f.isLink && f.val !== "TBC") {
+          displayValue = '<a href="' + f.val + '" target="_blank">' + f.val + '</a>';
+        }
+
+        block.innerHTML = [
+          '<span class="detail-doc-label">' + f.label + '</span>',
+          '<div class="detail-doc-value">' + displayValue + '</div>'
+        ].join('');
+        metadataTarget.appendChild(block);
       });
     }
-    function switchToWorkspaceLog() { document.getElementById('profile-state-view').style.display = 'none'; document.getElementById('workspace-state-view').style.display = 'flex'; }
-    window.onload = function() { loadCandidateWorkbookPipeline(); };
+
+    function switchToWorkspaceLog() {
+      document.getElementById('profile-state-view').style.display = 'none';
+      document.getElementById('workspace-state-view').style.display = 'flex';
+    }
+
+    window.onload = function() {
+      loadCandidateWorkbookPipeline();
+    };
   </script>
 </body>
 </html>
