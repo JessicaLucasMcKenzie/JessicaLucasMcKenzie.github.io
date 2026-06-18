@@ -32,7 +32,7 @@
       overflow: hidden;
     }
 
-    /* Left Sidebar Navigation */
+    /* Left Sidebar Panel Wrapper */
     .sidebar {
       width: 290px;
       background-color: var(--sidebar-bg);
@@ -41,6 +41,8 @@
       flex-direction: column;
       padding: 24px;
       flex-shrink: 0;
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
     }
 
     .logo-container {
@@ -57,56 +59,15 @@
       cursor: pointer;
       transition: opacity 0.15s ease-in-out;
     }
-    .logo-home-link:hover {
-      opacity: 0.85;
-    }
+    .logo-home-link:hover { opacity: 0.85; }
+    .logo-img { width: 100%; max-width: 180px; height: auto; object-fit: contain; margin-bottom: 14px; }
+    .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #0f172a; text-transform: uppercase; }
+    .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-    .logo-img {
-      width: 100%;
-      max-width: 180px;
-      height: auto;
-      object-fit: contain;
-      margin-bottom: 14px;
-    }
+    .meta-divider { width: 100%; border: 0; height: 1px; background-color: var(--border); margin: 16px 0; }
+    .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-bottom: 16px; text-align: center; }
 
-    .logo-container h2 {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: #0f172a;
-      text-transform: uppercase;
-    }
-
-    .logo-container p {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .meta-divider {
-      width: 100%;
-      border: 0;
-      height: 1px;
-      background-color: var(--border);
-      margin: 16px 0;
-    }
-    .revision-block {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
+    .nav-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
     .nav-item button {
       width: 100%;
       display: flex;
@@ -122,13 +83,31 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-
     .nav-item button:hover, .nav-item.active button {
       background-color: var(--teal-light);
       color: var(--teal-primary);
     }
 
-    /* Main Content Dashboard Frame */
+    /* Mobile Header Layout Adjustments */
+    .hamburger-menu {
+      display: none;
+      font-size: 26px;
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      margin-right: 16px;
+      padding: 4px;
+    }
+
+    .mobile-header-logo {
+      display: none;
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* Main Viewport Shell Frame */
     .main-viewport {
       flex: 1;
       display: flex;
@@ -147,12 +126,8 @@
       flex-shrink: 0;
     }
 
-    .top-header h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #0f172a;
-      letter-spacing: -0.01em;
-    }
+    .header-left-cluster { display: flex; align-items: center; }
+    .top-header h1 { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.01em; }
 
     .back-hub-btn {
       background: var(--bg-main);
@@ -166,224 +141,115 @@
       text-decoration: none;
       transition: all 0.2s;
     }
-    .back-hub-btn:hover {
-      border-color: var(--teal-primary);
-      color: var(--teal-primary);
-    }
+    .back-hub-btn:hover { border-color: var(--teal-primary); color: var(--teal-primary); }
 
-    .content-container {
-      padding: 40px;
-      max-width: 1400px;
-      width: 100%;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
+    .content-container { padding: 40px; max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
 
-    /* Views Layout States */
-    .app-view {
-      display: none;
-      flex-direction: column;
-      gap: 32px;
-    }
-    .app-view.active-view {
-      display: flex !important;
-    }
+    /* Component Architecture Triggers */
+    .app-view { display: none; flex-direction: column; gap: 32px; }
+    .app-view.active-view { display: flex !important; }
 
-    /* Dynamic Stakeholder Filter Segment Controls */
-    .filter-banner {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .filter-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-    .filter-buttons {
-      display: flex;
-      gap: 10px;
-    }
-    .filter-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: #ffffff;
-      color: var(--text-main);
-      transition: all 0.2s;
-    }
+    .filter-banner { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .filter-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+    .filter-buttons { display: flex; gap: 10px; }
+    .filter-btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: #ffffff; color: var(--text-main); transition: all 0.2s; }
     .filter-btn.active-filter[data-user="all"] { background: var(--teal-primary); color: #fff; border-color: var(--teal-primary); }
     .filter-btn.active-filter[data-user="jeff"] { background: var(--orange-accent); color: #fff; border-color: var(--orange-accent); }
     .filter-btn.active-filter[data-user="lauraemily"] { background: var(--green-accent); color: #fff; border-color: var(--green-accent); }
 
-    /* Direct Hub Link Grids */
-    .resource-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
-    }
+    .resource-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .card-link { background: white; border: 1px solid var(--border); padding: 20px 16px; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); transition: transform 0.2s, box-shadow 0.2s; }
+    .card-link:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.04); border-color: var(--teal-primary); }
+    .card-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; }
+    .card-link h3 { font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 4px; }
+    .card-link p { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
 
-    .card-link {
-      background: white;
-      border: 1px solid var(--border);
-      padding: 20px 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.01);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .card-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.04);
-      border-color: var(--teal-primary);
-    }
+    .dashboard-layout-row { display: grid; grid-template-columns: 1fr; gap: 32px; }
+    .panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .panel-header h2 { font-size: 16px; font-weight: 700; color: #0f172a; }
 
-    .card-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      margin-bottom: 12px;
-    }
+    /* Tables & Responsive Wrapper overflow fields */
+    .table-scroll-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); background-color: #f8fafc; white-space: nowrap; }
+    .data-table td { padding: 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #334155; line-height: 1.5; }
 
-    .card-link h3 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #0f172a;
-      margin-bottom: 4px;
-    }
-
-    .card-link p {
-      font-size: 11px;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    /* Split Dashboard Panels layout */
-    .dashboard-layout-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-
-    .panel {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-    }
-
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .panel-header h2 {
-      font-size: 16px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    /* Clean Data Matrices */
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    .data-table th {
-      padding: 14px 16px;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      background-color: #f8fafc;
-    }
-
-    .data-table td {
-      padding: 16px;
-      font-size: 13px;
-      border-bottom: 1px solid var(--border);
-      color: #334155;
-      line-height: 1.5;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 4px 8px;
-      font-size: 11px;
-      font-weight: 600;
-      border-radius: 6px;
-    }
+    .badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
     .badge.dentist { background-color: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
     .badge.pm { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
     .badge.tier { background-color: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
-    
     .badge.status-screen { background-color: #e0f2fe; color: #0369a1; }
     .badge.status-notsuit { background-color: #fee2e2; color: #991b1b; }
     .badge.status-ident { background-color: #f3f4f6; color: #4b5563; }
+
+    /* Sidebar Mobile Background Overlay Block Mask */
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(2px); z-index: 999; }
+
+    /* Responsive Mobile UI Rules Breakpoint Engine */
+    @media (max-width: 992px) {
+      .sidebar { position: fixed; top: 0; left: 0; height: 100vh; transform: translateX(-100%); box-shadow: 20px 0 40px rgba(0,0,0,0.15); }
+      .sidebar.menu-open { transform: translateX(0); }
+      .sidebar-overlay.menu-open { display: block; }
+      .hamburger-menu { display: block; }
+      .mobile-header-logo { display: block; }
+      .top-header { padding: 16px 20px; }
+      .content-container { padding: 20px; gap: 24px; }
+      .resource-grid { grid-template-columns: repeat(2, 1fr); }
+      .filter-banner { flex-direction: column; gap: 14px; align-items: flex-start; }
+      .coordinator-meta-text { display: none; }
+    }
+    @media (max-width: 520px) {
+      .resource-grid { grid-template-columns: 1fr; }
+      .filter-buttons { flex-direction: column; width: 100%; gap: 8px; }
+      .filter-btn { width: 100%; text-align: center; }
+    }
   </style>
 </head>
 <body>
 
+  <!-- Sidebar Overlay Mask for Mobile Tap Away Closure -->
+  <div class="sidebar-overlay" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
+
   <!-- Left Control Navigation Panel -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="app-sidebar">
     <div class="logo-container">
-      <a onclick="switchAppView('hub')" class="logo-home-link" title="Return to Dashboard Home">
+      <a onclick="switchAppView('hub'); toggleMobileSidebar();" class="logo-home-link">
         <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img">
       </a>
       <h2>JEFFREY KHO DASHBOARD</h2>
       <p>Administrative Support Workspace</p>
-      
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 1.0.6 &bull; June 17, 2026</div>
+      <div class="revision-block">Rev. 1.0.6 &bull; June 18, 2026</div>
     </div>
     
     <ul class="nav-links">
-      <li class="nav-item active" id="nav-hub"><button onclick="switchAppView('hub')">📊 Hub Overview</button></li>
-      <li class="nav-item" id="nav-recruitment"><button onclick="switchAppView('recruitment')">📋 Recruitment Tracker</button></li>
-      <li class="nav-item" id="nav-commission"><button onclick="switchAppView('commission')">📜 Commission Agreement</button></li>
-      <li class="nav-item" id="nav-coordinator"><button onclick="switchAppView('coordinator')">6️⃣ Coordinator Tracker</button></li>
-      <li class="nav-item" id="nav-logistics"><button onclick="switchAppView('logistics')">🔑 Personal Logistics</button></li>
-      <li class="nav-item" id="nav-heygen"><button onclick="switchAppView('heygen')">🎥 HeyGen Video Assets</button></li>
+      <li class="nav-item active" id="nav-hub"><button onclick="switchAppView('hub'); toggleMobileSidebar();">📊 Hub Overview</button></li>
+      <li class="nav-item" id="nav-recruitment"><button onclick="switchAppView('recruitment'); toggleMobileSidebar();">📋 Recruitment Tracker</button></li>
+      <li class="nav-item" id="nav-commission"><button onclick="switchAppView('commission'); toggleMobileSidebar();">📜 Commission Agreement</button></li>
+      <li class="nav-item" id="nav-coordinator"><button onclick="switchAppView('coordinator'); toggleMobileSidebar();">6️⃣ Coordinator Tracker</button></li>
+      <li class="nav-item" id="nav-logistics"><button onclick="switchAppView('logistics'); toggleMobileSidebar();">🔑 Personal Logistics</button></li>
+      <li class="nav-item" id="nav-heygen"><button onclick="switchAppView('heygen'); toggleMobileSidebar();">🎥 HeyGen Video Assets</button></li>
     </ul>
   </aside>
 
   <!-- Core Dashboard Window -->
   <main class="main-viewport">
     <header class="top-header">
-      <h1 id="view-title">JEFFREY KHO DASHBOARD</h1>
+      <div class="header-left-cluster">
+        <button class="hamburger-menu" onclick="toggleMobileSidebar()">☰</button>
+        <h1 id="view-title">JEFFREY KHO DASHBOARD</h1>
+      </div>
       <div style="display: flex; align-items: center; gap: 20px;">
-        <a href="hub.html" class="back-hub-btn">⚙️ Matrix Hub</a>
-        <div style="font-size: 13px; color: var(--text-muted); font-weight: 500;">
-          Coordinator: Jessica Lucas McKenzie
-        </div>
+        <span class="coordinator-meta-text" style="font-size: 13px; color: var(--text-muted); font-weight: 500;">Coordinator: Jessica Lucas McKenzie</span>
+        <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
+        <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="mobile-header-logo">
       </div>
     </header>
 
     <div class="content-container">
       
       <!-- ==================== VIEW 1: HUB OVERVIEW ==================== -->
-      <!-- Added explicit rendering fallback properties to prevent white viewport lock -->
       <div id="view-pane-hub" class="app-view active-view" style="display: flex;">
         <section class="resource-grid">
           <div onclick="switchAppView('recruitment')" class="card-link">
@@ -450,19 +316,21 @@
           <div class="panel-header">
             <h2>Recruitment Candidate Master Stream</h2>
           </div>
-          <table class="data-table" id="recruitment-table">
-            <thead>
-              <tr>
-                <th>Date Entered</th>
-                <th>Candidate Name</th>
-                <th>Category</th>
-                <th>Follow-Up / Action Log Log</th>
-                <th>Pipeline Status / Details</th>
-              </tr>
-            </thead>
-            <tbody id="recruitment-table-body">
-            </tbody>
-          </table>
+          <div class="table-scroll-wrapper">
+            <table class="data-table" id="recruitment-table">
+              <thead>
+                <tr>
+                  <th>Date Entered</th>
+                  <th>Candidate Name</th>
+                  <th>Category</th>
+                  <th>Follow-Up / Action Log Log</th>
+                  <th>Pipeline Status / Details</th>
+                </tr>
+              </thead>
+              <tbody id="recruitment-table-body">
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
 
@@ -472,36 +340,38 @@
           <div class="panel-header">
             <h2>Placement Milestone & Payout Matrices</h2>
           </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Tier Classification</th>
-                <th>Target Placement Profile</th>
-                <th>Base Target Threshold</th>
-                <th>Commission Payout %</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="badge tier">Tier 1</span></td>
-                <td>General Practitioner Dentist (Full-Time)</td>
-                <td>Standard placement validation block</td>
-                <td><strong>3.5% of placement bracket</strong></td>
-              </tr>
-              <tr>
-                <td><span class="badge tier">Tier 2</span></td>
-                <td>Senior / Specialist Clinical Lead</td>
-                <td>Advanced production metrics baseline</td>
-                <td><strong>4.0% of placement bracket</strong></td>
-              </tr>
-              <tr>
-                <td><span class="badge tier">Tier 3</span></td>
-                <td>Practice Management Executive (Regional)</td>
-                <td>Ops performance integration window</td>
-                <td><strong>5.0% flat tier rate</strong></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-scroll-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Tier Classification</th>
+                  <th>Target Placement Profile</th>
+                  <th>Base Target Threshold</th>
+                  <th>Commission Payout %</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge tier">Tier 1</span></td>
+                  <td>General Practitioner Dentist (Full-Time)</td>
+                  <td>Standard placement validation block</td>
+                  <td><strong>3.5% of placement bracket</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="badge tier">Tier 2</span></td>
+                  <td>Senior / Specialist Clinical Lead</td>
+                  <td>Advanced production metrics baseline</td>
+                  <td><strong>4.0% of placement bracket</strong></td>
+                </tr>
+                <tr>
+                  <td><span class="badge tier">Tier 3</span></td>
+                  <td>Practice Management Executive (Regional)</td>
+                  <td>Ops performance integration window</td>
+                  <td><strong>5.0% flat tier rate</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
 
@@ -511,30 +381,32 @@
           <div class="panel-header">
             <h2>Dental Clinic Coordination Metrics</h2>
           </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Log ID</th>
-                <th>Target Branch</th>
-                <th>Operational Status</th>
-                <th>Jessica's Coordination Focus</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>#ND-9021</td>
-                <td>Metro Dental Hub</td>
-                <td><span class="badge status-screen">Optimized</span></td>
-                <td>Staffing schedule locked for upcoming quarter</td>
-              </tr>
-              <tr>
-                <td>#ND-4412</td>
-                <td>Valley Surgical Clinic</td>
-                <td><span class="badge status-ident">Review Needed</span></td>
-                <td>Syncing missing equipment intake lines</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-scroll-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Log ID</th>
+                  <th>Target Branch</th>
+                  <th>Operational Status</th>
+                  <th>Jessica's Coordination Focus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#ND-9021</td>
+                  <td>Metro Dental Hub</td>
+                  <td><span class="badge status-screen">Optimized</span></td>
+                  <td>Staffing schedule locked for upcoming quarter</td>
+                </tr>
+                <tr>
+                  <td>#ND-4412</td>
+                  <td>Valley Surgical Clinic</td>
+                  <td><span class="badge status-ident">Review Needed</span></td>
+                  <td>Syncing missing equipment intake lines</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
 
@@ -544,30 +416,32 @@
           <div class="panel-header">
             <h2>Executive Support & Private Arrangements</h2>
           </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Logistics Element</th>
-                <th>Target Timeframe</th>
-                <th>Phase Status</th>
-                <th>Detail Target</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Annual Dental Symposium Board Meet</td>
-                <td>October 2026</td>
-                <td><span class="badge status-screen">Planning</span></td>
-                <td>Jessica structuring venue options and hospitality arrays</td>
-              </tr>
-              <tr>
-                <td>Private Travel Route Verification</td>
-                <td>Immediate</td>
-                <td><span class="badge status-screen">Confirmed</span></td>
-                <td>Flight and terminal configurations locked</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-scroll-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Logistics Element</th>
+                  <th>Target Timeframe</th>
+                  <th>Phase Status</th>
+                  <th>Detail Target</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Annual Dental Symposium Board Meet</td>
+                  <td>October 2026</td>
+                  <td><span class="badge status-screen">Planning</span></td>
+                  <td>Jessica structuring venue options and hospitality arrays</td>
+                </tr>
+                <tr>
+                  <td>Private Travel Route Verification</td>
+                  <td>Immediate</td>
+                  <td><span class="badge status-screen">Confirmed</span></td>
+                  <td>Flight and terminal configurations locked</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
 
@@ -577,32 +451,34 @@
           <div class="panel-header">
             <h2>HeyGen AI Video Generation Hub</h2>
           </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Asset Template Name</th>
-                <th>Configuration Details</th>
-                <th>Render Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Clinic Welcome Intro Video</strong></td>
-                <td>HeyGen Actor Avatar Node 4 — Active pipeline sync</td>
-                <td><span class="badge status-screen">Queued</span></td>
-              </tr>
-              <tr>
-                <td><strong>Recruitment Strategy Pitch</strong></td>
-                <td>Voiceover track synthesis complete; waiting feedback node</td>
-                <td><span class="badge status-ident">In Draft</span></td>
-              </tr>
-              <tr>
-                <td><strong>Q3 Internal Dental Update</strong></td>
-                <td>1080p high bitrate render stream finalized and signed off</td>
-                <td><span class="badge status-screen">Delivered</span></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-scroll-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Asset Template Name</th>
+                  <th>Configuration Details</th>
+                  <th>Render Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Clinic Welcome Intro Video</strong></td>
+                  <td>HeyGen Actor Avatar Node 4 — Active pipeline sync</td>
+                  <td><span class="badge status-screen">Queued</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Recruitment Strategy Pitch</strong></td>
+                  <td>Voiceover track synthesis complete; waiting feedback node</td>
+                  <td><span class="badge status-ident">In Draft</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Q3 Internal Dental Update</strong></td>
+                  <td>1080p high bitrate render stream finalized and signed off</td>
+                  <td><span class="badge status-screen">Delivered</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
 
@@ -625,6 +501,11 @@
       { date: "06-Jun-2026", name: "Natalie Brooks", type: "dentist", jeffFollowUp: "N", lauraEmily: "N", log: "Initial connection invitation accepted via LinkedIn.", status: "Identified", notes: "Pediatric clinical focus area candidate." }
     ];
 
+    function toggleMobileSidebar() {
+      document.getElementById('app-sidebar').classList.toggle('menu-open');
+      document.getElementById('mobile-overlay').classList.toggle('menu-open');
+    }
+
     function renderTableRows(dataset) {
       const tableBody = document.getElementById('recruitment-table-body');
       if (!tableBody) return;
@@ -635,7 +516,7 @@
         let statusClass = "status-ident";
         if(candidate.status.includes("Scre")) statusClass = "status-screen";
         if(candidate.status.includes("Not")) statusClass = "status-notsuit";
-        row.innerHTML = `<td><strong>${candidate.date}</strong></td><td><div style="font-weight:700; color:#0f172a;">${candidate.name}</div><div style="margin-top:4px;">${typePill}</div></td><td><span class="badge ${statusClass}">${candidate.status}</span></td><td style="font-size:12px; color:#475569; max-width:320px;">${candidate.log}</td><td style="font-size:12px; color:var(--text-muted); max-width:300px;">${candidate.notes}</td>`;
+        row.innerHTML = `<td><strong>${candidate.date}</strong></td><td><div style="font-weight:700; color:#0f172a; white-space:nowrap;">${candidate.name}</div><div style="margin-top:4px;">${typePill}</div></td><td><span class="badge ${statusClass}">${candidate.status}</span></td><td style="font-size:12px; color:#475569; min-width:240px;">${candidate.log}</td><td style="font-size:12px; colorvar(--text-muted); min-width:240px;">${candidate.notes}</td>`;
         tableBody.appendChild(row);
       });
     }
@@ -658,7 +539,6 @@
       if (viewName === 'recruitment') renderTableRows(candidateDatabase);
     }
 
-    // Direct initialization loop execution
     renderTableRows(candidateDatabase);
   </script>
 </body>
