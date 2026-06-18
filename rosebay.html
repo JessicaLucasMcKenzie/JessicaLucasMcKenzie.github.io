@@ -7,152 +7,50 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
   <style>
     :root {
-      --bg-main: #f8fafc;
-      --sidebar-bg: #ffffff;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --rose-primary: #e11d48; 
-      --rose-light: #fff1f2;
-      --border: #e2e8f0;
+      --bg-main: #f8fafc; --sidebar-bg: #ffffff; --text-main: #1e293b; --text-muted: #64748b; --rose-primary: #e11d48; --rose-light: #fff1f2; --border: #e2e8f0;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .sidebar {
-      width: 290px;
-      background-color: var(--sidebar-bg);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 24px;
-      flex-shrink: 0;
-    }
-
-    .logo-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-bottom: 20px;
-      text-align: center;
-    }
-
-    .logo-home-link {
-      display: block;
-      width: 100%;
-      cursor: pointer;
-      transition: opacity 0.15s ease-in-out;
-    }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+    .sidebar { width: 290px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px; flex-shrink: 0; }
+    .logo-container { display: flex; flex-direction: column; align-items: center; padding-bottom: 20px; text-align: center; }
+    .logo-home-link { display: block; width: 100%; cursor: pointer; transition: opacity 0.15s ease-in-out; }
     .logo-home-link:hover { opacity: 0.8; }
-
     .logo-img { width: 100%; max-width: 180px; height: auto; object-fit: contain; margin-bottom: 14px; }
     .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #0f172a; text-transform: uppercase; }
     .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
     .meta-divider { width: 100%; border: 0; height: 1px; background-color: var(--border); margin: 16px 0; }
     .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-bottom: 16px; text-align: center; }
-
     .nav-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .nav-item button {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      color: #475569;
-      background: none;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      text-align: left;
-      cursor: pointer;
-    }
-    .nav-item.active button {
-      background-color: var(--rose-light);
-      color: var(--rose-primary);
-    }
-
+    .nav-item button { width: 100%; display: flex; align-items: center; padding: 12px 16px; color: #475569; background: none; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; text-align: left; cursor: pointer; }
+    .nav-item.active button { background-color: var(--rose-light); color: var(--rose-primary); }
     .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 40px; }
-    .top-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-    }
+    .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
     .top-header h1 { font-size: 20px; font-weight: 700; color: #0f172a; }
-    
-    .header-actions-cluster {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .home-icon-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      font-size: 16px;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.15s ease-in-out;
-    }
-    .home-icon-btn:hover {
-      background: #f8fafc;
-      border-color: var(--rose-primary);
-    }
-
+    .header-actions-cluster { display: flex; align-items: center; gap: 12px; }
+    .home-icon-btn { display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 6px; font-size: 16px; text-decoration: none; cursor: pointer; transition: all 0.15s ease-in-out; }
+    .home-icon-btn:hover { background: #f8fafc; border-color: var(--rose-primary); }
     .back-hub-btn { background: var(--bg-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); text-decoration: none; }
-
     .content-container { display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; margin: 0 auto; }
-    
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-    .metric-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-    }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .metric-card { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
     .metric-card p { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
     .metric-card h3 { font-size: 24px; font-weight: 700; color: #0f172a; margin-top: 6px; }
-
     .panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
     .api-status-strip { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center; gap: 10px; }
-
     .table-scroll-wrapper { width: 100%; overflow-x: auto; }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
     .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); background-color: #f8fafc; }
     .data-table td { padding: 16px 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #334155; line-height: 1.5; }
-
     .index-badge { font-family: 'JetBrains Mono', monospace; background: #e2e8f0; color: #475569; padding: 4px 6px; border-radius: 4px; font-weight: 500; font-size: 12px; }
     .badge-blocked { background-color: #fee2e2; color: #991b1b; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
-
-    /* Profile Slider Drawer UI Layout */
     .crm-drawer { position: fixed; top: 0; right: 0; width: 480px; max-width: 100vw; height: 100vh; background: #ffffff; box-shadow: -10px 0 40px rgba(15, 23, 42, 0.15); transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000; display: flex; flex-direction: column; }
     .crm-drawer.drawer-open { transform: translateX(0); }
     .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
     .drawer-header h3 { font-size: 18px; font-weight: 700; color: #0f172a; }
     .close-drawer-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
     .drawer-body { padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; flex: 1; }
-    
     .doc-section { display: flex; flex-direction: column; gap: 6px; }
     .doc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
     .doc-content-box { background: #f8fafc; border: 1px solid var(--border); padding: 12px; border-radius: 8px; font-size: 13px; color: #334155; line-height: 1.5; }
@@ -160,7 +58,6 @@
   </style>
 </head>
 <body>
-
   <aside class="sidebar">
     <div class="logo-container">
       <a href="hub.html" class="logo-home-link">
@@ -169,7 +66,7 @@
       <h2>ROSEBAY DASHBOARD</h2>
       <p>Airbnb Workspace 🇦🇺</p>
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 1.0.1 &bull; HARBOUR STREAM</div>
+      <div class="revision-block">Rev. 1.0.2 &bull; CACHE PURGE ACTIVE</div>
     </div>
     <ul class="nav-links">
       <li class="nav-item active"><button>📋 Operational Log</button></li>
@@ -192,10 +89,8 @@
         <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
       </div>
     </header>
-
     <div class="content-container">
       <div class="api-status-strip" id="api-status">📡 Syncing Pipeline Status: Accessing Rosebay data hooks...</div>
-
       <div class="metrics-grid">
         <div class="metric-card">
           <p>Total Booked Stays</p>
@@ -210,7 +105,6 @@
           <h3 id="metric-total-cleaning">-</h3>
         </div>
       </div>
-
       <section class="panel">
         <div class="table-scroll-wrapper">
           <table class="data-table">
@@ -236,14 +130,14 @@
   </main>
 
   <script>
-    // Points directly to your Rosebay tracking sheet workbook
     var SPREADSHEET_ID = "1Pgg9OGAKEBLZoeXxbMeuaBbJ5o-_c52cVGJAm4t2Md0";
     var globalOpsDatabase = [];
 
     function loadLiveRosebayStreams() {
       var statusBox = document.getElementById('api-status');
-      // Tries parsing tab name 'Rosebay Ops' or falls back to 'Sheet1' / 'Bookings' based on workbook structure
-      var url = "https://docs.google.com/spreadsheets/d/" + SPREADSHEET_ID + "/gviz/tq?tqx=out:json";
+      // Imbue a dynamic dynamic millisecond parameter cache breaker payload token
+      var cacheBustToken = new Date().getTime();
+      var url = "https://docs.google.com/spreadsheets/d/" + SPREADSHEET_ID + "/gviz/tq?tqx=out:json" + "&_=" + cacheBustToken;
 
       fetch(url)
         .then(function(r) { return r.text(); })
@@ -263,12 +157,10 @@
     function processRows(rows) {
       if (!rows) return;
       globalOpsDatabase = [];
-      
       rows.forEach(function(row, index) {
         if (index === 0) return; 
         var cells = row.c;
         if (!cells || !cells[0] || cells[0].v === null) return;
-
         globalOpsDatabase.push({
           id: index,
           airbnbNum: cells[0].v.toString(),
@@ -286,44 +178,25 @@
     }
 
     function calculateMetrics() {
-      var staysCount = 0;
-      var nightsTotal = 0;
-      var cleaningTotal = 0;
-
+      var staysCount = 0; var nightsTotal = 0; var cleaningTotal = 0;
       globalOpsDatabase.forEach(function(item) {
         if (item.guestName.toLowerCase().includes("blocked")) return;
         staysCount++;
-        
-        var n = parseInt(item.nights);
-        if(!isNaN(n)) nightsTotal += n;
-
-        var c = parseFloat(item.cleaningFee.replace(/[^0-9.]/g, ''));
-        if(!isNaN(c)) cleaningTotal += c;
+        var n = parseInt(item.nights); if(!isNaN(n)) nightsTotal += n;
+        var c = parseFloat(item.cleaningFee.replace(/[^0-9.]/g, '')); if(!isNaN(c)) cleaningTotal += c;
       });
-
       document.getElementById('metric-total-stays').textContent = staysCount;
       document.getElementById('metric-total-nights').textContent = nightsTotal + " Days";
       document.getElementById('metric-total-cleaning').textContent = "$" + cleaningTotal.toLocaleString();
     }
 
     function renderTable() {
-      var tableBody = document.getElementById('ops-table-body');
-      if (!tableBody) return;
+      var tableBody = document.getElementById('ops-table-body'); if (!tableBody) return;
       tableBody.innerHTML = "";
-
       globalOpsDatabase.forEach(function(row) {
-        var tr = document.createElement('tr');
-        tr.style.cursor = "pointer";
-        tr.setAttribute('onclick', 'openProfileDrawer(' + row.id + ')');
-
-        var displayCleanFee = row.cleaningFee;
-        if (!displayCleanFee.startsWith('$') && displayCleanFee !== "—") displayCleanFee = "$" + displayCleanFee;
-
-        var nameDisplay = row.guestName;
-        if (nameDisplay.toLowerCase().includes("blocked")) {
-          nameDisplay = '<span class="badge-blocked">Calendar Blocked</span>';
-        }
-
+        var tr = document.createElement('tr'); tr.style.cursor = "pointer"; tr.setAttribute('onclick', 'openProfileDrawer(' + row.id + ')');
+        var displayCleanFee = row.cleaningFee; if (!displayCleanFee.startsWith('$') && displayCleanFee !== "—") displayCleanFee = "$" + displayCleanFee;
+        var nameDisplay = row.guestName; if (nameDisplay.toLowerCase().includes("blocked")) nameDisplay = '<span class="badge-blocked">Calendar Blocked</span>';
         tr.innerHTML = [
           '<td><span class="index-badge">' + row.airbnbNum + '</span></td>',
           '<td><strong>' + row.stayDates + '</strong></td>',
@@ -339,9 +212,7 @@
     }
 
     function openProfileDrawer(rowId) {
-      var record = globalOpsDatabase.find(function(r) { return r.id === rowId; });
-      if (!record) return;
-
+      var record = globalOpsDatabase.find(function(r) { return r.id === rowId; }); if (!record) return;
       document.getElementById('drawer-guest-name').textContent = record.guestName.toUpperCase() || "CALENDAR BLOCK";
       document.getElementById('drawer-document-content').innerHTML = [
         '<div class="doc-section"><span class="doc-label">Airbnb Reference ID</span><div class="doc-content-box">' + record.airbnbNum + '</div></div>',
@@ -354,9 +225,7 @@
       ].join('');
       document.getElementById('profile-drawer').classList.add('drawer-open');
     }
-
     function closeProfileDrawer() { document.getElementById('profile-drawer').classList.remove('drawer-open'); }
-
     window.onload = function() { loadLiveRosebayStreams(); };
   </script>
 </body>
