@@ -46,7 +46,16 @@
       padding-bottom: 20px;
       text-align: center;
     }
-    .logo-img { width: 100%; max-width: 100px; height: auto; object-fit: contain; margin-bottom: 14px; }
+    
+    /* SVG Logo wrapper layout rules */
+    .logo-svg-wrapper {
+      width: 100%;
+      max-width: 102px;
+      height: auto;
+      margin-bottom: 14px;
+      color: var(--rose-primary);
+    }
+    
     .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #0f172a; text-transform: uppercase; }
     .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
@@ -129,7 +138,11 @@
 
   <aside class="sidebar">
     <div class="logo-container">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Airbnb_Logo_B%C3%A9lo.svg" alt="Airbnb Logo" class="logo-img">
+      <div class="logo-svg-wrapper">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="display:block; fill:currentColor;">
+          <path d="M16 1c2.008 0 3.463.963 4.751 3.269l.533.981c.143.268.29.56.442.879l1.696 3.59c.563 1.196 1.144 2.457 1.742 3.784l.643 1.432c.69 1.545 1.391 3.149 2.096 4.815a11.146 11.146 0 0 1 .494 2.15l.024.238a8.318 8.318 0 0 1-2.519 6.452l-.18.169A8.455 8.455 0 0 1 19.8 29.5c-1.314.195-2.617-.03-3.8-.636l-.3-.162-.112-.066-.112.066-.3.162c-1.183.606-2.486.831-3.8.636a8.455 8.455 0 0 1-5.882-1.815l-.18-.169a8.318 8.318 0 0 1-2.519-6.452l.024-.238a11.146 11.146 0 0 1 .494-2.15c.705-1.666 1.406-3.27 2.096-4.815l.643-1.432c.598-1.327 1.179-2.588 1.742-3.784l1.696-3.59c.152-.319.299-.611.442-.879l.533-.981C12.537 1.963 13.992 1 16 1zm0 2c-1.237 0-2.12.57-3.056 2.23l-.538.992c-.144.268-.291.562-.444.883l-1.695 3.587c-.562 1.194-1.142 2.454-1.739 3.78l-.644 1.433c-.689 1.543-1.389 3.144-2.092 4.808a9.145 9.145 0 0 0-.422 1.79l-.011.145a6.317 6.317 0 0 0 1.83 4.848l.147.139a6.458 6.458 0 0 0 4.471 1.404c.96-.135 1.916-.412 2.8-.847l.192-.102.192.102c.884.435 1.84.712 2.8.847a6.458 6.458 0 0 0 4.471-1.404l.147-.139a6.317 6.317 0 0 0 1.83-4.848l-.011-.145a9.145 9.145 0 0 0-.422-1.79c-.703-1.664-1.403-3.265-2.092-4.808l-.644-1.433c-.597-1.326-1.177-2.586-1.739-3.78l-1.695-3.587c-.153-.321-.3-.615-.444-.883l-.538-.992C18.12 3.57 17.237 3 16 3zm0 10.5c2.42 0 4.42 1.888 4.497 4.242l.003.158c0 2.222-1.171 3.593-3.64 5.373l-.407.288c-.297.208-.601.409-.91.6l-.143.086-.143-.086c-.309-.191-.613-.392-.91-.6l-.407-.288c-2.469-1.78-3.64-3.151-3.64-5.373 0-2.368 1.944-4.3 4.36-4.3l.14-.002zm0 2c-1.332 0-2.424 1.025-2.495 2.316l-.005.184c0 1.157.653 2.012 2.5 3.385.642-.423 1.25-.875 1.815-1.348l.185-.157c.333-.3.447-.562.5-.783l.019-.112c.058-.45.02-.857-.16-1.222l-.08-.145A2.43 2.43 0 0 0 16 15.5z"/>
+        </svg>
+      </div>
       <h2>AIRBNB DASHBOARD</h2>
       <p>Operations Portal</p>
       <hr class="meta-divider">
@@ -148,40 +161,3 @@
 
     <div class="content-container">
       <div class="api-status-strip">
-        ✅ API Status: Connection fully synchronized. Loaded direct logs from source spreadsheet.
-      </div>
-
-      <div class="property-cards-container">
-        
-        <a href="naxos.html" class="property-card">
-          <div class="card-body naxos-card">
-            <span class="tag-location">📍 Cyclades Islands</span>
-            <div class="card-title">
-              Naxos Live Sheet Feed <span>🇬🇷</span>
-            </div>
-            <p class="card-cleaner">Cleaner: <strong>Anela Korone</strong></p>
-            <span class="action-badge">Click to open dynamic view →</span>
-          </div>
-        </a>
-
-        <a href="rosebay.html" class="property-card">
-          <div class="card-body rosebay-card">
-            <span class="tag-location">📍 Sydney Harbor</span>
-            <div class="card-title">
-              Rosebay Live Sheet Feed <span>🇦🇺</span>
-            </div>
-            <p class="card-cleaner">Cleaner: <strong>Khami</strong></p>
-            <span class="action-badge">Click to open dynamic view →</span>
-          </div>
-        </a>
-
-      </div>
-
-      <div class="panel-info-banner">
-        💡 <strong>System Navigation Note:</strong> Click on either property link engine above to view completely interactive row lists, calculated automated KPIs, real-time status buffers, and sliding drawer guest records profiles.
-      </div>
-    </div>
-  </main>
-
-</body>
-</html>
