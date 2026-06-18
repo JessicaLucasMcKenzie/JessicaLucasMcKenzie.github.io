@@ -30,7 +30,6 @@
       overflow: hidden;
     }
 
-    /* Left Sidebar Navigation Panel */
     .sidebar {
       width: 290px;
       background-color: var(--sidebar-bg);
@@ -39,8 +38,6 @@
       flex-direction: column;
       padding: 24px;
       flex-shrink: 0;
-      transition: transform 0.3s ease-in-out;
-      z-index: 1000;
     }
 
     .logo-container {
@@ -78,10 +75,6 @@
       color: var(--airbnb-pink);
     }
 
-    .hamburger-menu { display: none; font-size: 26px; background: none; border: none; color: var(--text-main); cursor: pointer; margin-right: 16px; }
-    .mobile-header-logo { display: none; height: 28px; width: auto; object-fit: contain; }
-
-    /* Main Content Dashboard Frame */
     .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
     .top-header {
       background: #ffffff;
@@ -91,25 +84,19 @@
       justify-content: space-between;
       align-items: center;
     }
-    .header-left-cluster { display: flex; align-items: center; }
     .top-header h1 { font-size: 20px; font-weight: 700; color: #222; }
-
     .back-hub-btn { background: #ffffff; border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #222; text-decoration: none; }
-    .back-hub-btn:hover { border-color: var(--airbnb-pink); color: var(--airbnb-pink); }
 
     .content-container { padding: 40px; max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
 
-    /* Property Navigation Top Row Cards */
     .property-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .property-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s ease-in-out; }
-    .property-card:hover, .property-card.active-card { border-color: var(--airbnb-pink); box-shadow: 0 6px 16px rgba(255, 56, 92, 0.08); transform: translateY(-2px); }
+    .property-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .property-card.active-card { border-color: var(--airbnb-pink); box-shadow: 0 6px 16px rgba(255, 56, 92, 0.08); }
     .prop-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--airbnb-pink); margin-bottom: 4px; display: block; }
 
     .perspective-banner { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-    .perspective-buttons { display: flex; gap: 10px; }
     .filter-btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: #ffffff; }
     .filter-btn.active-filter { background: var(--airbnb-pink); color: #fff; border-color: var(--airbnb-pink); }
-    .lang-toggle { background: var(--green-accent); color: white; border-color: var(--green-accent); display: none; }
 
     .property-pane { display: none; flex-direction: column; gap: 32px; }
     .property-pane.active-pane { display: flex; }
@@ -118,77 +105,48 @@
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .panel-header h2 { font-size: 16px; font-weight: 700; color: #222; }
 
-    /* API Connection Live Feedback Monitor Status Strip */
     .api-status-strip { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center; gap: 10px; }
 
-    .table-scroll-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .table-scroll-wrapper { width: 100%; overflow-x: auto; }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
     .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); background-color: #fafafa; }
     .data-table td { padding: 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #222; line-height: 1.5; }
 
     .badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
     .badge.confirmed { background-color: #e2fbe8; color: #14532d; }
-    .badge.cleaning { background-color: #fffbeb; color: #78350f; }
-
-    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.3); z-index: 999; }
-
-    @media (max-width: 992px) {
-      .sidebar { position: fixed; top: 0; left: 0; height: 100vh; transform: translateX(-100%); box-shadow: 20px 0 40px rgba(0,0,0,0.1); }
-      .sidebar.menu-open { transform: translateX(0); }
-      .sidebar-overlay.menu-open { display: block; }
-      .hamburger-menu { display: block; }
-      .mobile-header-logo { display: block; }
-      .top-header { padding: 16px 20px; }
-      .content-container { padding: 20px; }
-      .property-grid { grid-template-columns: 1fr; gap: 16px; }
-      .perspective-banner { flex-direction: column; gap: 14px; align-items: flex-start; }
-      .perspective-buttons { flex-direction: column; width: 100%; gap: 8px; }
-      .filter-btn { width: 100%; text-align: center; }
-      .manager-meta-text { display: none; }
-    }
   </style>
 </head>
 <body>
 
-  <div class="sidebar-overlay" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
-
-  <!-- Left Sidebar Panel Navigation -->
-  <aside class="sidebar" id="app-sidebar">
+  <aside class="sidebar">
     <div class="logo-container">
       <a href="hub.html" class="logo-home-link">
         <img src="airbnblogo.png" alt="Airbnb Hospitality" class="logo-img">
       </a>
       <h2>AIRBNB DASHBOARD</h2>
-      <p>Hospitality Operations Platform</p>
+      <p>Operations Portal</p>
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 2.0.5 &bull; LIVE SHEET FEED</div>
+      <div class="revision-block">Rev. 2.1.0 &bull; LIVE BOOKINGS</div>
     </div>
     
     <ul class="nav-links">
-      <li class="nav-item active"><button onclick="window.location.reload();">🔄 Refresh Live Data</button></li>
-      <li class="nav-item"><a id="external-sheet-link" href="https://docs.google.com/spreadsheets/d/1zGvuL4OEgwc0gXIfrPJPRde8DZxwPmL--GNiGO_Tr2Q/edit" target="_blank" style="text-decoration:none;"><button>📋 Open Google Source Sheet</button></a></li>
+      <li class="nav-item active"><button onclick="window.location.reload();">🔄 Refresh Pipeline</button></li>
+      <li class="nav-item"><a href="https://docs.google.com/spreadsheets/d/1zGvuL4OEgwc0gXIfrPJPRde8DZxwPmL--GNiGO_Tr2Q/edit" target="_blank" style="text-decoration:none;"><button>📋 Open Source Sheet</button></a></li>
     </ul>
   </aside>
 
-  <!-- Core Content Screen Frame -->
   <main class="main-viewport">
     <header class="top-header">
-      <div class="header-left-cluster">
-        <button class="hamburger-menu" onclick="toggleMobileSidebar()">☰</button>
-        <h1 id="view-title">AIRBNB LIVE MANAGEMENT</h1>
-      </div>
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <span class="manager-meta-text" style="font-size: 13px; color: var(--text-muted); font-weight: 500;">Manager: Jessica Lucas McKenzie</span>
+      <h1>AIRBNB LIVE MANAGEMENT</h1>
+      <div>
         <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
-        <img src="airbnblogo.png" alt="Airbnb" class="mobile-header-logo">
       </div>
     </header>
 
     <div class="content-container">
       
-      <!-- Live API Diagnostic Feedback Bar -->
       <div class="api-status-strip" id="api-status">
-        📡 Syncing Pipeline Status: Initializing connection loops with Google Sheets API...
+        📡 Syncing Pipeline Status: Initializing connection...
       </div>
       
       <section class="property-grid">
@@ -212,29 +170,26 @@
       </section>
 
       <div class="perspective-banner">
-        <div id="perspective-title" style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Active Workspace View:</div>
-        <div class="perspective-buttons">
-          <button id="btn-view-jess" class="filter-btn active-filter" onclick="setPerspective('jessica')">Jessica (Upcoming Bookings)</button>
-          <button id="btn-view-clean" class="filter-btn" onclick="setPerspective('cleaner')">Cleaner Operations Portal</button>
-          <button id="btn-lang-toggle" class="filter-btn lang-toggle" onclick="toggleGreekLanguage()">Translate to Greek (Ελληνικά)</button>
+        <div style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Active Workspace View:</div>
+        <div>
+          <button class="filter-btn active-filter">Jessica (Upcoming Bookings)</button>
         </div>
       </div>
 
-      <!-- ==================== PANE 1: NAXOS GREECE ==================== -->
       <div id="pane-naxos" class="property-pane active-pane">
         <section class="panel">
           <div class="panel-header">
-            <h2 id="naxos-table-header">Live Feed from Google Spreadsheet Matrix</h2>
+            <h2>Live Feed from Matrix ("Bookings" Tab)</h2>
           </div>
           <div class="table-scroll-wrapper">
             <table class="data-table">
               <thead>
                 <tr id="naxos-table-th">
-                  <th>Column A</th>
-                  <th>Column B</th>
-                  <th>Column C</th>
-                  <th>Column D</th>
-                  <th>Column E</th>
+                  <th>Month</th>
+                  <th>Stay Dates</th>
+                  <th>Nights</th>
+                  <th>Guests</th>
+                  <th>Cleaning</th>
                 </tr>
               </thead>
               <tbody id="naxos-table-body">
@@ -245,15 +200,11 @@
         </section>
       </div>
 
-      <!-- ==================== PANE 2: ROSEBAY AUSTRALIA ==================== -->
       <div id="pane-rosebay" class="property-pane">
         <section class="panel">
           <div class="panel-header">
             <h2>Rosebay Harbour Operational Matrix</h2>
           </div>
-          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
-            The active dataset for Rosebay Harbor is currently linked directly to the master source document template.
-          </p>
           <a href="https://docs.google.com/document/d/1luFwvZq9WXzNNeeqRJBv9q4bHoA0sm64lb3Mt_MfZpI/edit" target="_blank" style="display:inline-block; background:var(--airbnb-pink); color:white; padding:12px 24px; border-radius:8px; font-weight:600; text-decoration:none;">
             📂 Open Rosebay Master Google Document
           </a>
@@ -264,127 +215,70 @@
   </main>
 
   <script>
-    var activeProperty = 'naxos';
-    var activePerspective = 'jessica';
-    var isGreek = false;
-    var spreadsheetRowsGlobal = []; 
-
-    var API_KEY = "AIzaSyA_NOCw6JDD2RvmMcSAzxWswDxhdhCUBBo";
     var SPREADSHEET_ID = "1zGvuL4OEgwc0gXIfrPJPRde8DZxwPmL--GNiGO_Tr2Q";
-    var TAB_NAME = "Naxos_Airbnb";
-
-    function toggleMobileSidebar() {
-      var s = document.getElementById('app-sidebar');
-      var o = document.getElementById('mobile-overlay');
-      if(s) s.classList.toggle('menu-open');
-      if(o) o.classList.toggle('menu-open');
-    }
-
+    
     function fetchLiveGoogleSheetsData() {
       var statusBox = document.getElementById('api-status');
-      if (!statusBox) return;
+      var tbody = document.getElementById('naxos-table-body');
+      var thRow = document.getElementById('naxos-table-th');
       
-      var range = encodeURIComponent(TAB_NAME) + "!A1:G100"; 
-      var url = "https://sheets.googleapis.com/v4/spreadsheets/" + SPREADSHEET_ID + "/values/" + range + "?key=" + API_KEY;
+      // Public CSV link structure ensures zero credential/expired key blocks
+      var url = "https://docs.google.com/spreadsheets/d/" + SPREADSHEET_ID + "/gviz/tq?tqx=out:json&sheet=Bookings";
 
       fetch(url)
-        .then(function(response) {
-          if (!response.ok) throw new Error("HTTP Path Error");
-          return response.json();
-        })
-        .then(function(data) {
-          if (!data || !data.values || data.values.length === 0) {
-            statusBox.innerHTML = '⚠️ API Status: Connected, but tab "' + TAB_NAME + '" appears blank.';
+        .then(function(r) { return r.text(); })
+        .then(function(text) {
+          // Parse out Google's structural JSON wrapper safely
+          var rawJson = JSON.parse(text.substr(47).slice(0, -2));
+          var rows = rawJson.table.rows;
+          var cols = rawJson.table.cols;
+
+          if (!rows || rows.length === 0) {
+            statusBox.innerHTML = "⚠️ Connected, but the table view contains no upcoming rows.";
             return;
           }
-          spreadsheetRowsGlobal = data.values;
-          statusBox.innerHTML = '✅ API Status: Connection synchronized. Successfully imported ' + data.values.length + ' scheduling rows straight from Google Sheets.';
-          renderLiveSheetTable();
+
+          // Build dynamic column headers from the Sheet layout
+          var headerHtml = "";
+          cols.forEach(function(col) {
+            headerHtml += "<th>" + (col.label ? col.label : "") + "</th>";
+          });
+          if(thRow) thRow.innerHTML = headerHtml;
+
+          // Build content body matrix
+          var tbodyHtml = "";
+          rows.forEach(function(row) {
+            tbodyHtml += "<tr>";
+            row.c.forEach(function(cell, idx) {
+              var val = (cell && cell.v !== null) ? cell.f || cell.v : "";
+              if (idx === 0) {
+                tbodyHtml += "<td><strong>" + val + "</strong></td>";
+              } else if (val.toString().toLowerCase().includes("confirmed") || val.toString().toLowerCase().includes("june")) {
+                tbodyHtml += "<td><span class="badge confirmed">" + val + "</span></td>";
+              } else {
+                tbodyHtml += "<td>" + val + "</td>";
+              }
+            });
+            tbodyHtml += "</tr>";
+          });
+
+          tbody.innerHTML = tbodyHtml;
+          statusBox.innerHTML = "✅ API Status: Connection fully synchronized. Loaded " + rows.length + " operational logs directly from target source.";
         })
         .catch(function(err) {
           console.error(err);
-          statusBox.innerHTML = '❌ API Error: Connection failed. Verify that your Google Sheet sharing setting is active.';
+          statusBox.innerHTML = "❌ API Error: Connection loop interrupted. Verify tab configurations.";
         });
     }
 
-    function renderLiveSheetTable() {
-      var tbody = document.getElementById('naxos-table-body');
-      var thRow = document.getElementById('naxos-table-th');
-      if (!tbody || !spreadsheetRowsGlobal || spreadsheetRowsGlobal.length === 0) return;
-
-      tbody.innerHTML = "";
-      
-      var headers = spreadsheetRowsGlobal[0];
-      var headersHtml = "";
-      for (var i = 0; i < headers.length; i++) {
-        headersHtml += '<th>' + headers[i] + '</th>';
-      }
-      if (thRow) thRow.innerHTML = headersHtml;
-
-      var dataRows = spreadsheetRowsGlobal.slice(1);
-      for (var j = 0; j < dataRows.length; j++) {
-        var row = dataRows[j];
-        var tr = document.createElement('tr');
-        while (row.length < headers.length) {
-          row.push("");
-        }
-        
-        var rowHtml = "";
-        for (var k = 0; k < row.length; k++) {
-          var cell = row[k];
-          if (k === 0) {
-            rowHtml += '<td><strong>' + cell + '</strong></td>';
-          } else if (cell && cell.toString().trim() !== "" && (k === 3 || k === 4)) {
-            rowHtml += '<td><span class="badge confirmed">' + cell + '</span></td>';
-          } else {
-            rowHtml += '<td>' + cell + '</td>';
-          }
-        }
-        tr.innerHTML = rowHtml;
-        tbody.appendChild(tr);
-      }
-    }
-
     function selectProperty(property) {
-      activeProperty = property;
-      var cards = document.querySelectorAll('.property-card');
-      for (var i = 0; i < cards.length; i++) {
-        cards[i].classList.remove('active-card');
-      }
-      var panes = document.querySelectorAll('.property-pane');
-      for (var j = 0; j < panes.length; j++) {
-        panes[j].classList.remove('active-pane');
-      }
+      document.getElementById('card-naxos').classList.remove('active-card');
+      document.getElementById('card-rosebay').classList.remove('active-card');
+      document.getElementById('pane-naxos').classList.remove('active-pane');
+      document.getElementById('pane-rosebay').classList.remove('active-pane');
       
-      var targetCard = document.getElementById('card-' + property);
-      if (targetCard) targetCard.classList.add('active-card');
-      
-      var targetPane = document.getElementById('pane-' + property);
-      if (targetPane) targetPane.classList.add('active-pane');
-      
-      if (property === 'naxos') {
-        fetchLiveGoogleSheetsData();
-      }
-    }
-
-    function setPerspective(perspective) {
-      activePerspective = perspective;
-      var btnJess = document.getElementById('btn-view-jess');
-      var btnClean = document.getElementById('btn-view-clean');
-      if(btnJess) btnJess.classList.remove('active-filter');
-      if(btnClean) btnClean.classList.remove('active-filter');
-      
-      if(perspective === 'jessica') {
-        if(btnJess) btnJess.classList.add('active-filter');
-      } else {
-        if(btnClean) btnClean.classList.add('active-filter');
-      }
-    }
-
-    function toggleGreekLanguage() {
-      isGreek = !isGreek;
-      var btnLang = document.getElementById('btn-lang-toggle');
-      if(btnLang) btnLang.textContent = isGreek ? "Translate to English" : "Translate to Greek (Ελληνικά)";
+      document.getElementById('card-' + property).classList.add('active-card');
+      document.getElementById('pane-' + property).classList.add('active-pane');
     }
 
     window.onload = function() {
