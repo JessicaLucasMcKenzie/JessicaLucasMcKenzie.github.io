@@ -126,7 +126,7 @@
       <h2>AIRBNB DASHBOARD</h2>
       <p>Operations Portal</p>
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 2.1.0 &bull; LIVE BOOKINGS</div>
+      <div class="revision-block">Rev. 2.1.1 &bull; LIVE BOOKINGS</div>
     </div>
     
     <ul class="nav-links">
@@ -222,13 +222,11 @@
       var tbody = document.getElementById('naxos-table-body');
       var thRow = document.getElementById('naxos-table-th');
       
-      // Public CSV link structure ensures zero credential/expired key blocks
       var url = "https://docs.google.com/spreadsheets/d/" + SPREADSHEET_ID + "/gviz/tq?tqx=out:json&sheet=Bookings";
 
       fetch(url)
         .then(function(r) { return r.text(); })
         .then(function(text) {
-          // Parse out Google's structural JSON wrapper safely
           var rawJson = JSON.parse(text.substr(47).slice(0, -2));
           var rows = rawJson.table.rows;
           var cols = rawJson.table.cols;
@@ -238,14 +236,14 @@
             return;
           }
 
-          // Build dynamic column headers from the Sheet layout
           var headerHtml = "";
           cols.forEach(function(col) {
-            headerHtml += "<th>" + (col.label ? col.label : "") + "</th>";
+            if (col.label) {
+              headerHtml += "<th>" + col.label + "</th>";
+            }
           });
-          if(thRow) thRow.innerHTML = headerHtml;
+          if(thRow && headerHtml !== "") thRow.innerHTML = headerHtml;
 
-          // Build content body matrix
           var tbodyHtml = "";
           rows.forEach(function(row) {
             tbodyHtml += "<tr>";
@@ -254,7 +252,7 @@
               if (idx === 0) {
                 tbodyHtml += "<td><strong>" + val + "</strong></td>";
               } else if (val.toString().toLowerCase().includes("confirmed") || val.toString().toLowerCase().includes("june")) {
-                tbodyHtml += "<td><span class="badge confirmed">" + val + "</span></td>";
+                tbodyHtml += "<td><span class='badge confirmed'>" + val + "</span></td>";
               } else {
                 tbodyHtml += "<td>" + val + "</td>";
               }
@@ -263,11 +261,11 @@
           });
 
           tbody.innerHTML = tbodyHtml;
-          statusBox.innerHTML = "✅ API Status: Connection fully synchronized. Loaded " + rows.length + " operational logs directly from target source.";
+          statusBox.innerHTML = "✅ API Status: Connection fully synchronized. Loaded direct logs from source spreadsheet.";
         })
         .catch(function(err) {
           console.error(err);
-          statusBox.innerHTML = "❌ API Error: Connection loop interrupted. Verify tab configurations.";
+          statusBox.innerHTML = "❌ API Error: Data transformation loop failed. Verify columns formatting.";
         });
     }
 
