@@ -3,48 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CENTRAL SYSTEM MATRIX HUB</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <title>Central Hub Matrix</title>
+
+  <!-- Claude Cache Buster Script Layer -->
+  <script>
+    (function() {
+      var currentVersion = "v2.2.7_purge";
+      if (localStorage.getItem("hub_layout_version") !== currentVersion) {
+        localStorage.setItem("hub_layout_version", currentVersion);
+        window.location.reload(true);
+      }
+    })();
+  </script>
+
   <style>
-    :root {
-      --bg: #0b0f19;
-      --panel: #111827;
-      --border: #1f2937;
-      --text: #f9fafb;
-      --text-muted: #9ca3af;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0f172a;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 48px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 60px 40px; }
-    .container { max-width: 1200px; margin: 0 auto; }
-    header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-    h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.05em; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-    .module-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-decoration: none; color: inherit; transition: transform 0.2s, border-color 0.2s; }
-    .module-card:hover { transform: translateY(-2px); border-color: #3b82f6; }
-    .module-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-    .module-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+    .hub-layout {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #1e293b;
+      margin-bottom: 48px;
+    }
+    .title-area h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .title-area p {
+      color: #64748b;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 32px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #4f46e5;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+    }
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .card p {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="hub-layout">
     <header>
-      <h1>JLM SOLUTIONS SYSTEM CONTROL MATRIX</h1>
-      <img src="jlmlogo.png" alt="JLM" style="height: 32px; width: auto;">
+      <div class="title-area">
+        <h1>SYSTEM INTEGRATION MATRIX</h1>
+        <p>JLM Solutions Master Management Console</p>
+      </div>
+      <img src="jlmlogo.png" alt="JLM" style="height: 40px; width: auto;">
     </header>
-    <div class="grid">
-      <a href="ND.html" class="module-card">
-        <h3>📋 Recruitment Pipeline Console</h3>
-        <p>Manage candidate screening profiles, interview tracking metrics logs, and practice manager roles directly linked to clinical databases.</p>
+
+    <div class="hub-grid">
+      <a href="ND.html" class="card">
+        <div class="card-icon">📋</div>
+        <h3>Recruitment Workspace</h3>
+        <p>Live pipeline data loops, candidate sheets tracking, and dynamic support dashboards for Jeffrey Kho.</p>
       </a>
-      <a href="airbnb.html" class="module-card">
-        <h3>🏠 Airbnb Operations Portal</h3>
-        <p>Monitor global short-term property bookings across Naxos Greece and Rosebay Australia rental ledgers.</p>
+      <a href="airbnb.html" class="card">
+        <div class="card-icon">🏠</div>
+        <h3>Airbnb Live Management</h3>
+        <p>Short term accommodation portals tracking live spreadsheet booking logs for Naxos and Rosebay properties.</p>
       </a>
-      <a href="admin.html" class="module-card">
-        <h3>⚙️ System Administrative Control</h3>
-        <p>View application architecture diagnostic profiles and structural local path settings.</p>
+      <a href="admin.html" class="card">
+        <div class="card-icon">⚙️</div>
+        <h3>System Operations</h3>
+        <p>System configuration panel, database routing properties, and layout architecture diagnostic tools.</p>
       </a>
     </div>
   </div>
