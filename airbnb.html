@@ -6,7 +6,7 @@
   <title>JLM Hospitality — Airbnb Management Matrix</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -123,7 +123,9 @@
 
     .table-scroll-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); background-color: #fafafa; }
+    .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); background-color: #fafafa; }
+    
+    /* Thin separation border line rule across row sets */
     .data-table td { padding: 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #222; line-height: 1.5; }
 
     .badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
@@ -161,12 +163,12 @@
       <h2>AIRBNB DASHBOARD</h2>
       <p>Hospitality Operations Platform</p>
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 2.0.0 &bull; LIVE SHEET API</div>
+      <div class="revision-block">Rev. 2.0.1 &bull; LIVE SHEET FEED</div>
     </div>
     
     <ul class="nav-links">
       <li class="nav-item active"><button onclick="window.location.reload();">🔄 Refresh Live Data</button></li>
-      <li class="nav-item"><a href="https://docs.google.com/spreadsheets/d/1jxDnZ1hORMGzdJsOemNv7sM4-bEv_J-AXNpeXhyKxW0/edit?gid=2006841082" target="_blank" style="text-decoration:none;"><button>📋 Open Google Source Sheet</button></a></li>
+      <li class="nav-item"><a id="external-sheet-link" href="https://docs.google.com/spreadsheets/d/1fwid1wNSwcUgBvglIYsd-mHEHTIMEyys/edit" target="_blank" style="text-decoration:none;"><button>📋 Open Google Source Sheet</button></a></li>
     </ul>
   </aside>
 
@@ -267,40 +269,41 @@
     let activeProperty = 'naxos';
     let activePerspective = 'jessica';
     let isGreek = false;
-    let spreadsheetRowsGlobal = []; // Dynamic container loop cache
+    let spreadsheetRowsGlobal = []; 
 
+    // Verified Credentials & Spreadsheet IDs from Screenshots
     const API_KEY = "AIzaSyA_NOCw6JDD2RvmMcSAzxWswDxhdhCUBBo";
-    const SPREADSHEET_ID = "1jxDnZ1hORMGzdJsOemNv7sM4-bEv_J-AXNpeXhyKxW0";
+    const SPREADSHEET_ID = "1fwid1wNSwcUgBvglIYsd-mHEHTIMEyys";
+    const TAB_NAME = "Naxos_Airbnb";
 
     function toggleMobileSidebar() {
       document.getElementById('app-sidebar').classList.toggle('menu-open');
       document.getElementById('mobile-overlay').classList.toggle('menu-open');
     }
 
-    // Live Dynamic Google Fetch Engine
+    // Dynamic Live Google Fetch Request Node
     function fetchLiveGoogleSheetsData() {
       const statusBox = document.getElementById('api-status');
-      // We read Sheet1 over an absolute bounding bracket column index range fallback
-      const range = "Sheet1!A1:E60"; 
+      const range = `${TAB_NAME}!A1:G100`; // Dynamically queries columns A through G
       const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${range}?key=${API_KEY}`;
 
       fetch(url)
         .then(response => {
-          if (!response.ok) throw new Error("HTTP connection threshold fault or target sheet path mismatch");
+          if (!response.ok) throw new Error("HTTP Path Error");
           return response.json();
         })
         .then(data => {
           if (!data.values || data.values.length === 0) {
-            statusBox.innerHTML = "⚠️ API Status: Connected, but Sheet1 appears completely blank or tab name differs.";
+            statusBox.innerHTML = `⚠️ API Status: Connected, but tab "${TAB_NAME}" appears blank.`;
             return;
           }
           spreadsheetRowsGlobal = data.values;
-          statusBox.innerHTML = `✅ API Status: Connection verified. Successfully imported ${data.values.length} rows directly from live Google Sheet.`;
+          statusBox.innerHTML = `✅ API Status: Connection synchronized. Successfully imported ${data.values.length} scheduling rows straight from Google Sheets.`;
           renderLiveSheetTable();
         })
         .catch(err => {
           console.error(err);
-          statusBox.innerHTML = `❌ API Error: Connection failed. Verify that your Google Sheet has general sharing access set to "Anyone with the link can view".`;
+          statusBox.innerHTML = `❌ API Error: Connection failed. Verify that your Google Sheet sharing setting is active.`;
         });
     }
 
@@ -311,20 +314,20 @@
 
       tbody.innerHTML = "";
       
-      // Extract headers from Row 1
+      // Map live sheet header categories dynamically
       const headers = spreadsheetRowsGlobal[0];
       thRow.innerHTML = headers.map(h => `<th>${h}</th>`).join('');
 
-      // Render the rest of the lines
+      // Populate live values
       const dataRows = spreadsheetRowsGlobal.slice(1);
       dataRows.forEach(row => {
         const tr = document.createElement('tr');
-        // Ensure all 5 missing index padding loops match layout bounds evenly
         while (row.length < headers.length) row.push("");
         
         tr.innerHTML = row.map((cell, idx) => {
           if (idx === 0) return `<td><strong>${cell}</strong></td>`;
-          if (cell.toLowerCase() === "confirmed" || cell.toLowerCase() === "required") {
+          // Highlight active reservation and operations cells cleanly
+          if (cell.trim() !== "" && (idx === 3 || idx === 4)) {
             return `<td><span class="badge confirmed">${cell}</span></td>`;
           }
           return `<td>${cell}</td>`;
@@ -340,12 +343,8 @@
       document.getElementById(`card-${property}`).classList.add('active-card');
       document.getElementById(`pane-${property}`).classList.add('active-pane');
       
-      const langBtn = document.getElementById('btn-lang-toggle');
       if (property === 'naxos') {
-        if (activePerspective === 'cleaner') langBtn.style.display = 'block';
         fetchLiveGoogleSheetsData();
-      } else {
-        langBtn.style.display = 'none';
       }
     }
 
@@ -356,13 +355,9 @@
       
       if(perspective === 'jessica') {
         document.getElementById('btn-view-jess').classList.add('active-filter');
-        document.getElementById('btn-lang-toggle').style.display = 'none';
-        isGreek = false;
       } else {
         document.getElementById('btn-view-clean').classList.add('active-filter');
-        if(activeProperty === 'naxos') document.getElementById('btn-lang-toggle').style.display = 'block';
       }
-      alert("Perspective swap ready. Once you verify your first live layout link sync, we can apply specific filter targets across data columns.");
     }
 
     function toggleGreekLanguage() {
@@ -370,7 +365,6 @@
       document.getElementById('btn-lang-toggle').textContent = isGreek ? "Translate to English" : "Translate to Greek (Ελληνικά)";
     }
 
-    // Kick off API data connection fetch loop immediately on window launch
     window.onload = fetchLiveGoogleSheetsData;
   </script>
 </body>
