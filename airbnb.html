@@ -152,6 +152,7 @@
 
   <div class="sidebar-overlay" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
 
+  <!-- Left Sidebar Panel Navigation -->
   <aside class="sidebar" id="app-sidebar">
     <div class="logo-container">
       <a href="hub.html" class="logo-home-link">
@@ -160,7 +161,7 @@
       <h2>AIRBNB DASHBOARD</h2>
       <p>Hospitality Operations Platform</p>
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 2.0.4 &bull; LIVE SHEET FEED</div>
+      <div class="revision-block">Rev. 2.0.5 &bull; LIVE SHEET FEED</div>
     </div>
     
     <ul class="nav-links">
@@ -169,6 +170,7 @@
     </ul>
   </aside>
 
+  <!-- Core Content Screen Frame -->
   <main class="main-viewport">
     <header class="top-header">
       <div class="header-left-cluster">
@@ -184,6 +186,7 @@
 
     <div class="content-container">
       
+      <!-- Live API Diagnostic Feedback Bar -->
       <div class="api-status-strip" id="api-status">
         📡 Syncing Pipeline Status: Initializing connection loops with Google Sheets API...
       </div>
@@ -217,6 +220,7 @@
         </div>
       </div>
 
+      <!-- ==================== PANE 1: NAXOS GREECE ==================== -->
       <div id="pane-naxos" class="property-pane active-pane">
         <section class="panel">
           <div class="panel-header">
@@ -241,6 +245,7 @@
         </section>
       </div>
 
+      <!-- ==================== PANE 2: ROSEBAY AUSTRALIA ==================== -->
       <div id="pane-rosebay" class="property-pane">
         <section class="panel">
           <div class="panel-header">
@@ -370,9 +375,9 @@
       if(btnClean) btnClean.classList.remove('active-filter');
       
       if(perspective === 'jessica') {
-        if(btnJess) btnJess.add('active-filter');
+        if(btnJess) btnJess.classList.add('active-filter');
       } else {
-        if(btnClean) btnClean.add('active-filter');
+        if(btnClean) btnClean.classList.add('active-filter');
       }
     }
 
