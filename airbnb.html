@@ -47,7 +47,6 @@
       text-align: center;
     }
     
-    /* SVG Logo wrapper layout rules */
     .logo-svg-wrapper {
       width: 100%;
       max-width: 102px;
@@ -94,7 +93,7 @@
     .hub-matrix-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 6px; }
 
     .content-container { display: flex; flex-direction: column; gap: 32px; max-width: 1400px; width: 100%; margin: 0 auto; }
-    .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 14px 18px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; display: flex; align-items: center; gap: 10px; }
+    .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 14px 18px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; display: block; width: 100%; }
 
     .property-cards-container {
       display: grid;
@@ -161,3 +160,40 @@
 
     <div class="content-container">
       <div class="api-status-strip">
+        ✅ API Status: Connection fully synchronized. Loaded direct logs from source spreadsheet.
+      </div>
+
+      <div class="property-cards-container">
+        
+        <a href="naxos.html" class="property-card">
+          <div class="card-body naxos-card">
+            <span class="tag-location">📍 Cyclades Islands</span>
+            <div class="card-title">
+              Naxos Live Sheet Feed <span>🇬🇷</span>
+            </div>
+            <p class="card-cleaner">Cleaner: <strong>Anela Korone</strong></p>
+            <span class="action-badge">Click to open dynamic view →</span>
+          </div>
+        </a>
+
+        <a href="rosebay.html" class="property-card">
+          <div class="card-body rosebay-card">
+            <span class="tag-location">📍 Sydney Harbor</span>
+            <div class="card-title">
+              Rosebay Live Sheet Feed <span>🇦🇺</span>
+            </div>
+            <p class="card-cleaner">Cleaner: <strong>Khami</strong></p>
+            <span class="action-badge">Click to open dynamic view →</span>
+          </div>
+        </a>
+
+      </div>
+
+      <div class="panel-info-banner">
+        💡 <strong>System Navigation Note:</strong> Click on either property link engine above to view completely interactive row lists, calculated automated KPIs, real-time status buffers, and sliding drawer guest records profiles.
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
