@@ -66,12 +66,12 @@
       line-height: 1.5;
     }
 
-    .selector-group {
-      margin-bottom: 28px;
+    .form-group {
+      margin-bottom: 20px;
       text-align: left;
     }
 
-    .selector-label {
+    .form-label {
       display: block;
       font-size: 11px;
       font-weight: 700;
@@ -81,7 +81,7 @@
       margin-bottom: 8px;
     }
 
-    .user-select {
+    .user-select, .pass-input {
       width: 100%;
       padding: 12px 16px;
       background-color: #ffffff;
@@ -91,6 +91,9 @@
       font-size: 14px;
       font-weight: 500;
       outline: none;
+    }
+
+    .user-select {
       cursor: pointer;
       appearance: none;
       -webkit-appearance: none;
@@ -100,12 +103,22 @@
       background-size: 16px;
     }
 
-    .user-select:focus {
+    .user-select:focus, .pass-input:focus {
       border-color: var(--btn-color);
     }
 
+    .error-msg {
+      color: #dc2626;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: -8px;
+      margin-bottom: 16px;
+      display: none;
+      text-align: left;
+    }
+
     .enter-btn { 
-      display: inline-block; 
+      display: block;
       background: var(--btn-color); 
       color: #ffffff; 
       padding: 14px 28px; 
@@ -113,9 +126,10 @@
       font-size: 14px; 
       font-weight: 600; 
       text-decoration: none; 
-      transition: background 0.1s ease; 
       width: 100%; 
       text-align: center;
+      border: none;
+      cursor: pointer;
     }
 
     .enter-btn:hover { 
@@ -131,23 +145,39 @@
     <h1>MASTER MANAGEMENT WORKSPACE</h1>
     <p>Operational Dashboard Ecosystem Pipeline Hub</p>
     
-    <div class="selector-group">
-      <label class="selector-label">Select Active Operator Profile</label>
+    <div class="form-group">
+      <label class="form-label">Select Active Operator Profile</label>
       <select class="user-select" id="operator-dropdown">
-        <option value="jessica">Jessica Lucas McKenzie (Operations)</option>
-        <option value="jeffrey">Jeffrey Kho (Clinical Support)</option>
+        <option value="prettinpinkjessm@gmail.com">prettinpinkjessm@gmail.com</option>
+        <option value="manuellynch@gmail.com">manuellynch@gmail.com</option>
       </select>
     </div>
 
-    <a href="hub.html" class="enter-btn" onclick="saveActiveSession()">Initialize Central Hub Matrix</a>
+    <div class="form-group">
+      <label class="form-label">Security Password</label>
+      <input type="password" class="pass-input" id="secure-pass" placeholder="Enter workspace password">
+    </div>
+
+    <div class="error-msg" id="error-banner">❌ Invalid authentication password string.</div>
+
+    <button class="enter-btn" onclick="validateAndRoute()">Initialize Central Hub Matrix</button>
   </div>
 
   <script>
-    function saveActiveSession() {
+    function validateAndRoute() {
+      var password = document.getElementById('secure-pass').value;
       var selectedUser = document.getElementById('operator-dropdown').value;
-      localStorage.setItem('active_matrix_operator', selectedUser);
+      var err = document.getElementById('error-banner');
+
+      if (password.toLowerCase() === 'mango') {
+        err.style.display = 'none';
+        localStorage.setItem('active_matrix_operator', selectedUser);
+        window.location.href = 'hub.html';
+      } else {
+        err.style.display = 'block';
+      }
     }
-    
+
     window.onload = function() {
       var saved = localStorage.getItem('active_matrix_operator');
       if (saved) {
