@@ -3,87 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JLM Solutions - Gateway</title>
+  <title>MASTER MANAGEMENT WORKSPACE</title>
   
-  <!-- Claude Cache Buster Script Layer -->
+  <!-- Under-the-hood Cache Control Layer -->
   <script>
     (function() {
-      var currentVersion = "v2.2.7_purge";
-      if (localStorage.getItem("index_layout_version") !== currentVersion) {
-        localStorage.setItem("index_layout_version", currentVersion);
+      var currentVersion = "v2.2.8_force";
+      if (localStorage.getItem("index_cache_key") !== currentVersion) {
+        localStorage.setItem("index_cache_key", currentVersion);
         window.location.reload(true);
       }
     })();
   </script>
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --teal: #2d6a4f;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-      color: #f8fafc;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
       min-height: 100vh;
-      overflow: hidden;
+      padding: 20px;
     }
-    .portal-container {
-      text-align: center;
-      padding: 40px;
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      max-width: 440px;
-      width: 90%;
-    }
-    .brand-logo {
-      width: 120px;
-      height: auto;
+
+    .logo-img {
+      height: 64px;
+      width: auto;
       margin-bottom: 24px;
+      object-fit: contain;
     }
-    h1 {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 12px;
-      background: linear-gradient(to right, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+    .card { 
+      background: var(--card-bg); 
+      border: 1px solid var(--border); 
+      border-radius: 16px; 
+      padding: 40px; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
     }
-    p {
-      color: #94a3b8;
-      font-size: 15px;
-      line-height: 1.6;
-      margin-bottom: 32px;
-    }
-    .portal-btn {
-      display: block;
-      background: #4f46e5;
+
+    h1 { 
+      font-size: 26px; 
+      font-weight: 700; 
+      margin-bottom: 12px; 
+      letter-spacing: -0.01em;
       color: #ffffff;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 16px;
-      padding: 16px;
-      border-radius: 12px;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      text-transform: uppercase;
     }
-    .portal-btn:hover {
-      background: #4338ca;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+
+    p { 
+      color: var(--text-muted); 
+      font-size: 15px; 
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .enter-btn { 
+      display: inline-block; 
+      background: var(--teal); 
+      color: #ffffff; 
+      padding: 16px 28px; 
+      border-radius: 8px; 
+      font-size: 15px; 
+      font-weight: 600; 
+      text-decoration: none; 
+      transition: background 0.15s ease; 
+      width: 100%; 
+    }
+
+    .enter-btn:hover { 
+      background: #24543f; 
     }
   </style>
 </head>
 <body>
-  <div class="portal-container">
-    <img src="jlmlogo.png" alt="JLM Solutions Logo" class="brand-logo">
-    <h1>JLM SOLUTIONS</h1>
-    <p>Operational Infrastructure & Systems Management Pipeline Hub</p>
-    <a href="hub.html" class="portal-btn">Enter Control Hub</a>
+
+  <img src="jlmlogo.png" alt="JLM Solutions Logo" class="logo-img">
+  
+  <div class="card">
+    <h1>Master Management Workspace</h1>
+    <p>Operational Dashboard Ecosystem Pipeline Hub</p>
+    <a href="hub.html" class="enter-btn">Initialize Central Hub Matrix</a>
   </div>
+
 </body>
 </html>
