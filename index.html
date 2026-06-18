@@ -3,47 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JLM SOLUTIONS SYSTEM NETWORK PORTAL</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <title>JLM Solutions - Gateway</title>
+  
+  <!-- Claude Cache Buster Script Layer -->
+  <script>
+    (function() {
+      var currentVersion = "v2.2.7_purge";
+      if (localStorage.getItem("index_layout_version") !== currentVersion) {
+        localStorage.setItem("index_layout_version", currentVersion);
+        window.location.reload(true);
+      }
+    })();
+  </script>
+
   <style>
-    :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --border: #334155;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --teal: #2d6a4f;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      overflow: hidden;
     }
-    .wrapper { max-width: 500px; width: 100%; text-align: center; }
-    .logo { width: 80px; height: auto; margin-bottom: 20px; }
-    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-    h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
-    p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
-    .enter-btn { display: inline-block; background: var(--teal); color: #fff; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 600; text-decoration: none; transition: background 0.15s; width: 100%; }
-    .enter-btn:hover { background: #3a835d; }
+    .portal-container {
+      text-align: center;
+      padding: 40px;
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      max-width: 440px;
+      width: 90%;
+    }
+    .brand-logo {
+      width: 120px;
+      height: auto;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      background: linear-gradient(to right, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .portal-btn {
+      display: block;
+      background: #4f46e5;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    .portal-btn:hover {
+      background: #4338ca;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+    }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <img src="jlmlogo.png" alt="JLM Solutions Logo" class="logo">
-    <div class="card">
-      <h1>MASTER MANAGEMENT WORKSPACE</h1>
-      <p>Operational Dashboard Ecosystem Pipeline Hub</p>
-      <a href="hub.html" class="enter-btn">Initialize Central Hub Matrix</a>
-    </div>
+  <div class="portal-container">
+    <img src="jlmlogo.png" alt="JLM Solutions Logo" class="brand-logo">
+    <h1>JLM SOLUTIONS</h1>
+    <p>Operational Infrastructure & Systems Management Pipeline Hub</p>
+    <a href="hub.html" class="portal-btn">Enter Control Hub</a>
   </div>
 </body>
 </html>
