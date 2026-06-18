@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ROSE BAY OBERVATION & OPS CONSOLE</title>
+  <title>ROSEBAY OBSERVE & OPS CONSOLE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -17,8 +17,6 @@
       --rose-primary: #e11d48; 
       --rose-light: #fff1f2;
       --border: #e2e8f0;
-      --orange-accent: #ea580c;
-      --green-accent: #16a34a;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -84,14 +82,12 @@
       color: var(--rose-primary);
     }
 
-    .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 40px; }
     .top-header {
-      background: #ffffff;
-      padding: 22px 40px;
-      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 32px;
     }
     .top-header h1 { font-size: 20px; font-weight: 700; color: #0f172a; }
     
@@ -122,9 +118,8 @@
 
     .back-hub-btn { background: var(--bg-main); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); text-decoration: none; }
 
-    .content-container { padding: 40px; max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+    .content-container { display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; margin: 0 auto; }
     
-    /* Metrics Row Grid Layout */
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -147,11 +142,10 @@
     .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); background-color: #f8fafc; }
     .data-table td { padding: 16px 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #334155; line-height: 1.5; }
 
-    /* Custom Labels and Badges */
     .index-badge { font-family: 'JetBrains Mono', monospace; background: #e2e8f0; color: #475569; padding: 4px 6px; border-radius: 4px; font-weight: 500; font-size: 12px; }
     .badge-blocked { background-color: #fee2e2; color: #991b1b; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
 
-    /* Profile Sidebar Slider Drawer */
+    /* Profile Slider Drawer UI Layout */
     .crm-drawer { position: fixed; top: 0; right: 0; width: 480px; max-width: 100vw; height: 100vh; background: #ffffff; box-shadow: -10px 0 40px rgba(15, 23, 42, 0.15); transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000; display: flex; flex-direction: column; }
     .crm-drawer.drawer-open { transform: translateX(0); }
     .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
@@ -162,6 +156,7 @@
     .doc-section { display: flex; flex-direction: column; gap: 6px; }
     .doc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
     .doc-content-box { background: #f8fafc; border: 1px solid var(--border); padding: 12px; border-radius: 8px; font-size: 13px; color: #334155; line-height: 1.5; }
+    .checklist-box { background: #fff1f2; border: 1px solid #ffe4e6; color: #9f1239; padding: 12px; border-radius: 8px; font-size: 12px; line-height: 1.6; }
   </style>
 </head>
 <body>
@@ -169,12 +164,12 @@
   <aside class="sidebar">
     <div class="logo-container">
       <a href="hub.html" class="logo-home-link">
-        <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img">
+        <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Matrix Logo" class="logo-img">
       </a>
-      <h2>ROSE BAY DASHBOARD</h2>
-      <p>Airbnb Workspace</p>
+      <h2>ROSEBAY DASHBOARD</h2>
+      <p>Airbnb Workspace 🇦🇺</p>
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 1.0.0 &bull; LIVE SHEET SYNC</div>
+      <div class="revision-block">Rev. 1.0.1 &bull; HARBOUR STREAM</div>
     </div>
     <ul class="nav-links">
       <li class="nav-item active"><button>📋 Operational Log</button></li>
@@ -191,7 +186,7 @@
 
   <main class="main-viewport">
     <header class="top-header">
-      <h1>ROSE BAY OPERATIONAL MANAGEMENT CONSOLE</h1>
+      <h1>ROSEBAY OPERATIONAL MANAGEMENT CONSOLE</h1>
       <div class="header-actions-cluster">
         <a href="hub.html" class="home-icon-btn" title="Return to Central Matrix Hub">🏠</a>
         <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
@@ -199,9 +194,8 @@
     </header>
 
     <div class="content-container">
-      <div class="api-status-strip" id="api-status">📡 Syncing Pipeline Status: Accessing Rose Bay data hooks...</div>
+      <div class="api-status-strip" id="api-status">📡 Syncing Pipeline Status: Accessing Rosebay data hooks...</div>
 
-      <!-- Dynamic Analytical KPI Metrics Counters -->
       <div class="metrics-grid">
         <div class="metric-card">
           <p>Total Booked Stays</p>
@@ -242,13 +236,14 @@
   </main>
 
   <script>
-    // Configured directly to point to your secure 1Pgg9OGAKEBLZoeXxbMeuaBbJ5o-_c52cVGJAm4t2Md0 Airbnb tracking sheet workbook
+    // Points directly to your Rosebay tracking sheet workbook
     var SPREADSHEET_ID = "1Pgg9OGAKEBLZoeXxbMeuaBbJ5o-_c52cVGJAm4t2Md0";
     var globalOpsDatabase = [];
 
-    function loadLiveRoseBayStreams() {
+    function loadLiveRosebayStreams() {
       var statusBox = document.getElementById('api-status');
-      var url = "https://docs.google.com/spreadsheets/d/" + SPREADSHEET_ID + "/gviz/tq?tqx=out:json&sheet=Rose+Bay+Ops";
+      // Tries parsing tab name 'Rosebay Ops' or falls back to 'Sheet1' / 'Bookings' based on workbook structure
+      var url = "https://docs.google.com/spreadsheets/d/" + SPREADSHEET_ID + "/gviz/tq?tqx=out:json";
 
       fetch(url)
         .then(function(r) { return r.text(); })
@@ -257,11 +252,11 @@
           processRows(rawJson.table.rows);
           calculateMetrics();
           renderTable();
-          if(statusBox) statusBox.innerHTML = "✅ API Status: Success. Synced " + globalOpsDatabase.length + " operational ledger logs cleanly.";
+          if(statusBox) statusBox.innerHTML = "✅ API Status: Success. Synced " + globalOpsDatabase.length + " Rosebay operational logs cleanly.";
         })
         .catch(function(err) {
           console.error(err);
-          if(statusBox) statusBox.innerHTML = "❌ API Error: Data synchronization failed. Verify that link sharing remains open to public view.";
+          if(statusBox) statusBox.innerHTML = "❌ API Error: Connection failed. Verify workbook visibility permissions.";
         });
     }
 
@@ -270,7 +265,7 @@
       globalOpsDatabase = [];
       
       rows.forEach(function(row, index) {
-        if (index === 0) return; // Skip headers cleanly
+        if (index === 0) return; 
         var cells = row.c;
         if (!cells || !cells[0] || cells[0].v === null) return;
 
@@ -285,7 +280,7 @@
           checkIn: (cells[6] && cells[6].v !== null) ? cells[6].v.toString() : "Standard",
           checkOut: (cells[7] && cells[7].v !== null) ? cells[7].v.toString() : "",
           cleaningFee: (cells[8] && cells[8].v !== null) ? cells[8].v.toString() : "$0",
-          notes: (cells[9] && cells[9].v !== null) ? cells[9].v.toString() : "No special parameter notes logged."
+          notes: (cells[9] && cells[9].v !== null) ? cells[9].v.toString() : "No parameter notes logged."
         });
       });
     }
@@ -337,7 +332,7 @@
           '<td>' + (row.totalGuests || "—") + '</td>',
           '<td>' + row.checkIn + '</td>',
           '<td><strong>' + row.checkOut + '</strong></td>',
-          '<td><span style="font-weight:600; color:#0284c7;">' + displayCleanFee + '</span></td>'
+          '<td><span style="font-weight:600; color:#e11d48;">' + displayCleanFee + '</span></td>'
         ].join('');
         tableBody.appendChild(tr);
       });
@@ -350,18 +345,19 @@
       document.getElementById('drawer-guest-name').textContent = record.guestName.toUpperCase() || "CALENDAR BLOCK";
       document.getElementById('drawer-document-content').innerHTML = [
         '<div class="doc-section"><span class="doc-label">Airbnb Reference ID</span><div class="doc-content-box">' + record.airbnbNum + '</div></div>',
-        '<div class="doc-section"><span class="doc-label">Stay Schedule Window</span><div class="doc-content-box">' + record.stayDates + ' (' + record.nights + ' Nights)</div></div>',
+        '<div class="doc-section"><span class="doc-label">Stay Window Schedule</span><div class="doc-content-box">' + record.stayDates + ' (' + record.nights + ' Nights)</div></div>',
         '<div class="doc-section"><span class="doc-label">Direct Contact Phone</span><div class="doc-content-box">' + record.phone + '</div></div>',
         '<div class="doc-section"><span class="doc-label">Check-In Instruction Logs</span><div class="doc-content-box">' + record.checkIn + '</div></div>',
-        '<div class="doc-section"><span class="doc-label">Cleaning & Maintenance Allocation</span><div class="doc-content-box">' + record.cleaningFee + '</div></div>',
-        '<div class="doc-section"><span class="doc-label">Operational Manifest & Payment Notes</span><div class="doc-content-box">' + record.notes + '</div></div>'
+        '<div class="doc-section"><span class="doc-label">Cleaning Allocation</span><div class="doc-content-box">' + record.cleaningFee + '</div></div>',
+        '<div class="doc-section"><span class="doc-label">Operational Manifest Notes</span><div class="doc-content-box">' + record.notes + '</div></div>',
+        '<div class="doc-section"><span class="doc-label">Rosebay Operational Constants</span><div class="checklist-box"><strong>Cleaner Assignment:</strong> Khami<br><strong>Standard Check-in:</strong> 4pm<br><strong>Standard Check-out:</strong> 11am</div></div>'
       ].join('');
       document.getElementById('profile-drawer').classList.add('drawer-open');
     }
 
     function closeProfileDrawer() { document.getElementById('profile-drawer').classList.remove('drawer-open'); }
 
-    window.onload = function() { loadLiveRoseBayStreams(); };
+    window.onload = function() { loadLiveRosebayStreams(); };
   </script>
 </body>
 </html>
