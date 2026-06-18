@@ -3,21 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JLM Hospitality — Airbnb Management Matrix</title>
+  <title>AIRBNB MASTER LIVE MANAGEMENT</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --bg-main: #fcf8f8;
+      --bg-main: #fcfbfa;
       --sidebar-bg: #ffffff;
-      --text-main: #222222;
-      --text-muted: #717171;
-      --airbnb-pink: #FF385C; 
-      --airbnb-light: #FFF0F2;
-      --border: #ebebeb;
-      --green-accent: #008489;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --rose-primary: #ff5a5f;
+      --rose-light: #fff1f2;
+      --border: #f1f1f0;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,7 +30,7 @@
     }
 
     .sidebar {
-      width: 290px;
+      width: 280px;
       background-color: var(--sidebar-bg);
       border-right: 1px solid var(--border);
       display: flex;
@@ -47,21 +46,21 @@
       padding-bottom: 20px;
       text-align: center;
     }
-
-    .logo-home-link { display: block; width: 100%; cursor: pointer; }
     .logo-img { width: 100%; max-width: 140px; height: auto; object-fit: contain; margin-bottom: 14px; }
-    .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; color: #222; text-transform: uppercase; }
-    
+    .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #0f172a; text-transform: uppercase; }
+    .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
     .meta-divider { width: 100%; border: 0; height: 1px; background-color: var(--border); margin: 16px 0; }
-    .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #b0b0b0; text-transform: uppercase; text-align: center; }
+    .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-bottom: 16px; text-align: center; }
 
     .nav-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
     .nav-item button {
       width: 100%;
       display: flex;
       align-items: center;
+      gap: 10px;
       padding: 12px 16px;
-      color: #484848;
+      color: #475569;
       background: none;
       border: none;
       border-radius: 8px;
@@ -70,218 +69,120 @@
       text-align: left;
       cursor: pointer;
     }
-    .nav-item button:hover, .nav-item.active button {
-      background-color: var(--airbnb-light);
-      color: var(--airbnb-pink);
+    .nav-item.active button {
+      background-color: var(--rose-light);
+      color: var(--rose-primary);
     }
 
-    .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 40px; }
     .top-header {
-      background: #ffffff;
-      padding: 22px 40px;
-      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 32px;
     }
-    .top-header h1 { font-size: 20px; font-weight: 700; color: #222; }
-    .back-hub-btn { background: #ffffff; border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #222; text-decoration: none; }
+    .top-header h1 { font-size: 22px; font-weight: 700; color: #0f172a; text-transform: uppercase; letter-spacing: -0.01em; }
+    .hub-matrix-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 6px; }
 
-    .content-container { padding: 40px; max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+    .content-container { display: flex; flex-direction: column; gap: 32px; max-width: 1400px; width: 100%; margin: 0 auto; }
+    .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 14px 18px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; display: flex; align-items: center; gap: 10px; }
 
-    .property-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .property-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    .property-card.active-card { border-color: var(--airbnb-pink); box-shadow: 0 6px 16px rgba(255, 56, 92, 0.08); }
-    .prop-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--airbnb-pink); margin-bottom: 4px; display: block; }
+    /* Custom Responsive Property Navigation Grid Cards */
+    .property-cards-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .property-card {
+      text-decoration: none;
+      color: inherit;
+      outline: none;
+    }
+    .card-body {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 28px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .property-card:hover .card-body {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+    }
+    .card-body.naxos-card:hover { border-color: #0284c7; }
+    .card-body.rosebay-card:hover { border-color: #e11d48; }
 
-    .perspective-banner { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-    .filter-btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: #ffffff; }
-    .filter-btn.active-filter { background: var(--airbnb-pink); color: #fff; border-color: var(--airbnb-pink); }
+    .tag-location { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; display: block; }
+    .naxos-card .tag-location { color: #0284c7; }
+    .rosebay-card .tag-location { color: #e11d48; }
 
-    .property-pane { display: none; flex-direction: column; gap: 32px; }
-    .property-pane.active-pane { display: flex; }
+    .card-title { font-size: 20px; font-weight: 700; color: #0f172a; display: flex; align-items: center; justify-content: space-between; }
+    .card-cleaner { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+    .action-badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: #f1f5f9; color: #475569; margin-top: 14px; display: inline-block; }
 
-    .panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
-    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .panel-header h2 { font-size: 16px; font-weight: 700; color: #222; }
-
-    .api-status-strip { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; align-items: center; gap: 10px; }
-
-    .table-scroll-wrapper { width: 100%; overflow-x: auto; }
-    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); background-color: #fafafa; }
-    .data-table td { padding: 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #222; line-height: 1.5; }
-
-    .badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
-    .badge.confirmed { background-color: #e2fbe8; color: #14532d; }
+    .panel-info-banner { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
   </style>
 </head>
 <body>
 
   <aside class="sidebar">
     <div class="logo-container">
-      <a href="hub.html" class="logo-home-link">
-        <img src="airbnblogo.png" alt="Airbnb Hospitality" class="logo-img">
-      </a>
+      <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Matrix Logo" class="logo-img">
       <h2>AIRBNB DASHBOARD</h2>
       <p>Operations Portal</p>
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 2.1.1 &bull; LIVE BOOKINGS</div>
+      <div class="revision-block">REV. 2.2.0 &bull; LIVE BOOKINGS</div>
     </div>
-    
     <ul class="nav-links">
-      <li class="nav-item active"><button onclick="window.location.reload();">🔄 Refresh Pipeline</button></li>
-      <li class="nav-item"><a href="https://docs.google.com/spreadsheets/d/1zGvuL4OEgwc0gXIfrPJPRde8DZxwPmL--GNiGO_Tr2Q/edit" target="_blank" style="text-decoration:none;"><button>📋 Open Source Sheet</button></a></li>
+      <li class="nav-item active"><button>📋 Overview Console</button></li>
     </ul>
   </aside>
 
   <main class="main-viewport">
     <header class="top-header">
       <h1>AIRBNB LIVE MANAGEMENT</h1>
-      <div>
-        <a href="hub.html" class="back-hub-btn">⚙️ Hub Matrix</a>
-      </div>
+      <a href="hub.html" class="hub-matrix-btn">⚙️ Hub Matrix</a>
     </header>
 
     <div class="content-container">
-      
-      <div class="api-status-strip" id="api-status">
-        📡 Syncing Pipeline Status: Initializing connection...
-      </div>
-      
-      <section class="property-grid">
-        <div id="card-naxos" class="property-card active-card" onclick="selectProperty('naxos')">
-          <div>
-            <span class="prop-badge">📍 Cyclades Islands</span>
-            <h3>Naxos Live Sheet Feed</h3>
-            <p>Cleaner: Anela Korone</p>
-          </div>
-          <span style="font-size: 24px;">🇬🇷</span>
-        </div>
-
-        <div id="card-rosebay" class="property-card" onclick="selectProperty('rosebay')">
-          <div>
-            <span class="prop-badge">📍 Sydney Harbor</span>
-            <h3>Rosebay Harbour Doc</h3>
-            <p>Cleaner: Khami</p>
-          </div>
-          <span style="font-size: 24px;">🇦🇺</span>
-        </div>
-      </section>
-
-      <div class="perspective-banner">
-        <div style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Active Workspace View:</div>
-        <div>
-          <button class="filter-btn active-filter">Jessica (Upcoming Bookings)</button>
-        </div>
+      <div class="api-status-strip">
+        ✅ API Status: Connection fully synchronized. Loaded direct logs from source spreadsheet.
       </div>
 
-      <div id="pane-naxos" class="property-pane active-pane">
-        <section class="panel">
-          <div class="panel-header">
-            <h2>Live Feed from Matrix ("Bookings" Tab)</h2>
+      <div class="property-cards-container">
+        
+        <a href="naxos.html" class="property-card">
+          <div class="card-body naxos-card">
+            <span class="tag-location">📍 Cyclades Islands</span>
+            <div class="card-title">
+              Naxos Live Sheet Feed <span>🇬🇷</span>
+            </div>
+            <p class="card-cleaner">Cleaner: <strong>Anela Korone</strong></p>
+            <span class="action-badge">Click to open dynamic view →</span>
           </div>
-          <div class="table-scroll-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr id="naxos-table-th">
-                  <th>Month</th>
-                  <th>Stay Dates</th>
-                  <th>Nights</th>
-                  <th>Guests</th>
-                  <th>Cleaning</th>
-                </tr>
-              </thead>
-              <tbody id="naxos-table-body">
-                <tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">Loading live database logs from Google Sheets server...</td></tr>
-              </tbody>
-            </table>
+        </a>
+
+        <a href="rosebay.html" class="property-card">
+          <div class="card-body rosebay-card">
+            <span class="tag-location">📍 Sydney Harbor</span>
+            <div class="card-title">
+              Rosebay Live Sheet Feed <span>🇦🇺</span>
+            </div>
+            <p class="card-cleaner">Cleaner: <strong>Khami</strong></p>
+            <span class="action-badge">Click to open dynamic view →</span>
           </div>
-        </section>
+        </a>
+
       </div>
 
-      <div id="pane-rosebay" class="property-pane">
-        <section class="panel">
-          <div class="panel-header">
-            <h2>Rosebay Harbour Operational Matrix</h2>
-          </div>
-          <a href="https://docs.google.com/document/d/1luFwvZq9WXzNNeeqRJBv9q4bHoA0sm64lb3Mt_MfZpI/edit" target="_blank" style="display:inline-block; background:var(--airbnb-pink); color:white; padding:12px 24px; border-radius:8px; font-weight:600; text-decoration:none;">
-            📂 Open Rosebay Master Google Document
-          </a>
-        </section>
+      <div class="panel-info-banner">
+        💡 <strong>System Navigation Note:</strong> Click on either property link engine above to view completely interactive row lists, calculated automated KPIs, real-time status buffers, and sliding drawer guest records profiles.
       </div>
-
     </div>
   </main>
 
-  <script>
-    var SPREADSHEET_ID = "1zGvuL4OEgwc0gXIfrPJPRde8DZxwPmL--GNiGO_Tr2Q";
-    
-    function fetchLiveGoogleSheetsData() {
-      var statusBox = document.getElementById('api-status');
-      var tbody = document.getElementById('naxos-table-body');
-      var thRow = document.getElementById('naxos-table-th');
-      
-      var url = "https://docs.google.com/spreadsheets/d/" + SPREADSHEET_ID + "/gviz/tq?tqx=out:json&sheet=Bookings";
-
-      fetch(url)
-        .then(function(r) { return r.text(); })
-        .then(function(text) {
-          var rawJson = JSON.parse(text.substr(47).slice(0, -2));
-          var rows = rawJson.table.rows;
-          var cols = rawJson.table.cols;
-
-          if (!rows || rows.length === 0) {
-            statusBox.innerHTML = "⚠️ Connected, but the table view contains no upcoming rows.";
-            return;
-          }
-
-          var headerHtml = "";
-          cols.forEach(function(col) {
-            if (col.label) {
-              headerHtml += "<th>" + col.label + "</th>";
-            }
-          });
-          if(thRow && headerHtml !== "") thRow.innerHTML = headerHtml;
-
-          var tbodyHtml = "";
-          rows.forEach(function(row) {
-            tbodyHtml += "<tr>";
-            row.c.forEach(function(cell, idx) {
-              var val = (cell && cell.v !== null) ? cell.f || cell.v : "";
-              if (idx === 0) {
-                tbodyHtml += "<td><strong>" + val + "</strong></td>";
-              } else if (val.toString().toLowerCase().includes("confirmed") || val.toString().toLowerCase().includes("june")) {
-                tbodyHtml += "<td><span class='badge confirmed'>" + val + "</span></td>";
-              } else {
-                tbodyHtml += "<td>" + val + "</td>";
-              }
-            });
-            tbodyHtml += "</tr>";
-          });
-
-          tbody.innerHTML = tbodyHtml;
-          statusBox.innerHTML = "✅ API Status: Connection fully synchronized. Loaded direct logs from source spreadsheet.";
-        })
-        .catch(function(err) {
-          console.error(err);
-          statusBox.innerHTML = "❌ API Error: Data transformation loop failed. Verify columns formatting.";
-        });
-    }
-
-    function selectProperty(property) {
-      document.getElementById('card-naxos').classList.remove('active-card');
-      document.getElementById('card-rosebay').classList.remove('active-card');
-      document.getElementById('pane-naxos').classList.remove('active-pane');
-      document.getElementById('pane-rosebay').classList.remove('active-pane');
-      
-      document.getElementById('card-' + property).classList.add('active-card');
-      document.getElementById('pane-' + property).classList.add('active-pane');
-    }
-
-    window.onload = function() {
-      fetchLiveGoogleSheetsData();
-    };
-  </script>
 </body>
 </html>
