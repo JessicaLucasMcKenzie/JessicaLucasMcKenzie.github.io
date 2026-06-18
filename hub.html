@@ -3,111 +3,235 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Central Hub Matrix</title>
-
-  <!-- Claude Cache Buster Script Layer -->
-  <script>
-    (function() {
-      var currentVersion = "v2.2.7_purge";
-      if (localStorage.getItem("hub_layout_version") !== currentVersion) {
-        localStorage.setItem("hub_layout_version", currentVersion);
-        window.location.reload(true);
-      }
-    })();
-  </script>
-
+  <title>JLM Solutions — Project Matrix Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0c1219;
+      --surface: #131c27;
+      --surface2: #1b2733;
+      --border: #25323f;
+      --coral: #e08b92;
+      --text: #dde7f0;
+      --muted: #6b8099;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background-color: #0f172a;
-      color: #f1f5f9;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      padding: 48px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    .hub-layout {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    header {
+
+    /* Top Navigation Status Strip */
+    .status-ribbon {
+      background: #0f1620;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 24px;
-      border-bottom: 1px solid #1e293b;
-      margin-bottom: 48px;
+      font-size: 13px;
     }
-    .title-area h1 {
-      font-size: 24px;
+    .ribbon-title {
+      font-weight: 600;
+      color: #fff;
+    }
+    .ribbon-meta {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .exit-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+    .exit-btn:hover {
+      border-color: var(--coral);
+      color: var(--coral);
+    }
+
+    /* Master Grid Boundaries Container */
+    .hub-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      width: 100%;
+      flex: 1;
+    }
+
+    .hub-header {
+      margin-bottom: 32px;
+    }
+    .hub-header h1 {
+      font-size: 26px;
       font-weight: 700;
+      color: #fff;
       letter-spacing: -0.02em;
+      margin-bottom: 6px;
     }
-    .title-area p {
-      color: #64748b;
+    .hub-header p {
+      color: var(--muted);
       font-size: 14px;
-      margin-top: 4px;
     }
-    .hub-grid {
+
+    /* 2-Column Width Workspace Matrix for Mobile Optimization */
+    .matrix-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
-    .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 16px;
-      padding: 32px;
+
+    /* Mobile Fallback breakpoint to stack cleanly on mobile touch displays */
+    @media (max-width: 580px) {
+      .matrix-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .status-ribbon {
+        padding: 12px 20px;
+      }
+    }
+
+    .matrix-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0 0 28px 0;
       text-decoration: none;
       color: inherit;
-      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     }
-    .card:hover {
+    .matrix-card:hover {
       transform: translateY(-4px);
-      border-color: #4f46e5;
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+      border-color: var(--coral);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
     }
-    .card-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
+
+    /* Full-Width Image Header Block Wrapper */
+    .logo-wrapper {
+      width: 100%;
+      height: 180px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
     }
-    .card h3 {
-      font-size: 18px;
-      font-weight: 600;
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-info-block {
+      padding: 24px 24px 0 24px;
+      text-align: center;
+    }
+    .matrix-card h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
       margin-bottom: 8px;
+      letter-spacing: 0.02em;
     }
-    .card p {
-      color: #94a3b8;
-      font-size: 14px;
-      line-height: 1.6;
+    .matrix-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
-  <div class="hub-layout">
-    <header>
-      <div class="title-area">
-        <h1>SYSTEM INTEGRATION MATRIX</h1>
-        <p>JLM Solutions Master Management Console</p>
-      </div>
-      <img src="jlmlogo.png" alt="JLM" style="height: 40px; width: auto;">
-    </header>
 
-    <div class="hub-grid">
-      <a href="ND.html" class="card">
-        <div class="card-icon">📋</div>
-        <h3>Recruitment Workspace</h3>
-        <p>Live pipeline data loops, candidate sheets tracking, and dynamic support dashboards for Jeffrey Kho.</p>
-      </a>
-      <a href="airbnb.html" class="card">
-        <div class="card-icon">🏠</div>
-        <h3>Airbnb Live Management</h3>
-        <p>Short term accommodation portals tracking live spreadsheet booking logs for Naxos and Rosebay properties.</p>
-      </a>
-      <a href="admin.html" class="card">
-        <div class="card-icon">⚙️</div>
-        <h3>System Operations</h3>
-        <p>System configuration panel, database routing properties, and layout architecture diagnostic tools.</p>
-      </a>
+  <div class="status-ribbon">
+    <div>
+      <span class="ribbon-title">Jessica Lucas McKenzie</span>
+      <span class="ribbon-meta"> &nbsp;&nbsp;&bull;&nbsp;&nbsp; Enterprise Workspace Hub Matrix</span>
     </div>
+    <button class="exit-btn" onclick="window.location.href='index.html'">Log Out</button>
   </div>
+
+  <main class="hub-container">
+    <div class="hub-header">
+      <h1>Select Operational Dashboard</h1>
+      <p>Choose an initialized business node below to open your targeted coordination panel.</p>
+    </div>
+
+    <div class="matrix-grid">
+      
+      <!-- 1. Jeffrey Kho (Neighborhood Dental) -->
+      <a href="ND.html" class="matrix-card">
+        <div class="logo-wrapper">
+          <img data-src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img cache-bust">
+        </div>
+        <div class="card-info-block">
+          <h2>JEFFREY KHO</h2>
+          <p>Neighborhood Dental Group recruitment trackers, coordination hubs, and HeyGen production queues.</p>
+        </div>
+      </a>
+
+      <!-- 2. Hypetrex -->
+      <a href="#" class="matrix-card" onclick="alert('Hypetrex Dashboard module initialization sequence pending deployment.')">
+        <div class="logo-wrapper">
+          <img data-src="HYPERTRIX LOGO.png" alt="Hypetrex" class="logo-img cache-bust">
+        </div>
+        <div class="card-info-block">
+          <h2>HYPETREX</h2>
+          <p>Operational tracking systems, performance matrices, and administrative management panel.</p>
+        </div>
+      </a>
+
+      <!-- 3. Airbnb (FIXED: Linked directly to airbnb.html, script alert prompt removed) -->
+      <a href="airbnb.html" class="matrix-card">
+        <div class="logo-wrapper">
+          <img data-src="airbnblogo.png" alt="Airbnb" class="logo-img cache-bust">
+        </div>
+        <div class="card-info-block">
+          <h2>AIRBNB</h2>
+          <p>Property management logs, direct logistics planning, and hospitality coordination dashboard.</p>
+        </div>
+      </a>
+
+      <!-- 4. Free From That -->
+      <a href="admin.html" class="matrix-card">
+        <div class="logo-wrapper">
+          <img data-src="FFT LOGO JUNE 2026.png" alt="Free From That" class="logo-img cache-bust">
+        </div>
+        <div class="card-info-block">
+          <h2>FREE FROM THAT (FFT)</h2>
+          <p>Recipe generation metrics, operational tools, drafts, and customer requests pipeline.</p>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <script>
+    // MacBook Neo Cache-Buster Engine
+    document.addEventListener("DOMContentLoaded", function() {
+      const uniqueTimestamp = new Date().getTime();
+      document.querySelectorAll('.cache-bust').forEach(function(img) {
+        const rawSource = img.getAttribute('data-src');
+        if (rawSource) {
+          img.src = rawSource + "?t=" + uniqueTimestamp;
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
