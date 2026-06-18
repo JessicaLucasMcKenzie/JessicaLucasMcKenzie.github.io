@@ -32,7 +32,7 @@
       overflow: hidden;
     }
 
-    /* Left Sidebar Panel Wrapper */
+    /* Left Sidebar Navigation */
     .sidebar {
       width: 290px;
       background-color: var(--sidebar-bg);
@@ -88,7 +88,7 @@
       color: var(--teal-primary);
     }
 
-    /* Mobile Header Layout Adjustments */
+    /* Mobile Header Layout Rules */
     .hamburger-menu {
       display: none;
       font-size: 26px;
@@ -97,23 +97,15 @@
       color: var(--text-main);
       cursor: pointer;
       margin-right: 16px;
-      padding: 4px;
     }
+    .mobile-header-logo { display: none; height: 38px; width: auto; object-fit: contain; }
 
-    .mobile-header-logo {
-      display: none;
-      height: 38px;
-      width: auto;
-      object-fit: contain;
-    }
-
-    /* Main Viewport Shell Frame */
+    /* Main Viewport Dashboard Frame */
     .main-viewport {
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      background-color: var(--bg-main);
     }
 
     .top-header {
@@ -125,7 +117,6 @@
       align-items: center;
       flex-shrink: 0;
     }
-
     .header-left-cluster { display: flex; align-items: center; }
     .top-header h1 { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.01em; }
 
@@ -145,10 +136,10 @@
 
     .content-container { padding: 40px; max-width: 1400px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
 
-    /* Component Architecture Triggers */
     .app-view { display: none; flex-direction: column; gap: 32px; }
     .app-view.active-view { display: flex !important; }
 
+    /* Updated Filter Control Labels from Screenshot 2026-06-18 at 04.23.23.png */
     .filter-banner { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
     .filter-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
     .filter-buttons { display: flex; gap: 10px; }
@@ -164,15 +155,16 @@
     .card-link h3 { font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 4px; }
     .card-link p { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
 
-    .dashboard-layout-row { display: grid; grid-template-columns: 1fr; gap: 32px; }
     .panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .panel-header h2 { font-size: 16px; font-weight: 700; color: #0f172a; }
 
-    /* Tables & Responsive Wrapper overflow fields */
+    /* Interactive List Row Controls */
     .table-scroll-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); background-color: #f8fafc; white-space: nowrap; }
+    .data-table th { padding: 14px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); background-color: #f8fafc; }
+    .data-table tbody tr { cursor: pointer; transition: background 0.15s; }
+    .data-table tbody tr:hover { background-color: #f1f5f9; }
     .data-table td { padding: 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: #334155; line-height: 1.5; }
 
     .badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 6px; }
@@ -183,12 +175,29 @@
     .badge.status-notsuit { background-color: #fee2e2; color: #991b1b; }
     .badge.status-ident { background-color: #f3f4f6; color: #4b5563; }
 
-    /* Sidebar Mobile Background Overlay Block Mask */
-    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(2px); z-index: 999; }
+    /* CRM Candidate Drawer Document Style Overlay sheets */
+    .crm-drawer { position: fixed; top: 0; right: 0; width: 460px; max-width: 100vw; height: 100vh; background: #ffffff; box-shadow: -10px 0 40px rgba(15, 23, 42, 0.15); transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2000; display: flex; flex-direction: column; }
+    .crm-drawer.drawer-open { transform: translateX(0); }
+    .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
+    .drawer-header h3 { font-size: 18px; font-weight: 700; color: #0f172a; }
+    .close-drawer-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
+    .drawer-body { padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; flex: 1; }
+    
+    .doc-section { display: flex; flex-direction: column; gap: 6px; }
+    .doc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
+    .doc-content-box { background: #f8fafc; border: 1px solid var(--border); padding: 12px; border-radius: 8px; font-size: 13px; color: #334155; line-height: 1.5; }
+    
+    .interactive-field { width: 100%; border: 1px solid var(--border); padding: 10px 12px; border-radius: 8px; font-size: 13px; outline: none; font-family: inherit; color: #0f172a; }
+    .interactive-field:focus { border-color: var(--teal-primary); }
+    
+    .comms-pill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 4px; }
+    .comms-pill { border: 1px solid var(--border); padding: 8px; border-radius: 6px; font-size: 12px; text-align: center; cursor: pointer; font-weight: 500; background: #ffffff; transition: all 0.15s; }
+    .comms-pill.selected-pill { background: var(--teal-light); border-color: var(--teal-primary); color: var(--teal-primary); font-weight: 600; }
 
-    /* Responsive Mobile UI Rules Breakpoint Engine */
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.3); backdrop-filter: blur(1px); z-index: 999; }
+
     @media (max-width: 992px) {
-      .sidebar { position: fixed; top: 0; left: 0; height: 100vh; transform: translateX(-100%); box-shadow: 20px 0 40px rgba(0,0,0,0.15); }
+      .sidebar { position: fixed; top: 0; left: 0; height: 100vh; transform: translateX(-100%); }
       .sidebar.menu-open { transform: translateX(0); }
       .sidebar-overlay.menu-open { display: block; }
       .hamburger-menu { display: block; }
@@ -198,6 +207,7 @@
       .resource-grid { grid-template-columns: repeat(2, 1fr); }
       .filter-banner { flex-direction: column; gap: 14px; align-items: flex-start; }
       .coordinator-meta-text { display: none; }
+      .crm-drawer { width: 100%; }
     }
     @media (max-width: 520px) {
       .resource-grid { grid-template-columns: 1fr; }
@@ -208,32 +218,42 @@
 </head>
 <body>
 
-  <!-- Sidebar Overlay Mask for Mobile Tap Away Closure -->
   <div class="sidebar-overlay" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
 
-  <!-- Left Control Navigation Panel -->
+  <!-- Left Control Sidebar Navigation -->
   <aside class="sidebar" id="app-sidebar">
     <div class="logo-container">
-      <a onclick="switchAppView('hub'); toggleMobileSidebar();" class="logo-home-link">
+      <a onclick="switchAppView('hub');" class="logo-home-link">
         <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Neighborhood Dental" class="logo-img">
       </a>
       <h2>JEFFREY KHO DASHBOARD</h2>
       <p>Administrative Support Workspace</p>
       <hr class="meta-divider">
-      <div class="revision-block">Rev. 1.0.6 &bull; June 18, 2026</div>
+      <div class="revision-block">Rev. 1.0.7 &bull; June 18, 2026</div>
     </div>
     
     <ul class="nav-links">
-      <li class="nav-item active" id="nav-hub"><button onclick="switchAppView('hub'); toggleMobileSidebar();">📊 Hub Overview</button></li>
-      <li class="nav-item" id="nav-recruitment"><button onclick="switchAppView('recruitment'); toggleMobileSidebar();">📋 Recruitment Tracker</button></li>
-      <li class="nav-item" id="nav-commission"><button onclick="switchAppView('commission'); toggleMobileSidebar();">📜 Commission Agreement</button></li>
-      <li class="nav-item" id="nav-coordinator"><button onclick="switchAppView('coordinator'); toggleMobileSidebar();">6️⃣ Coordinator Tracker</button></li>
-      <li class="nav-item" id="nav-logistics"><button onclick="switchAppView('logistics'); toggleMobileSidebar();">🔑 Personal Logistics</button></li>
-      <li class="nav-item" id="nav-heygen"><button onclick="switchAppView('heygen'); toggleMobileSidebar();">🎥 HeyGen Video Assets</button></li>
+      <li class="nav-item active" id="nav-hub"><button onclick="switchAppView('hub');">📊 Hub Overview</button></li>
+      <li class="nav-item" id="nav-recruitment"><button onclick="switchAppView('recruitment');">📋 Recruitment Tracker</button></li>
+      <li class="nav-item" id="nav-commission"><button onclick="switchAppView('commission');">📜 Commission Agreement</button></li>
+      <li class="nav-item" id="nav-coordinator"><button onclick="switchAppView('coordinator');">6️⃣ Coordinator Tracker</button></li>
+      <li class="nav-item" id="nav-logistics"><button onclick="switchAppView('logistics');">🔑 Personal Logistics</button></li>
+      <li class="nav-item" id="nav-heygen"><button onclick="switchAppView('heygen');">🎥 HeyGen Video Assets</button></li>
     </ul>
   </aside>
 
-  <!-- Core Dashboard Window -->
+  <!-- Profile CRM Slipout Panel Document Drawer -->
+  <div class="crm-drawer" id="profile-drawer">
+    <div class="drawer-header">
+      <h3 id="drawer-candidate-name">Candidate Document</h3>
+      <button class="close-drawer-btn" onclick="closeProfileDrawer()">✕</button>
+    </div>
+    <div class="drawer-body" id="drawer-document-content">
+      <!-- Generated dynamically based on the target row interaction -->
+    </div>
+  </div>
+
+  <!-- Main Viewport Context -->
   <main class="main-viewport">
     <header class="top-header">
       <div class="header-left-cluster">
@@ -295,7 +315,7 @@
               <h2>Active System Summary</h2>
             </div>
             <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
-              Welcome back, Jessica. The active support hub handles tracking matrices across recruitment pipelines, dental logs, and commission agreements. Use the navigation panel on the left to swap sheets instantly.
+              Welcome back, Jessica. The active support hub handles tracking matrices across recruitment pipelines, dental logs, and commission agreements. Click individual candidate rows inside the console to access deep-dive documentation tabs.
             </p>
           </section>
         </div>
@@ -307,14 +327,14 @@
           <div class="filter-label">🎯 Active Dashboard Perspective Filter:</div>
           <div class="filter-buttons">
             <button class="filter-btn active-filter" data-user="all" onclick="applyRecruitmentFilter('all', this)">Jessica (Show All Rows)</button>
-            <button class="filter-btn" data-user="jeff" onclick="applyRecruitmentFilter('jeff', this)">Dr. Jeff (Dentist Follow-up Y)</button>
-            <button class="filter-btn" data-user="lauraemily" onclick="applyRecruitmentFilter('lauraemily', this)">Laura & Emily (PM Selection Y)</button>
+            <button class="filter-btn" data-user="jeff" onclick="applyRecruitmentFilter('jeff', this)">DR. JEFF (DENTISTS)</button>
+            <button class="filter-btn" data-user="lauraemily" onclick="applyRecruitmentFilter('lauraemily', this)">LAURA/EMILY (PM)</button>
           </div>
         </div>
 
         <section class="panel">
           <div class="panel-header">
-            <h2>Recruitment Candidate Master Stream</h2>
+            <h2>Recruitment Candidate Master Stream (Click name to review complete profile)</h2>
           </div>
           <div class="table-scroll-wrapper">
             <table class="data-table" id="recruitment-table">
@@ -486,57 +506,153 @@
   </main>
 
   <script>
+    // Global Memory Cache Registry
     const candidateDatabase = [
-      { date: "14-Jun-2026", name: "Alvin Wong", type: "dentist", jeffFollowUp: "Y", lauraEmily: "N", log: "Sent LinkedIn InMail (Jessica). Awaiting reply.", status: "Identified", notes: "Sourced via LinkedIn Sales Nav. Clinical Supervisor & Lead Dental Implant Mentor." },
-      { date: "14-Jun-2026", name: "Rhea Menon", type: "dentist", jeffFollowUp: "Y", lauraEmily: "N", log: "Sent LinkedIn InMail (Jessica). Awaiting reply.", status: "Identified", notes: "Growth-stage GP dentist + UQ MBA candidate. Rich Brisbane network." },
-      { date: "14-Jun-2026", name: "Dr. Clara Sterling", type: "dentist", jeffFollowUp: "N", lauraEmily: "N", log: "Preliminary screening call complete.", status: "Screening", notes: "General practitioner looking for weekend clinical slots." },
-      { date: "13-Jun-2026", name: "Ping Chen", type: "pm", jeffFollowUp: "N", lauraEmily: "Y", log: "15 Jun 2026 - Ping confirmed Fri 19 Jun 10am for virtual interview with Laura.", status: "Screening", notes: "Laura happy to interview Ping virtually this Fri. Jess emailed links." },
-      { date: "13-Jun-2026", name: "Samy Hachchane", type: "pm", jeffFollowUp: "N", lauraEmily: "N", log: "12 Jun 2026 - SEEK inbound applicant (applied ~9 Jun). Screened.", status: "Not Suitable", notes: "4 yrs dental PM at NZ dental school. NOT SUITABLE for Calamvale." },
-      { date: "12-Jun-2026", name: "Dr. Marcus Vance", type: "dentist", jeffFollowUp: "Y", lauraEmily: "N", log: "Reviewing formal contract paperwork. Soft follow-up sent.", status: "Screening", notes: "Associate dentist profile matching Downtown Clinic." },
-      { date: "11-Jun-2026", name: "Elena Rostova", type: "pm", jeffFollowUp: "N", lauraEmily: "Y", log: "Confirm Thursday calendar invitation hold with team.", status: "Screening", notes: "Lead Hygienist with clinic operations transition interest." },
-      { date: "10-Jun-2026", name: "David Kim", type: "dentist", jeffFollowUp: "Y", lauraEmily: "N", log: "Jessica to coordinate video introductory file delivery pipeline.", status: "Screening", notes: "Orthodontist Specialist profile matching East End Hub needs." },
-      { date: "09-Jun-2026", name: "Sarah Jenkins", type: "pm", jeffFollowUp: "N", lauraEmily: "Y", log: "Phone screening interview passed cleanly. Scheduling final loop.", status: "Screening", notes: "Experienced dental office clinic lead with 6+ years regional background." },
-      { date: "08-Jun-2026", name: "Dr. Aris Thorne", type: "dentist", jeffFollowUp: "Y", lauraEmily: "N", log: "Inbound portfolio intake check completed by team.", status: "Identified", notes: "Sourced via local medical network referral channel." },
-      { date: "07-Jun-2026", name: "Michael Chang", type: "pm", jeffFollowUp: "N", lauraEmily: "N", log: "Application rejected based on geographical matching limits.", status: "Not Suitable", notes: "Requires extensive relocation timeline support block." },
-      { date: "06-Jun-2026", name: "Natalie Brooks", type: "dentist", jeffFollowUp: "N", lauraEmily: "N", log: "Initial connection invitation accepted via LinkedIn.", status: "Identified", notes: "Pediatric clinical focus area candidate." }
+      { id: 1, date: "14-Jun-2026", name: "Alvin Wong", type: "dentist", jeffFollowUp: "Y", lauraEmily: "N", log: "Sent LinkedIn InMail (Jessica). Awaiting reply.", status: "Identified", notes: "Sourced 14-Jun-2026 via LinkedIn Sales Nav.", found: "LinkedIn Sales Navigator (Outreach loop)", background: "Clinical Supervisor & Lead Dental Implant Mentor (graduatedentaljob.com.au) + Head of Digital Guided Implant Solutions (Premium Dental Lab). ~6.5yrs experience.", discussions: "Awaiting reply; soft follow-up planned in ~1 week. Senior implant clinician/mentor; may suit clinical sessions or implant partnership rather than full chair.", email: "alvin.wong@dentalsurgeon.au", phone: "+61 412 345 678", bestComms: "Linkedin", callTime: "Afternoons after 4 PM" },
+      { id: 2, date: "14-Jun-2026", name: "Rhea Menon", type: "dentist", jeffFollowUp: "Y", lauraEmily: "N", log: "Sent LinkedIn InMail (Jessica). Awaiting reply.", status: "Identified", notes: "GP dentist + UQ MBA candidate. Rich Brisbane network.", found: "LinkedIn Sales Navigator (Outreach loop)", background: "General Dentist at The Practice Modern Dentist (since Jan 2025, ~1.5yrs) + Clinical Supervisor UQ + UQ MBA candidate. Brisbane based.", discussions: "Awaiting reply; soft follow-up planned in ~1 week. Growth-stage GP dentist (ambitious; room to grow into high biller).", email: "rhea.menon@uqconnect.edu.au", phone: "+61 423 987 654", bestComms: "WhatsApp", callTime: "Fridays any time" },
+      { id: 3, date: "14-Jun-2026", name: "Dr. Clara Sterling", type: "dentist", jeffFollowUp: "N", lauraEmily: "N", log: "Preliminary screening call complete.", status: "Screening", notes: "General practitioner looking for weekend clinical slots.", found: "SEEK Inbound Application", background: "Experienced general practitioner with deep focus on cosmetic veneers and restorative dentistry lines.", discussions: "Spoke with candidate on weekend flex options. Prefers localized morning rotations.", email: "", phone: "", bestComms: "Email", callTime: "Mornings 8 AM - 10 AM" },
+      { id: 4, date: "13-Jun-2026", name: "Ping Chen", type: "pm", jeffFollowUp: "N", lauraEmily: "Y", log: "Confirmed Fri 19 Jun 10am for virtual interview with Laura.", status: "Screening", notes: "Laura happy to interview Ping virtually this Fri.", found: "SEEK Inbound Application", background: "Dental Practice Manager candidate with extensive localized management background profile.", discussions: "15 Jun 2026 - Ping confirmed Fri 19 Jun 10am for virtual interview with Laura. Laura happy to interview virtually. Jess sent video link.", email: "ping.chen.ops@gmail.com", phone: "+61 455 112 233", bestComms: "Facetime", callTime: "Tuesdays before noon" },
+      { id: 5, date: "13-Jun-2026", name: "Samy Hachchane", type: "pm", jeffFollowUp: "N", lauraEmily: "N", log: "SEEK inbound applicant. Screened.", status: "Not Suitable", notes: "4 yrs dental PM at NZ dental school. NOT SUITABLE for Calamvale.", found: "SEEK Inbound Application", background: "4 years dental PM experience at an NZ dental school. Proficient in Dentrix, healthcare + budget management.", discussions: "12 Jun 2026 - Screened. NOT SUITABLE for Calamvale based on Emerald/Central QLD location (~850km, major relocation required) and no Mandarin proficiency.", email: "", phone: "", bestComms: "Viber", callTime: "Any time (Not pursuing)" }
     ];
+
+    let currentFilter = 'all';
 
     function toggleMobileSidebar() {
       document.getElementById('app-sidebar').classList.toggle('menu-open');
       document.getElementById('mobile-overlay').classList.toggle('menu-open');
     }
 
+    function openProfileDrawer(candidateId) {
+      const candidate = candidateDatabase.find(c => c.id === candidateId);
+      if (!candidate) return;
+
+      document.getElementById('drawer-candidate-name').textContent = candidate.name.toUpperCase();
+      
+      const bodyContainer = document.getElementById('drawer-document-content');
+      bodyContainer.innerHTML = `
+        <div class="doc-section">
+          <span class="doc-label">Sourcing Channel / Found Via</span>
+          <div class="doc-content-box">${candidate.found || 'Not logged'}</div>
+        </div>
+
+        <div class="doc-section">
+          <span class="doc-label">Professional Background</span>
+          <div class="doc-content-box">${candidate.background || 'No background records loaded'}</div>
+        </div>
+
+        <div class="doc-section">
+          <span class="doc-label">Discussions & Activity Logs</span>
+          <div class="doc-content-box">${candidate.discussions || 'No conversation log entered'}</div>
+        </div>
+
+        <div class="doc-section">
+          <span class="doc-label">Direct Email Address</span>
+          <input type="email" class="interactive-field" value="${candidate.email}" placeholder="Enter candidate email..." onchange="updateLiveMeta(${candidate.id}, 'email', this.value)">
+        </div>
+
+        <div class="doc-section">
+          <span class="doc-label">Direct Phone Number</span>
+          <input type="text" class="interactive-field" value="${candidate.phone}" placeholder="Enter phone contact..." onchange="updateLiveMeta(${candidate.id}, 'phone', this.value)">
+        </div>
+
+        <div class="doc-section">
+          <span class="doc-label">Best Way To Call / Connect</span>
+          <div class="comms-pill-grid">
+            ${['WhatsApp', 'Facetime', 'Email', 'Viber', 'Linkedin'].map(mode => `
+              <div class="comms-pill ${candidate.bestComms.toLowerCase() === mode.toLowerCase() ? 'selected-pill' : ''}" onclick="updateLivePill(${candidate.id}, '${mode}')">${mode}</div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <span class="doc-label">Best Time To Call</span>
+          <input type="text" class="interactive-field" value="${candidate.callTime || ''}" placeholder="e.g., Afternoons after 4 PM" onchange="updateLiveMeta(${candidate.id}, 'callTime', this.value)">
+        </div>
+      `;
+
+      document.getElementById('profile-drawer').classList.add('drawer-open');
+    }
+
+    function closeProfileDrawer() {
+      document.getElementById('profile-drawer').classList.remove('drawer-open');
+    }
+
+    function updateLiveMeta(id, property, value) {
+      const candidate = candidateDatabase.find(c => c.id === id);
+      if (candidate) {
+        candidate[property] = value;
+      }
+    }
+
+    function updateLivePill(id, selectedMode) {
+      const candidate = candidateDatabase.find(c => c.id === id);
+      if (candidate) {
+        candidate.bestComms = selectedMode;
+        // Re-render the drawer layout to immediately show visual selection toggles
+        openProfileDrawer(id);
+      }
+    }
+
     function renderTableRows(dataset) {
       const tableBody = document.getElementById('recruitment-table-body');
       if (!tableBody) return;
       tableBody.innerHTML = "";
+
       dataset.forEach(candidate => {
         const row = document.createElement('tr');
-        const typePill = candidate.type === 'dentist' ? `<span class="badge dentist">Dentist</span>` : `<span class="badge pm">Practice Manager</span>`;
+        row.setAttribute('onclick', `openProfileDrawer(${candidate.id})`);
+        
+        const typePill = candidate.type === 'dentist' ? 
+          `<span class="badge dentist">Dentist</span>` : 
+          `<span class="badge pm">Practice Manager</span>`;
+
         let statusClass = "status-ident";
         if(candidate.status.includes("Scre")) statusClass = "status-screen";
         if(candidate.status.includes("Not")) statusClass = "status-notsuit";
-        row.innerHTML = `<td><strong>${candidate.date}</strong></td><td><div style="font-weight:700; color:#0f172a; white-space:nowrap;">${candidate.name}</div><div style="margin-top:4px;">${typePill}</div></td><td><span class="badge ${statusClass}">${candidate.status}</span></td><td style="font-size:12px; color:#475569; min-width:240px;">${candidate.log}</td><td style="font-size:12px; colorvar(--text-muted); min-width:240px;">${candidate.notes}</td>`;
+
+        row.innerHTML = `
+          <td><strong>${candidate.date}</strong></td>
+          <td>
+            <div style="font-weight:700; color:#0f172a; white-space:nowrap;">${candidate.name}</div>
+            <div style="margin-top:4px;">${typePill}</div>
+          </td>
+          <td><span class="badge ${statusClass}">${candidate.status}</span></td>
+          <td style="font-size:12px; color:#475569; min-width:240px;">${candidate.log}</td>
+          <td style="font-size:12px; color:var(--text-muted); min-width:240px;">${candidate.notes}</td>
+        `;
         tableBody.appendChild(row);
       });
     }
 
     function applyRecruitmentFilter(filterType, buttonElement) {
+      currentFilter = filterType;
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active-filter'));
       if(buttonElement) buttonElement.classList.add('active-filter');
-      let filteredData = (filterType === 'all') ? candidateDatabase : (filterType === 'jeff') ? candidateDatabase.filter(c => c.type === 'dentist' && c.jeffFollowUp === 'Y') : candidateDatabase.filter(c => c.type === 'pm' && c.lauraEmily === 'Y');
+
+      let filteredData = [];
+      if (filterType === 'all') {
+        filteredData = candidateDatabase;
+      } else if (filterType === 'jeff') {
+        filteredData = candidateDatabase.filter(c => c.type === 'dentist' && c.jeffFollowUp === 'Y');
+      } else if (filterType === 'lauraemily') {
+        filteredData = candidateDatabase.filter(c => c.type === 'pm' && c.lauraEmily === 'Y');
+      }
+
       renderTableRows(filteredData);
     }
 
     function switchAppView(viewName) {
       document.querySelectorAll('.app-view').forEach(view => { view.style.display = 'none'; view.classList.remove('active-view'); });
       document.querySelectorAll('.nav-links .nav-item').forEach(item => item.classList.remove('active'));
+      
       const targetPane = document.getElementById(`view-pane-${viewName}`);
       if (targetPane) { targetPane.style.display = 'flex'; targetPane.classList.add('active-view'); }
+      
       const targetNav = document.getElementById(`nav-${viewName}`);
       if (targetNav) targetNav.classList.add('active');
+      
       document.getElementById('view-title').textContent = (viewName === 'hub') ? "JEFFREY KHO DASHBOARD" : viewName.toUpperCase() + " MANAGEMENT CONSOLE";
-      if (viewName === 'recruitment') renderTableRows(candidateDatabase);
+      if (viewName === 'recruitment') applyRecruitmentFilter(currentFilter, document.querySelector(`.filter-btn[data-user="${currentFilter}"]`));
     }
 
     renderTableRows(candidateDatabase);
