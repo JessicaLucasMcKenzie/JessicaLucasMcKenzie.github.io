@@ -119,27 +119,50 @@
   <div class="feed-container" id="task-feed"></div>
 
   <script>
-    // Configured directly with Jessica's contact destination string
     var HOST_PHONE = "306982848456"; 
     var WORKBOOK_KEY = "1Pgg9OGAKEBLZoeXxbMeuaBbJ5o-_c52cVGJAm4t2Md0";
 
     function fetchSchedule() {
+      var syncMsgElement = document.getElementById('sync-msg');
       var cacheBust = new Date().getTime();
+      // Connect to the Google Sheet using the "Rose Bay Ops" tab
       var url = "https://docs.google.com/spreadsheets/d/" + WORKBOOK_KEY + "/gviz/tq?tqx=out:json&sheet=Rose%20Bay%20Ops&cb=" + cacheBust;
 
       fetch(url)
         .then(r => r.text())
         .then(raw => {
-          var cleanJson = JSON.parse(raw.substr(47).slice(0, -2));
-          renderTasks(cleanJson.table.rows);
-          document.getElementById('sync-msg').innerText = "✅ Schedule Live & Synchronized";
+          try {
+            var jsonString = raw.substr(47).slice(0, -2);
+            var cleanJson = JSON.parse(jsonString);
+            
+            if (cleanJson.table && cleanJson.table.rows) {
+              renderTasks(cleanJson.table.rows);
+              syncMsgElement.style.background = "#f0fdf4";
+              syncMsgElement.style.color = "#166534";
+              syncMsgElement.style.borderColor = "#bbf7d0";
+              syncMsgElement.innerText = "✅ Schedule Live & Synchronized";
+            } else {
+              // Gracefully catches if the Tab name 'Rose Bay Ops' can't be found by Google's API
+              syncMsgElement.style.background = "#fef2f2";
+              syncMsgElement.style.color = "#991b1b";
+              syncMsgElement.style.borderColor = "#fca5a5";
+              syncMsgElement.innerText = "❌ Error: Could not find 'Rose Bay Ops' sheet tab.";
+            }
+          } catch (err) {
+            syncMsgElement.style.background = "#fef2f2";
+            syncMsgElement.style.color = "#991b1b";
+            syncMsgElement.style.borderColor = "#fca5a5";
+            syncMsgElement.innerText = "❌ Data processing crash: " + err.message;
+          }
         })
         .catch(e => {
-          document.getElementById('sync-msg').innerText = "❌ Network connection sync error";
+          syncMsgElement.style.background = "#fef2f2";
+          syncMsgElement.style.color = "#991b1b";
+          syncMsgElement.style.borderColor = "#fca5a5";
+          syncMsgElement.innerText = "❌ Network connection sync error";
         });
     }
 
-    // Smart date parsing function that reads both Google Date formats and European text strings (DD/MM/YYYY)
     function parseGoogleCellToDate(cellObj) {
       if (!cellObj) return null;
       
@@ -180,7 +203,6 @@
       var container = document.getElementById('task-feed');
       container.innerHTML = "";
 
-      // Target frame timeline threshold: Current date minus 3 days boundary line
       var cutOffDate = new Date();
       cutOffDate.setDate(cutOffDate.getDate() - 3);
       cutOffDate.setHours(0, 0, 0, 0);
@@ -192,12 +214,46 @@
         var c = row.c;
         if (!c || !c[1] || c[1].v === null) return;
 
-        // Use smart parsing for check-in and check-out cells
         var checkInDateObj = parseGoogleCellToDate(c[1]);
         var checkOutDateObj = parseGoogleCellToDate(c[2]);
 
         if (!checkInDateObj || !checkOutDateObj) return; 
 
-        // Format clean European date strings for displaying on cards
         var checkInStr = checkInDateObj.getDate().toString().padStart(2, '0') + '/' + (checkInDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkInDateObj.getFullYear();
-        var checkOutStr = checkOutDateObj.getDate().toString().padStart(2, '0') + '/' + (checkOutDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkOutDateObj.
+        var checkOutStr = checkOutDateObj.getDate().toString().padStart(2, '0') + '/' + (checkOutDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkOutDateObj.getFullYear();
+
+        var guestName = cleanStr(c[4]);
+        var guestCount = cleanStr(c[5]);
+        var instructions = cleanStr(c[7]) || "Standard turnaround procedures.";
+
+        if (checkOutDateObj >= cutOffDate) {
+          displayedCount++;
+          var dateLabel = "Turnover Date: " + checkOutStr;
+
+          var waMessage = encodeURIComponent("Hi! Just letting you know Rose Bay is fully cleaned, turned over, and ready for the next guests. 👍");
+          var waUrl = "https://api.whatsapp.com/send?phone=" + HOST_PHONE + "&text=" + waMessage;
+
+          var card = document.createElement('div');
+          card.className = "task-card";
+          card.innerHTML = `
+            <div class="card-date">${dateLabel}</div>
+            <div class="card-title">🏠 Rose Bay Residence</div>
+            <div class="info-line"><strong>Guest Checking Out:</strong> <span>${guestName}</span></div>
+            <div class="info-line"><strong>Arrival Window:</strong> <span>${checkInStr} → ${checkOutStr}</span></div>
+            <div class="info-line"><strong>Total Occupants:</strong> <span>${guestCount}</span></div>
+            <div class="notes-box"><strong>📋 Notes:</strong> ${instructions}</div>
+            <a href="${waUrl}" class="wa-btn" target="_blank">🟢 ✅ Confirm Cleaned via WhatsApp</a>
+          `;
+          container.appendChild(card);
+        }
+      });
+
+      if (displayedCount === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:40px; font-size:14px;">No upcoming checkouts scheduled in the active pipeline frame.</p>`;
+      }
+    }
+
+    window.onload = fetchSchedule;
+  </script>
+</body>
+</html>
