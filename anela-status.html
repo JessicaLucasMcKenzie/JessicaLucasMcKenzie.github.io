@@ -111,6 +111,7 @@
       container.innerHTML = "";
 
       var today = new Date();
+      today.setHours(0, 0, 0, 0);
 
       rows.forEach((row, idx) => {
         if (idx === 0) return;
@@ -121,12 +122,20 @@
         var checkOut = cleanStr(c[2]);
         var guestName = cleanStr(c[4]);
         
-        // Extract cleaning cost fee from Column J (Index 9)
         var costVal = (c[9] && typeof c[9].v === 'number') ? c[9].v : 0;
         
+        // FIXED: Safe parsing for European DD/MM/YYYY date strings
         var checkoutParts = checkOut.split('/');
-        var checkoutDateObj = new Date(parseInt(checkoutParts[2]), parseInt(checkoutParts[0]) - 1, parseInt(checkoutParts[1]));
+        if (checkoutParts.length < 3) return;
         
+        var day = parseInt(checkoutParts[0], 10);
+        var month = parseInt(checkoutParts[1], 10) - 1; // JS months run 0-11
+        var year = parseInt(checkoutParts[2], 10);
+        
+        var checkoutDateObj = new Date(year, month, day);
+        checkoutDateObj.setHours(0, 0, 0, 0);
+        
+        // If the checkout date is strictly before today, mark it completed
         var isComplete = checkoutDateObj < today;
         var badgeClass = isComplete ? "badge-complete" : "badge-pending";
         var badgeText = isComplete ? "✅ Cleaned" : "⏳ Scheduled";
