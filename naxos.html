@@ -81,14 +81,18 @@
     .content-container { display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; margin: 0 auto; }
     .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
+    /* Interactive Calendar Framework CSS with Red Navigation Control Ends */
+    .calendar-container-wrapper {
+      position: relative;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 64px; /* Generates space on sides for navigation arrows */
+    }
     .calendar-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 60px;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px;
     }
     .calendar-month {
       width: 100%;
@@ -132,6 +136,33 @@
       border-radius: 50%;
     }
 
+    /* Red Floating Arrow Layout Handles */
+    .cal-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: 1px solid #fee2e2;
+      border-radius: 50%;
+      color: var(--rose-primary);
+      font-size: 18px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .cal-nav-btn:hover {
+      background-color: var(--rose-light);
+      border-color: var(--rose-primary);
+    }
+    .cal-nav-left { left: 16px; }
+    .cal-nav-right { right: 16px; }
+
     .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .metric-card { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
     .metric-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
@@ -154,7 +185,6 @@
       <p>Airbnb Workspace 🇬🇷</p>
       <hr class="meta-divider">
       <div class="revision-block">REV. 1.0.2</div>
-      <!-- LIVE SYNCED TIMESTAMP BLOCK -->
       <div class="timestamp-block" id="last-sync-time">Syncing...</div>
     </div>
     <ul class="sidebar-actions">
@@ -172,7 +202,12 @@
     <div class="content-container">
       <div class="api-status-strip" id="status-msg">⏳ Syncing Pipeline Data...</div>
 
-      <div class="calendar-container" id="calendar-wrapper"></div>
+      <!-- Calendar Outer Frame Containing Navigation Controls -->
+      <div class="calendar-container-wrapper">
+        <button class="cal-nav-btn cal-nav-left" onclick="navigateCalendar(-1)">‹</button>
+        <div class="calendar-container" id="calendar-wrapper"></div>
+        <button class="cal-nav-btn cal-nav-right" onclick="navigateCalendar(1)">›</button>
+      </div>
 
       <div class="metrics-row">
         <div class="metric-card">
@@ -217,19 +252,17 @@
   <script>
     var BOOK_KEY = "1TvZdAANoIITpGLbrWKGh7ujniEgPq3rgI2tNbi4yB1o";
     var bookedDatesGlobal = new Set();
+    
+    // Interactive Pagination State Variable
+    var currentMonthOffset = 0;
 
     function updateSyncTimestamp() {
       var timeBox = document.getElementById('last-sync-time');
       if (!timeBox) return;
-      
       var current = new Date();
       var optionsDate = { month: 'short', day: 'numeric', year: 'numeric' };
       var optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-      
-      var formattedDate = current.toLocaleDateString('en-US', optionsDate);
-      var formattedTime = current.toLocaleTimeString('en-US', optionsTime);
-      
-      timeBox.innerHTML = "Last Updated:<br>" + formattedDate + " @ " + formattedTime;
+      timeBox.innerHTML = "Last Updated:<br>" + current.toLocaleDateString('en-US', optionsDate) + " @ " + current.toLocaleTimeString('en-US', optionsTime);
     }
 
     function generateCalendars() {
@@ -238,13 +271,19 @@
       wrapper.innerHTML = "";
 
       var baseYear = 2026;
-      var baseMonth = 5; // June anchor
+      // Add dynamic month navigation offset to target layout anchor
+      var baseMonth = 5 + currentMonthOffset; 
 
       for (var i = 0; i < 2; i++) {
         var targetMonth = new Date(baseYear, baseMonth + i, 1);
         var monthHtml = buildMonthGrid(targetMonth);
         wrapper.appendChild(monthHtml);
       }
+    }
+
+    function navigateCalendar(direction) {
+      currentMonthOffset += direction;
+      generateCalendars();
     }
 
     function buildMonthGrid(dateObj) {
@@ -280,7 +319,6 @@
     function fetchNaxosData() {
       var status = document.getElementById('status-msg');
       var cacheBust = new Date().getTime();
-      
       var url = "https://docs.google.com/spreadsheets/d/" + BOOK_KEY + "/gviz/tq?tqx=out:json&sheet=Naxos%20Ops&cb=" + cacheBust;
 
       fetch(url)
@@ -290,7 +328,7 @@
           bookedDatesGlobal.clear(); 
           processNaxosRows(cleanJson.table.rows);
           if (status) status.innerHTML = "✅ Connection fully synchronized. Loaded logs from source spreadsheet.";
-          updateSyncTimestamp(); // Push live update timestamp on perfect sync completion
+          updateSyncTimestamp(); 
         })
         .catch(e => {
           console.error(e);
@@ -333,7 +371,7 @@
           var dateKey = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
           bookedDatesGlobal.add(dateKey);
         }
-      } catch(err) { console.log("Timeline loop bypass", err); }
+      } catch(err) { console.log("Timeline sequence validation filter check", err); }
     }
 
     function processNaxosRows(rows) {
