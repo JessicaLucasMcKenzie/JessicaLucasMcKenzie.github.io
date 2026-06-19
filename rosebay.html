@@ -182,7 +182,7 @@
       <h2>ROSEBAY DASHBOARD</h2>
       <p>Airbnb Workspace 🇦🇺</p>
       <hr class="meta-divider">
-      <div class="revision-block">REV. 1.0.3</div>
+      <div class="revision-block">REV. 1.0.4</div>
       <div class="timestamp-block" id="last-sync-time">Syncing...</div>
     </div>
     <ul class="sidebar-actions">
@@ -265,9 +265,9 @@
       if (!wrapper) return;
       wrapper.innerHTML = "";
 
-      // Pin base view directly to March 2025 to catch early entries
-      var baseYear = 2025;
-      var baseMonth = 2 + currentMonthOffset; 
+      // Start calendar straight on June 2026 to match Naxos
+      var baseYear = 2026;
+      var baseMonth = 5 + currentMonthOffset; 
 
       for (var i = 0; i < 2; i++) {
         var targetMonth = new Date(baseYear, baseMonth + i, 1);
@@ -366,7 +366,7 @@
           var dateKey = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
           bookedDatesGlobal.add(dateKey);
         }
-      } catch(err) { console.log("Timeline skip check", err); }
+      } catch(err) { console.log("Timeline range processing check exception", err); }
     }
 
     function processRosebayRows(rows) {
@@ -385,25 +385,27 @@
 
         totalStays++;
         
-        var refNum = extractStringValue(c[0]) || "—";
-        var inDate = extractStringValue(c[2]) || "—";
-        var outDate = extractStringValue(c[3]) || "—";
+        // CORRRECTED MAPPING TO YOUR EXACT COLUMNS:
+        var refNum = extractStringValue(c[0]) || "—";  // Column A
+        var inDate = extractStringValue(c[1]) || "—";  // Column B
+        var outDate = extractStringValue(c[2]) || "—"; // Column C
         
-        // Auto-extract numbers from cell objects cleanly
+        // Column D: Nights calculation fallback
         var nightsVal = 0;
-        if (c[4]) {
-          if (typeof c[4].v === 'number') nightsVal = c[4].v;
-          else if (c[4].v !== null) nightsVal = parseInt(c[4].v.toString().replace(/[^0-9]/g, '')) || 0;
+        if (c[3]) {
+          if (typeof c[3].v === 'number') nightsVal = c[3].v;
+          else if (c[3].v !== null) nightsVal = parseInt(c[3].v.toString().replace(/[^0-9]/g, '')) || 0;
         }
         
-        var guestName = extractStringValue(c[5]) || "—";
-        var totalGuests = extractStringValue(c[6]) || "—";
-        var checkInNotes = extractStringValue(c[8]) || "—";
+        var guestName = extractStringValue(c[4]) || "—";   // Column E
+        var totalGuests = extractStringValue(c[5]) || "—"; // Column F
+        var checkInNotes = extractStringValue(c[7]) || "—"; // Column H
         
+        // Column J: Strip text characters like "$" or "€" out to fix cleaning logs math string crash
         var costVal = 0;
-        if (c[10]) {
-          if (typeof c[10].v === 'number') costVal = c[10].v;
-          else if (c[10].v !== null) costVal = parseFloat(c[10].v.toString().replace(/[^0-9.]/g, '')) || 0;
+        if (c[9]) {
+          if (typeof c[9].v === 'number') costVal = c[9].v;
+          else if (c[9].v !== null) costVal = parseFloat(c[9].v.toString().replace(/[^0-9.]/g, '')) || 0;
         }
 
         totalNights += nightsVal;
@@ -420,14 +422,14 @@
           '<td><strong>' + guestName + '</strong></td>',
           '<td>' + totalGuests + '</td>',
           '<td>' + checkInNotes + '</td>',
-          '<td>€' + costVal + '</td>'
+          '<td>$' + costVal + '</td>'
         ].join('');
         body.appendChild(tr);
       });
 
       document.getElementById('m-stays').innerText = totalStays;
       document.getElementById('m-nights').innerText = totalNights;
-      document.getElementById('m-costs').innerText = "€" + totalCosts;
+      document.getElementById('m-costs').innerText = "$" + totalCosts.toFixed(2);
 
       generateCalendars();
     }
