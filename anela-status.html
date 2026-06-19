@@ -100,6 +100,37 @@
         });
     }
 
+    // Comprehensive parsing engine to normalize raw sheets data objects vs standard strings
+    function parseGoogleCellToDate(cellObj) {
+      if (!cellObj) return null;
+      
+      var valStr = cellObj.v ? cellObj.v.toString().trim() : "";
+      var formattedStr = cellObj.f ? cellObj.f.toString().trim() : "";
+
+      if (valStr.includes("Date(")) {
+        var matches = valStr.match(/\d+/g);
+        if (matches && matches.length >= 3) {
+          var y = parseInt(matches[0], 10);
+          var m = parseInt(matches[1], 10); 
+          var d = parseInt(matches[2], 10);
+          return new Date(y, m, d);
+        }
+      }
+
+      var activeStr = formattedStr || valStr;
+      if (activeStr.includes("/")) {
+        var parts = activeStr.split('/');
+        if (parts.length >= 3) {
+          var d = parseInt(parts[0], 10);
+          var m = parseInt(parts[1], 10) - 1; 
+          var y = parseInt(parts[2], 10);
+          return new Date(y, m, d);
+        }
+      }
+
+      return null;
+    }
+
     function cleanStr(cell) {
       if (!cell) return "";
       if (cell.f) return cell.f.toString().trim();
@@ -118,25 +149,18 @@
         var c = row.c;
         if (!c || !c[1] || c[1].v === null) return;
 
-        var checkIn = cleanStr(c[1]);
-        var checkOut = cleanStr(c[2]);
+        var checkInDateObj = parseGoogleCellToDate(c[1]);
+        var checkOutDateObj = parseGoogleCellToDate(c[2]);
+
+        if (!checkInDateObj || !checkOutDateObj) return;
+
+        var checkInStr = checkInDateObj.getDate().toString().padStart(2, '0') + '/' + (checkInDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkInDateObj.getFullYear();
+        var checkOutStr = checkOutDateObj.getDate().toString().padStart(2, '0') + '/' + (checkOutDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkOutDateObj.getFullYear();
+
         var guestName = cleanStr(c[4]);
-        
         var costVal = (c[9] && typeof c[9].v === 'number') ? c[9].v : 0;
         
-        // FIXED: Safe parsing for European DD/MM/YYYY date strings
-        var checkoutParts = checkOut.split('/');
-        if (checkoutParts.length < 3) return;
-        
-        var day = parseInt(checkoutParts[0], 10);
-        var month = parseInt(checkoutParts[1], 10) - 1; // JS months run 0-11
-        var year = parseInt(checkoutParts[2], 10);
-        
-        var checkoutDateObj = new Date(year, month, day);
-        checkoutDateObj.setHours(0, 0, 0, 0);
-        
-        // If the checkout date is strictly before today, mark it completed
-        var isComplete = checkoutDateObj < today;
+        var isComplete = checkOutDateObj < today;
         var badgeClass = isComplete ? "badge-complete" : "badge-pending";
         var badgeText = isComplete ? "✅ Cleaned" : "⏳ Scheduled";
 
@@ -144,7 +168,7 @@
         card.className = "project-card";
         card.innerHTML = `
           <div class="project-details">
-            <div class="project-date">Turnover Window: ${checkIn} → ${checkOut}</div>
+            <div class="project-date">Turnover Window: ${checkInStr} → ${checkOutStr}</div>
             <div class="project-title">🏠 Casa Nai Nai</div>
             <div class="project-meta">
               <strong>Incoming Guest:</strong> ${guestName}<br>
@@ -158,6 +182,10 @@
         `;
         container.appendChild(card);
       });
+      
+      if (container.children.length === 0) {
+        container.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 40px;">No operational logs found.</p>`;
+      }
     }
 
     window.onload = fetchStatusPipeline;
