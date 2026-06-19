@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WORKSPACE ACCESS PORTAL</title>
+  <title>NAXOS CONSOLE GATEWAY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
       --brand: #ff5a5f;
-      --border: #334155;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -26,61 +26,60 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      padding: 16px;
+      padding: 24px;
     }
-    .login-card {
+    .login-box {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 32px;
       width: 100%;
-      max-width: 400px;
+      max-width: 380px;
       text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
-    .lock-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
+    h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+    
+    .input-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      text-align: left;
+      margin-bottom: 6px;
+      letter-spacing: 0.05em;
     }
-    h1 { font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.05em; text-transform: uppercase; }
-    p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
-    
-    .input-group { margin-bottom: 16px; text-align: left; }
-    label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.05em; }
-    
-    .password-field {
+    .pin-field {
       width: 100%;
       padding: 12px;
       font-size: 16px;
-      background: #0f172a;
       border: 1px solid var(--border);
-      color: white;
       border-radius: 8px;
       text-align: center;
-      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+      background: #fff;
       font-family: inherit;
     }
-    .password-field:focus {
+    .pin-field:focus {
       outline: none;
       border-color: var(--brand);
     }
     
-    .submit-btn {
+    .unlock-btn {
       width: 100%;
-      background: var(--brand);
+      background-color: var(--brand);
       color: white;
       border: none;
       padding: 12px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
     }
-    .submit-btn:hover { background: #e04f53; }
-    
-    .error-msg {
-      font-size: 13px;
+    .error-text {
+      font-size: 12px;
       color: #ef4444;
       margin-top: 12px;
       font-weight: 500;
@@ -90,41 +89,36 @@
 </head>
 <body>
 
-  <div class="login-card">
-    <div class="lock-icon">🔐</div>
+  <div class="login-box">
     <h1>Console Gateway</h1>
-    <p>Enter password to unlock operational matrices</p>
+    <div class="subtitle">Enter password to unlock operations</div>
     
-    <div class="input-group">
-      <label for="pass-input">Security Password</label>
-      <input type="password" id="pass-input" class="password-field" placeholder="••••••••" onkeydown="checkEnter(event)">
-    </div>
+    <label class="input-label">Security Password</label>
+    <input type="password" id="gateway-pass" class="pin-field" placeholder="••••••••" onkeydown="handleKey(event)">
     
-    <button class="submit-btn" onclick="validateAccess()">Verify Access</button>
-    <div class="error-msg" id="err-box">❌ Incorrect security password. Access Denied.</div>
+    <button class="unlock-btn" onclick="checkGate()">Verify Access</button>
+    <div class="error-text" id="error-msg">❌ Incorrect password. Access denied.</div>
   </div>
 
   <script>
-    // UPDATED: Set Jessica's passphrase configuration parameter
-    var PASSKEY = "nainai";
+    var PASS_KEY = "nainai";
 
-    function validateAccess() {
-      var entry = document.getElementById('pass-input').value.trim();
-      var errorBox = document.getElementById('err-box');
+    function checkGate() {
+      var input = document.getElementById('gateway-pass').value.trim();
+      var err = document.getElementById('error-msg');
 
-      if (entry.toLowerCase() === PASSKEY.toLowerCase()) {
-        errorBox.style.display = "none";
-        // Redirect directly into the operational hub center file
+      if (input.toLowerCase() === PASS_KEY.toLowerCase()) {
+        err.style.display = "none";
         window.location.href = "hub.html";
       } else {
-        errorBox.style.display = "block";
-        document.getElementById('pass-input').value = "";
+        err.style.display = "block";
+        document.getElementById('gateway-pass').value = "";
       }
     }
 
-    function checkEnter(event) {
-      if (event.key === "Enter") {
-        validateAccess();
+    function handleKey(e) {
+      if (e.key === "Enter") {
+        checkGate();
       }
     }
   </script>
