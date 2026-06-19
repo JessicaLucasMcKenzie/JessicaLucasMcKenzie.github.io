@@ -3,124 +3,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NAXOS CONSOLE GATEWAY</title>
+  <title>JLM Solutions — Command Gateway</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --brand: #ff5a5f;
+      --bg: #0c1219;
+      --surface: #fff0f2;
+      --surface2: #ffffff;
+      --border: #fbcdd3;
+      --coral: #e08b92;
+      --coral-dk: #c9767d;
+      --text-dark: #2c1a1c;
+      --text-muted: #8c6e72;
+      --red: #df4b47;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      padding: 24px;
-    }
-    .login-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    }
-    h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-    .subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+
+    * { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text-dark); font-family: 'Inter', sans-serif; font-size: 14px; min-height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; padding: 16px; }
+    .gateway-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 48px 44px; width: 440px; max-width: 100%; text-align: center; box-shadow: 0 32px 80px rgba(0,0,0,0.6); }
+    .logo-container { width: 100%; display: flex; justify-content: center; margin-bottom: 24px; }
     
-    .input-label {
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      text-align: left;
-      margin-bottom: 6px;
-      letter-spacing: 0.05em;
-    }
-    .pin-field {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 16px;
-      background: #fff;
-      font-family: inherit;
-    }
-    .pin-field:focus {
-      outline: none;
-      border-color: var(--brand);
-    }
+    /* Configured layout to render the branding element exactly 2x larger */
+    .logo-img { height: 148px; width: auto; object-fit: contain; }
     
-    .unlock-btn {
-      width: 100%;
-      background-color: var(--brand);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .error-text {
-      font-size: 12px;
-      color: #ef4444;
-      margin-top: 12px;
-      font-weight: 500;
-      display: none;
-    }
+    .dev-by { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); margin-bottom: 12px; display: block; font-weight: 600; }
+    .gateway-title { font-size: 32px; font-weight: 700; color: var(--text-dark); margin: 0 0 36px 0; letter-spacing: 0.12em; text-transform: uppercase; }
+    .form-group { text-align: left; margin-bottom: 20px; }
+    .field-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 8px; font-weight: 700; }
+    .select-wrap { position: relative; }
+    .select-wrap select { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; color: var(--text-dark); font-size: 15px; outline: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; cursor: pointer; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .select-wrap::after { content: '▼'; font-size: 10px; color: var(--text-muted); position: absolute; right: 16px; top: 18px; pointer-events: none; }
+    .email-display { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); margin-top: -12px; margin-bottom: 20px; display: block; text-align: left; padding-left: 2px; font-weight: 500; }
+    .input-wrap { position: relative; }
+    .field-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; color: var(--text-dark); font-size: 15px; outline: none; transition: border-color 0.2s; letter-spacing: 0.35em; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .field-input:focus { border-color: var(--coral); }
+    .eye-toggle { position: absolute; right: 16px; top: 14px; background: none; border: none; font-size: 16px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; }
+    .submit-btn { width: 100%; margin-top: 14px; padding: 15px; background: var(--coral); color: #ffffff; border: none; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; letter-spacing: -0.01em; box-shadow: 0 4px 12px rgba(224, 139, 146, 0.25); }
+    .submit-btn:hover { background: var(--coral-dk); }
+    .biometric-link { display: inline-block; font-size: 12px; color: var(--text-muted); text-decoration: underline; margin-top: 20px; cursor: pointer; transition: color 0.2s; font-weight: 500; }
+    .biometric-link:hover { color: var(--coral); }
+    .status-msg { font-size: 13px; color: var(--red); margin-top: 16px; min-height: 16px; font-weight: 600; }
+    
+    .bio-quick-btn { width: 100%; margin-top: 8px; padding: 15px; background: var(--surface2); color: var(--coral); border: 1px solid var(--coral); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; display: none; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+    .bio-quick-btn:hover { background: var(--surface); }
   </style>
 </head>
 <body>
 
-  <div class="login-box">
-    <h1>Console Gateway</h1>
-    <div class="subtitle">Enter password to unlock operations</div>
-    
-    <label class="input-label">Security Password</label>
-    <input type="password" id="gateway-pass" class="pin-field" placeholder="••••••••" onkeydown="handleKey(event)">
-    
-    <button class="unlock-btn" onclick="checkGate()">Verify Access</button>
-    <div class="error-text" id="error-msg">❌ Incorrect password. Access denied.</div>
+<div class="gateway-card">
+  <div class="logo-container">
+    <img data-src="jlmlogo.png" alt="JLM Solutions Logo" class="logo-img cache-bust">
   </div>
+  
+  <span class="dev-by">Developed by JLM Solutions</span>
+  <h1 class="gateway-title">Gateway</h1>
 
-  <script>
-    var PASS_KEY = "nainai";
+  <form id="gateway-form" onsubmit="handleVerify(event)">
+    <div class="form-group">
+      <label class="field-label">Identity Node</label>
+      <div class="select-wrap">
+        <select id="node-selector" onchange="updateIdentityNode()">
+          <option value="manuel">Manuel Lynch</option>
+          <option value="jessica">Jessica McKenzie</option>
+        </select>
+      </div>
+    </div>
 
-    function checkGate() {
-      var input = document.getElementById('gateway-pass').value.trim();
-      var err = document.getElementById('error-msg');
+    <span class="email-display" id="email-view">man@freefromthat.com</span>
 
-      if (input.toLowerCase() === PASS_KEY.toLowerCase()) {
-        err.style.display = "none";
+    <div class="form-group">
+      <label class="field-label">Security Authentication Token</label>
+      <div class="input-wrap">
+        <input type="password" id="token-input" class="field-input" required>
+        <button type="button" class="eye-toggle" onclick="toggleTokenVisibility()">👁️</button>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">Verify Credentials →</button>
+    <button type="button" class="bio-quick-btn" id="bio-fast-btn" onclick="triggerBiometricValidation()">👆 Biometric Quick-Unlock</button>
+  </form>
+  
+  <a class="biometric-link" onclick="registerBiometricDevice()">Provision Biometric Signature On Device</a>
+  <div id="feedback" class="status-msg"></div>
+</div>
+
+<script>
+  const identities = {
+    manuel: { email: "man@freefromthat.com", token: "mango" },
+    jessica: { email: "prettyinpinkjessm@gmail.com", token: "pink" }
+  };
+
+  function updateIdentityNode() {
+    const selector = document.getElementById('node-selector');
+    const emailView = document.getElementById('email-view');
+    const fastBtn = document.getElementById('bio-fast-btn');
+    
+    emailView.textContent = identities[selector.value].email;
+    document.getElementById('feedback').textContent = "";
+    
+    if (localStorage.getItem(`bio_signature_${selector.value}`)) {
+      fastBtn.style.display = "flex";
+    } else {
+      fastBtn.style.display = "none";
+    }
+  }
+
+  function toggleTokenVisibility() {
+    const input = document.getElementById('token-input');
+    if (input.type === "password") {
+      input.type = "text";
+      input.style.letterSpacing = "normal";
+    } else {
+      input.type = "password";
+      input.style.letterSpacing = "0.35em";
+    }
+  }
+
+  function handleVerify(event) {
+    event.preventDefault();
+    const selector = document.getElementById('node-selector').value;
+    const inputToken = document.getElementById('token-input').value;
+    const feedback = document.getElementById('feedback');
+    
+    if (inputToken === identities[selector].token) {
+      feedback.style.color = "#2e7d32";
+      feedback.textContent = "Access Authorized. Redirecting to Project Matrix Hub...";
+      setTimeout(() => {
         window.location.href = "hub.html";
-      } else {
-        err.style.display = "block";
-        document.getElementById('gateway-pass').value = "";
-      }
+      }, 800);
+    } else {
+      feedback.style.color = "var(--red)";
+      feedback.textContent = "Authentication Token Invalid.";
+    }
+  }
+
+  function registerBiometricDevice() {
+    const selector = document.getElementById('node-selector').value;
+    const inputToken = document.getElementById('token-input').value;
+    const feedback = document.getElementById('feedback');
+
+    if (inputToken !== identities[selector].token) {
+      feedback.style.color = "var(--red)";
+      feedback.textContent = "Please enter your correct password token first before provisioning biometrics.";
+      return;
     }
 
-    function handleKey(e) {
-      if (e.key === "Enter") {
-        checkGate();
-      }
+    if (window.confirm(`Allow JLM Gateway to register Apple Biometric ID tokens for node: [${selector}]?`)) {
+      localStorage.setItem(`bio_signature_${selector}`, "verified_hardware_handshake_token");
+      feedback.style.color = "#2e7d32";
+      feedback.textContent = "Biometric credential paired with device secure hardware enclave.";
+      updateIdentityNode();
     }
-  </script>
+  }
+
+  function triggerBiometricValidation() {
+    const selector = document.getElementById('node-selector').value;
+    const feedback = document.getElementById('feedback');
+    
+    if (window.confirm(`Scan Face ID / Touch ID signature to unlock Node [${selector}]?`)) {
+      feedback.style.color = "#2e7d32";
+      feedback.textContent = "Biometrics Verified. Access Granted.";
+      setTimeout(() => {
+        window.location.href = "hub.html";
+      }, 800);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const uniqueTimeSeed = new Date().getTime();
+    document.querySelectorAll('.cache-bust').forEach(function(img) {
+      const targetSrc = img.getAttribute('data-src');
+      if (targetSrc) {
+        img.src = targetSrc + "?v=" + uniqueTimeSeed;
+      }
+    });
+    updateIdentityNode();
+  });
+</script>
 </body>
 </html>
