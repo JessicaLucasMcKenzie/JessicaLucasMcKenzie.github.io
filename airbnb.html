@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AIRBNB MASTER LIVE MANAGEMENT</title>
+  <title>AIRBNB LIVE MANAGEMENT</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --bg-main: #fcfbfa;
+      --bg-main: #f8fafc;
       --sidebar-bg: #ffffff;
       --text-main: #1e293b;
       --text-muted: #64748b;
+      --border: #e2e8f0;
       --rose-primary: #ff5a5f;
       --rose-light: #fff1f2;
-      --border: #f1f1f0;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,98 +46,71 @@
       padding-bottom: 20px;
       text-align: center;
     }
-    .logo-img { width: 100%; max-width: 140px; height: auto; object-fit: contain; margin-bottom: 14px; }
+    .logo-img { width: 100%; max-width: 130px; height: auto; object-fit: contain; margin-bottom: 14px; }
     .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #0f172a; text-transform: uppercase; }
     .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
     .meta-divider { width: 100%; border: 0; height: 1px; background-color: var(--border); margin: 16px 0; }
-    .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-bottom: 16px; text-align: center; }
+    .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-bottom: 16px; }
 
-    .nav-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .nav-item button {
+    .sidebar-actions { display: flex; flex-direction: column; gap: 12px; list-style: none; }
+    .side-btn {
       width: 100%;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 16px;
-      color: #475569;
+      gap: 8px;
+      padding: 10px 14px;
       background: none;
       border: none;
-      border-radius: 8px;
-      font-size: 14px;
+      border-radius: 6px;
+      font-size: 13px;
       font-weight: 500;
-      text-align: left;
+      color: #475569;
       cursor: pointer;
+      text-align: left;
+      text-decoration: none;
     }
-    .nav-item.active button {
-      background-color: var(--rose-light);
-      color: var(--rose-primary);
-    }
+    .side-btn.btn-active { background-color: var(--rose-light); color: var(--rose-primary); font-weight: 600; }
 
     .main-viewport { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 40px; }
-    .top-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-    .top-header h1 { font-size: 22px; font-weight: 700; color: #0f172a; text-transform: uppercase; letter-spacing: -0.01em; }
-    .hub-matrix-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 6px; }
+    .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .top-header h1 { font-size: 20px; font-weight: 700; color: #0f172a; }
+    .hub-matrix-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); text-decoration: none; }
 
-    .content-container { display: flex; flex-direction: column; gap: 32px; max-width: 1400px; width: 100%; margin: 0 auto; }
-    .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 14px 18px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; display: flex; align-items: center; gap: 10px; }
+    .content-container { display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; margin: 0 auto; }
+    .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
-    /* Custom Responsive Property Navigation Grid Cards */
-    .property-cards-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .property-card {
-      text-decoration: none;
-      color: inherit;
-      outline: none;
-    }
-    .card-body {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 28px;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s ease-in-out;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    }
-    .property-card:hover .card-body {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
-    }
-    .card-body.naxos-card:hover { border-color: #0284c7; }
-    .card-body.rosebay-card:hover { border-color: #e11d48; }
+    .property-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .prop-card { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; transition: border-color 0.15s ease; }
+    .prop-card:hover { border-color: var(--rose-primary); }
+    .prop-loc { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--rose-primary); letter-spacing: 0.05em; margin-bottom: 4px; display: block; }
+    .prop-title { font-size: 16px; font-weight: 700; color: #0f172a; }
+    .prop-cleaner { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
-    .tag-location { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; display: block; }
-    .naxos-card .tag-location { color: #0284c7; }
-    .rosebay-card .tag-location { color: #e11d48; }
+    .workspace-bar { background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+    .view-badge { background-color: var(--rose-primary); color: #ffffff; padding: 6px 14px; border-radius: 6px; font-weight: 600; }
 
-    .card-title { font-size: 20px; font-weight: 700; color: #0f172a; display: flex; align-items: center; justify-content: space-between; }
-    .card-cleaner { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
-    .action-badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: #f1f5f9; color: #475569; margin-top: 14px; display: inline-block; }
-
-    .panel-info-banner { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; color: var(--text-muted); font-size: 14px; }
+    .panel-title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: capitalize; }
+    .panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    
+    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .data-table th { padding: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); background-color: #f8fafc; }
+    .data-table td { padding: 14px 12px; font-size: 12px; border-bottom: 1px solid var(--border); color: #334155; }
   </style>
 </head>
 <body>
 
   <aside class="sidebar">
     <div class="logo-container">
-      <img src="NEIGHBORHOOD DENTAL LOGO.png" alt="Matrix Logo" class="logo-img">
+      <img src="airbnblogo.png" alt="Airbnb Logo" class="logo-img">
       <h2>AIRBNB DASHBOARD</h2>
       <p>Operations Portal</p>
       <hr class="meta-divider">
-      <div class="revision-block">REV. 2.2.0 &bull; LIVE BOOKINGS</div>
+      <div class="revision-block">REV. 2.1.1 &bull; LIVE BOOKINGS</div>
     </div>
-    <ul class="nav-links">
-      <li class="nav-item active"><button>📋 Overview Console</button></li>
+    <ul class="sidebar-actions">
+      <li><button class="side-btn btn-active" onclick="loadLiveMasterGrid()">🔄 Refresh Pipeline</button></li>
+      <li><a href="https://docs.google.com/spreadsheets/d/1Pgg9OGAKEBLZoeXxbMeuaBbJ5o-_c52cVGJAm4t2Md0/edit" target="_blank" class="side-btn">📋 Open Source Sheet</a></li>
     </ul>
   </aside>
 
@@ -148,41 +121,80 @@
     </header>
 
     <div class="content-container">
-      <div class="api-status-strip">
-        ✅ API Status: Connection fully synchronized. Loaded direct logs from source spreadsheet.
+      <div class="api-status-strip" id="status-message">✅ API Status: Connection fully synchronized. Loaded direct logs from source spreadsheet.</div>
+
+      <div class="property-grid">
+        <a href="naxos.html" class="prop-card">
+          <span class="prop-loc" style="color: #0284c7;">📍 CYCLADES ISLANDS</span>
+          <div class="prop-title">Naxos Live Sheet Feed 🇬🇷</div>
+          <div class="prop-cleaner">Cleaner: Anela Korone</div>
+        </a>
+        <a href="rosebay.html" class="prop-card">
+          <span class="prop-loc">📍 SYDNEY HARBOR</span>
+          <div class="prop-title">Rosebay Live Sheet Feed 🇦🇺</div>
+          <div class="prop-cleaner">Cleaner: Khami</div>
+        </a>
       </div>
 
-      <div class="property-cards-container">
-        
-        <a href="naxos.html" class="property-card">
-          <div class="card-body naxos-card">
-            <span class="tag-location">📍 Cyclades Islands</span>
-            <div class="card-title">
-              Naxos Live Sheet Feed <span>🇬🇷</span>
-            </div>
-            <p class="card-cleaner">Cleaner: <strong>Anela Korone</strong></p>
-            <span class="action-badge">Click to open dynamic view →</span>
-          </div>
-        </a>
-
-        <a href="rosebay.html" class="property-card">
-          <div class="card-body rosebay-card">
-            <span class="tag-location">📍 Sydney Harbor</span>
-            <div class="card-title">
-              Rosebay Live Sheet Feed <span>🇦🇺</span>
-            </div>
-            <p class="card-cleaner">Cleaner: <strong>Khami</strong></p>
-            <span class="action-badge">Click to open dynamic view →</span>
-          </div>
-        </a>
-
+      <div class="workspace-bar">
+        <span style="color: var(--text-muted); font-weight: 500;">Active Workspace View:</span>
+        <span class="view-badge">Jessica (Upcoming Bookings)</span>
       </div>
 
-      <div class="panel-info-banner">
-        💡 <strong>System Navigation Note:</strong> Click on either property link engine above to view completely interactive row lists, calculated automated KPIs, real-time status buffers, and sliding drawer guest records profiles.
+      <div>
+        <div class="panel-title">Live Feed from Matrix ("Bookings" Tab)</div>
+        <section class="panel">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>MONTH</th>
+                <th>STAY DATES</th>
+                <th>NIGHTS</th>
+                <th>GUEST NAME</th>
+                <th># GUESTS</th>
+                <th>PHONE</th>
+                <th>CHECK-IN NOTES</th>
+                <th>CLEANING 1</th>
+                <th>CLEANING 2</th>
+                <th>CLEANING 3</th>
+                <th>CHECK OUT NOTE</th>
+              </tr>
+            </thead>
+            <tbody id="master-feed-body">
+              <tr><td colspan="11" style="text-align:center; color:var(--text-muted); padding:30px;">Connecting live streaming loops...</td></tr>
+            </tbody>
+          </table>
+        </section>
       </div>
     </div>
   </main>
 
-</body>
-</html>
+  <script>
+    var WORKBOOK_KEY = "1Pgg9OGAKEBLZoeXxbMeuaBbJ5o-_c52cVGJAm4t2Md0";
+
+    function loadLiveMasterGrid() {
+      var status = document.getElementById('status-message');
+      var bust = new Date().getTime();
+      var url = "https://docs.google.com/spreadsheets/d/" + WORKBOOK_KEY + "/gviz/tq?tqx=out:json&sheet=Bookings&_" + bust;
+
+      fetch(url)
+        .then(r => r.text())
+        .then(text => {
+          var rawJson = JSON.parse(text.substr(47).slice(0, -2));
+          renderMasterTable(rawJson.table.rows);
+          if(status) status.innerHTML = "✅ API Status: Connection fully synchronized. Loaded direct logs from source spreadsheet.";
+        })
+        .catch(err => {
+          console.error(err);
+          if(status) status.innerHTML = "❌ API Status: Cache synchronization refresh failed.";
+        });
+    }
+
+    function renderMasterTable(rows) {
+      var body = document.getElementById('master-feed-body');
+      if(!body || !rows) return;
+      body.innerHTML = "";
+
+      rows.forEach((row, idx) => {
+        if (idx === 0) return; // Skip headers
+        var cells
