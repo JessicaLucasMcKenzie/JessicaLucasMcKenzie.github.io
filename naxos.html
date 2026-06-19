@@ -49,6 +49,26 @@
     .logo-img { width: 100%; max-width: 130px; height: auto; object-fit: contain; margin-bottom: 14px; }
     .logo-container h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #0f172a; text-transform: uppercase; }
     .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .sidebar-meta-text { font-size: 12px; color: #475569; margin-top: 4px; line-height: 1.5; text-align: center; }
+    
+    .public-listing-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--rose-primary);
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid #fee2e2;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background-color: var(--rose-light);
+      transition: all 0.2s ease;
+    }
+    .public-listing-link:hover {
+      background-color: var(--rose-primary);
+      color: #ffffff;
+      border-color: var(--rose-primary);
+    }
 
     .meta-divider { width: 100%; border: 0; height: 1px; background-color: var(--border); margin: 16px 0; }
     .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; }
@@ -81,13 +101,12 @@
     .content-container { display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; margin: 0 auto; }
     .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
-    /* Interactive Calendar Framework CSS with Red Navigation Control Ends */
     .calendar-container-wrapper {
       position: relative;
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 32px 64px; /* Generates space on sides for navigation arrows */
+      padding: 32px 64px;
     }
     .calendar-container {
       display: grid;
@@ -136,7 +155,6 @@
       border-radius: 50%;
     }
 
-    /* Red Floating Arrow Layout Handles */
     .cal-nav-btn {
       position: absolute;
       top: 50%;
@@ -183,8 +201,17 @@
       <img src="airbnblogo.png" alt="Airbnb Logo" class="logo-img">
       <h2>NAXOS DASHBOARD</h2>
       <p>Airbnb Workspace 🇬🇷</p>
+      
+      <!-- ADDED SIDEBAR META CONSOLE PROFILE LABELS -->
+      <div class="sidebar-meta-text">
+        <div>📍 CYCLADES ISLANDS</div>
+        <div>Naxos Live Sheet Feed 🇬🇷</div>
+        <div>Cleaner: Anela Korone</div>
+        <a href="https://www.airbnb.com/rooms/1027362852788685296" target="_blank" class="public-listing-link">🏠 View Public Listing</a>
+      </div>
+
       <hr class="meta-divider">
-      <div class="revision-block">REV. 1.0.2</div>
+      <div class="revision-block">REV. 1.0.3</div>
       <div class="timestamp-block" id="last-sync-time">Syncing...</div>
     </div>
     <ul class="sidebar-actions">
@@ -202,7 +229,6 @@
     <div class="content-container">
       <div class="api-status-strip" id="status-msg">⏳ Syncing Pipeline Data...</div>
 
-      <!-- Calendar Outer Frame Containing Navigation Controls -->
       <div class="calendar-container-wrapper">
         <button class="cal-nav-btn cal-nav-left" onclick="navigateCalendar(-1)">‹</button>
         <div class="calendar-container" id="calendar-wrapper"></div>
@@ -252,8 +278,6 @@
   <script>
     var BOOK_KEY = "1TvZdAANoIITpGLbrWKGh7ujniEgPq3rgI2tNbi4yB1o";
     var bookedDatesGlobal = new Set();
-    
-    // Interactive Pagination State Variable
     var currentMonthOffset = 0;
 
     function updateSyncTimestamp() {
@@ -271,8 +295,7 @@
       wrapper.innerHTML = "";
 
       var baseYear = 2026;
-      // Add dynamic month navigation offset to target layout anchor
-      var baseMonth = 5 + currentMonthOffset; 
+      var baseMonth = 5 + currentMonthOffset; // June anchor
 
       for (var i = 0; i < 2; i++) {
         var targetMonth = new Date(baseYear, baseMonth + i, 1);
@@ -371,7 +394,7 @@
           var dateKey = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
           bookedDatesGlobal.add(dateKey);
         }
-      } catch(err) { console.log("Timeline sequence validation filter check", err); }
+      } catch(err) { console.log("Timeline loop bypass", err); }
     }
 
     function processNaxosRows(rows) {
