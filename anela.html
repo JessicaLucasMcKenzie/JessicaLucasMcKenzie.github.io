@@ -1,1 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANELA - NAXOS OPERATIONS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --brand: #ff5a5f;
+      --whatsapp: #25D366;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 12px 0;
+    }
+    h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    
+    .status-strip {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    
+    .feed-container { display: flex; flex-direction: column; gap: 16px; }
+    
+    .task-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    
+    .card-date {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--brand);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    
+    .card-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    
+    .info-line {
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+    }
+    .info-line strong { color: var(--text-muted); font-weight: 500; }
+    
+    .notes-box {
+      background: #f1f5f9;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #475569;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+    
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background-color: var(--whatsapp);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 14px;
+      box-shadow: 0 2px 4px rgba(37, 211, 102, 0.2);
+    }
+  </style>
+</head>
+<body>
 
+  <header>
+    <h1>Anela's Schedule</h1>
+    <div class="subtitle">Casa Nai Nai Operational Feed 🇬🇷</div>
+  </header>
+
+  <div class="status-strip" id="sync-msg">⏳ Fetching schedule pipeline...</div>
+
+  <div class="feed-container" id="task-feed"></div>
+
+  <script>
+    // REPLACE WITH YOUR ACTUAL DESIRED PHONE NUMBER STRING (e.g., "+306900000000")
+    var HOST_PHONE = "YOUR_PHONE_NUMBER_HERE"; 
+    var WORKBOOK_KEY = "1TvZdAANoIITpGLbrWKGh7ujniEgPq3rgI2tNbi4yB1o";
+
+    function fetchSchedule() {
+      var cacheBust = new Date().getTime();
+      var url = "https://docs.google.com/spreadsheets/d/" + WORKBOOK_KEY + "/gviz/tq?tqx=out:json&sheet=Naxos%20Ops&cb=" + cacheBust;
+
+      fetch(url)
+        .then(r => r.text())
+        .then(raw => {
+          var cleanJson = JSON.parse(raw.substr(47).slice(0, -2));
+          renderTasks(cleanJson.table.rows);
+          document.getElementById('sync-msg').innerText = "✅ Schedule Live & Synchronized";
+        })
+        .catch(e => {
+          document.getElementById('sync-msg').innerText = "❌ Network connection sync error";
+        });
+    }
+
+    function cleanStr(cell) {
+      if (!cell) return "";
+      if (cell.f) return cell.f.toString().trim();
+      return cell.v !== null ? cell.v.toString().trim() : "";
+    }
+
+    function renderTasks(rows) {
+      var container = document.getElementById('task-feed');
+      container.innerHTML = "";
+
+      rows.forEach((row, idx) => {
+        if (idx === 0) return;
+        var c = row.c;
+        if (!c || !c[1] || c[1].v === null) return;
+
+        var checkIn = cleanStr(c[1]);
+        var checkOut = cleanStr(c[2]);
+        var guestName = cleanStr(c[4]);
+        var guestCount = cleanStr(c[5]);
+        var instructions = cleanStr(c[7]) || "Standard turnaround procedures.";
+
+        // Format dates cleanly for her visual task titles
+        var dateLabel = "Turnover Date: " + checkOut;
+
+        var waMessage = encodeURIComponent("Hi! Just letting you know Casa Nai Nai is fully cleaned, turned over, and ready for the next guests. 👍");
+        var waUrl = "https://api.whatsapp.com/send?phone=" + HOST_PHONE + "&text=" + waMessage;
+
+        var card = document.createElement('div');
+        card.className = "task-card";
+        card.innerHTML = `
+          <div class="card-date">${dateLabel}</div>
+          <div class="card-title">🏠 Casa Nai Nai</div>
+          <div class="info-line"><strong>Guest Checking Out:</strong> <span>${guestName}</span></div>
+          <div class="info-line"><strong>Arrival Window:</strong> <span>${checkIn} → ${checkOut}</span></div>
+          <div class="info-line"><strong>Total Occupants:</strong> <span>${guestCount}</span></div>
+          <div class="notes-box"><strong>📋 Notes:</strong> ${instructions}</div>
+          <a href="${waUrl}" class="wa-btn" target="_blank">🟢 ✅ Confirm Cleaned via WhatsApp</a>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.onload = fetchSchedule;
+  </script>
+</body>
+</html>
