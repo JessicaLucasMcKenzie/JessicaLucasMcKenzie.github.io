@@ -119,7 +119,6 @@
   <div class="feed-container" id="task-feed"></div>
 
   <script>
-    // Configured directly with Jessica's contact destination string
     var HOST_PHONE = "306982848456"; 
     var WORKBOOK_KEY = "1TvZdAANoIITpGLbrWKGh7ujniEgPq3rgI2tNbi4yB1o";
 
@@ -167,10 +166,15 @@
         var guestCount = cleanStr(c[5]);
         var instructions = cleanStr(c[7]) || "Standard turnaround procedures.";
 
-        // Convert the check-out string (MM/DD/YYYY) into a timestamp date object
+        // FIXED: Now safely parses European format: DD/MM/YYYY
         var outParts = checkOut.split('/');
         if (outParts.length < 3) return;
-        var checkOutDateObj = new Date(parseInt(outParts[2]), parseInt(outParts[0]) - 1, parseInt(outParts[1]));
+        
+        var day = parseInt(outParts[0], 10);
+        var month = parseInt(outParts[1], 10) - 1; // JS months run 0-11
+        var year = parseInt(outParts[2], 10);
+        
+        var checkOutDateObj = new Date(year, month, day);
         checkOutDateObj.setHours(0, 0, 0, 0);
 
         // Date filter logic validation window checks
