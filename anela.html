@@ -138,6 +138,39 @@
         });
     }
 
+    // Smart date parsing function that reads both Google Date formats and European text strings
+    function parseGoogleCellToDate(cellObj) {
+      if (!cellObj) return null;
+      
+      var valStr = cellObj.v ? cellObj.v.toString().trim() : "";
+      var formattedStr = cellObj.f ? cellObj.f.toString().trim() : "";
+
+      // 1. Check if Google passed a raw Date object string: Date(2026,5,19)
+      if (valStr.includes("Date(")) {
+        var matches = valStr.match(/\d+/g);
+        if (matches && matches.length >= 3) {
+          var y = parseInt(matches[0], 10);
+          var m = parseInt(matches[1], 10); // Google Sheets returns 0-indexed months already
+          var d = parseInt(matches[2], 10);
+          return new Date(y, m, d);
+        }
+      }
+
+      // 2. Fall back to parsing a standard text string (DD/MM/YYYY)
+      var activeStr = formattedStr || valStr;
+      if (activeStr.includes("/")) {
+        var parts = activeStr.split('/');
+        if (parts.length >= 3) {
+          var d = parseInt(parts[0], 10);
+          var m = parseInt(parts[1], 10) - 1; // Convert to JS 0-indexed month
+          var y = parseInt(parts[2], 10);
+          return new Date(y, m, d);
+        }
+      }
+
+      return null;
+    }
+
     function cleanStr(cell) {
       if (!cell) return "";
       if (cell.f) return cell.f.toString().trim();
@@ -148,7 +181,6 @@
       var container = document.getElementById('task-feed');
       container.innerHTML = "";
 
-      // Target frame timeline threshold: Current date minus 3 days boundary line
       var cutOffDate = new Date();
       cutOffDate.setDate(cutOffDate.getDate() - 3);
       cutOffDate.setHours(0, 0, 0, 0);
@@ -160,27 +192,24 @@
         var c = row.c;
         if (!c || !c[1] || c[1].v === null) return;
 
-        var checkIn = cleanStr(c[1]);
-        var checkOut = cleanStr(c[2]);
+        // Use smart parsing for both check-in and check-out cells
+        var checkInDateObj = parseGoogleCellToDate(c[1]);
+        var checkOutDateObj = parseGoogleCellToDate(c[2]);
+
+        if (!checkInDateObj || !checkOutDateObj) return; // Skip if date is corrupt
+
+        // Format clean European date strings for displaying on cards
+        var checkInStr = checkInDateObj.getDate().toString().padStart(2, '0') + '/' + (checkInDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkInDateObj.getFullYear();
+        var checkOutStr = checkOutDateObj.getDate().toString().padStart(2, '0') + '/' + (checkOutDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkOutDateObj.getFullYear();
+
         var guestName = cleanStr(c[4]);
         var guestCount = cleanStr(c[5]);
         var instructions = cleanStr(c[7]) || "Standard turnaround procedures.";
 
-        // FIXED: Now safely parses European format: DD/MM/YYYY
-        var outParts = checkOut.split('/');
-        if (outParts.length < 3) return;
-        
-        var day = parseInt(outParts[0], 10);
-        var month = parseInt(outParts[1], 10) - 1; // JS months run 0-11
-        var year = parseInt(outParts[2], 10);
-        
-        var checkOutDateObj = new Date(year, month, day);
-        checkOutDateObj.setHours(0, 0, 0, 0);
-
-        // Date filter logic validation window checks
+        // Date window check evaluation
         if (checkOutDateObj >= cutOffDate) {
           displayedCount++;
-          var dateLabel = "Turnover Date: " + checkOut;
+          var dateLabel = "Turnover Date: " + checkOutStr;
 
           var waMessage = encodeURIComponent("Hi! Just letting you know Casa Nai Nai is fully cleaned, turned over, and ready for the next guests. 👍");
           var waUrl = "https://api.whatsapp.com/send?phone=" + HOST_PHONE + "&text=" + waMessage;
@@ -191,7 +220,7 @@
             <div class="card-date">${dateLabel}</div>
             <div class="card-title">🏠 Casa Nai Nai</div>
             <div class="info-line"><strong>Guest Checking Out:</strong> <span>${guestName}</span></div>
-            <div class="info-line"><strong>Arrival Window:</strong> <span>${checkIn} → ${checkOut}</span></div>
+            <div class="info-line"><strong>Arrival Window:</strong> <span>${checkInStr} → ${checkOutStr}</span></div>
             <div class="info-line"><strong>Total Occupants:</strong> <span>${guestCount}</span></div>
             <div class="notes-box"><strong>📋 Notes:</strong> ${instructions}</div>
             <a href="${waUrl}" class="wa-btn" target="_blank">🟢 ✅ Confirm Cleaned via WhatsApp</a>
