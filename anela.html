@@ -119,8 +119,8 @@
   <div class="feed-container" id="task-feed"></div>
 
   <script>
-    // REPLACE WITH YOUR ACTUAL DESIRED PHONE NUMBER STRING (e.g., "+306900000000")
-    var HOST_PHONE = "YOUR_PHONE_NUMBER_HERE"; 
+    // Configured directly with Jessica's contact destination string
+    var HOST_PHONE = "306982848456"; 
     var WORKBOOK_KEY = "1TvZdAANoIITpGLbrWKGh7ujniEgPq3rgI2tNbi4yB1o";
 
     function fetchSchedule() {
@@ -149,6 +149,13 @@
       var container = document.getElementById('task-feed');
       container.innerHTML = "";
 
+      // Target frame timeline threshold: Current date minus 3 days boundary line
+      var cutOffDate = new Date();
+      cutOffDate.setDate(cutOffDate.getDate() - 3);
+      cutOffDate.setHours(0, 0, 0, 0);
+
+      var displayedCount = 0;
+
       rows.forEach((row, idx) => {
         if (idx === 0) return;
         var c = row.c;
@@ -160,25 +167,38 @@
         var guestCount = cleanStr(c[5]);
         var instructions = cleanStr(c[7]) || "Standard turnaround procedures.";
 
-        // Format dates cleanly for her visual task titles
-        var dateLabel = "Turnover Date: " + checkOut;
+        // Convert the check-out string (MM/DD/YYYY) into a timestamp date object
+        var outParts = checkOut.split('/');
+        if (outParts.length < 3) return;
+        var checkOutDateObj = new Date(parseInt(outParts[2]), parseInt(outParts[0]) - 1, parseInt(outParts[1]));
+        checkOutDateObj.setHours(0, 0, 0, 0);
 
-        var waMessage = encodeURIComponent("Hi! Just letting you know Casa Nai Nai is fully cleaned, turned over, and ready for the next guests. 👍");
-        var waUrl = "https://api.whatsapp.com/send?phone=" + HOST_PHONE + "&text=" + waMessage;
+        // Date filter logic validation window checks
+        if (checkOutDateObj >= cutOffDate) {
+          displayedCount++;
+          var dateLabel = "Turnover Date: " + checkOut;
 
-        var card = document.createElement('div');
-        card.className = "task-card";
-        card.innerHTML = `
-          <div class="card-date">${dateLabel}</div>
-          <div class="card-title">🏠 Casa Nai Nai</div>
-          <div class="info-line"><strong>Guest Checking Out:</strong> <span>${guestName}</span></div>
-          <div class="info-line"><strong>Arrival Window:</strong> <span>${checkIn} → ${checkOut}</span></div>
-          <div class="info-line"><strong>Total Occupants:</strong> <span>${guestCount}</span></div>
-          <div class="notes-box"><strong>📋 Notes:</strong> ${instructions}</div>
-          <a href="${waUrl}" class="wa-btn" target="_blank">🟢 ✅ Confirm Cleaned via WhatsApp</a>
-        `;
-        container.appendChild(card);
+          var waMessage = encodeURIComponent("Hi! Just letting you know Casa Nai Nai is fully cleaned, turned over, and ready for the next guests. 👍");
+          var waUrl = "https://api.whatsapp.com/send?phone=" + HOST_PHONE + "&text=" + waMessage;
+
+          var card = document.createElement('div');
+          card.className = "task-card";
+          card.innerHTML = `
+            <div class="card-date">${dateLabel}</div>
+            <div class="card-title">🏠 Casa Nai Nai</div>
+            <div class="info-line"><strong>Guest Checking Out:</strong> <span>${guestName}</span></div>
+            <div class="info-line"><strong>Arrival Window:</strong> <span>${checkIn} → ${checkOut}</span></div>
+            <div class="info-line"><strong>Total Occupants:</strong> <span>${guestCount}</span></div>
+            <div class="notes-box"><strong>📋 Notes:</strong> ${instructions}</div>
+            <a href="${waUrl}" class="wa-btn" target="_blank">🟢 ✅ Confirm Cleaned via WhatsApp</a>
+          `;
+          container.appendChild(card);
+        }
       });
+
+      if (displayedCount === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:40px; font-size:14px;">No upcoming checkouts scheduled in the active pipeline frame.</p>`;
+      }
     }
 
     window.onload = fetchSchedule;
