@@ -80,7 +80,7 @@
     .content-container { display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; margin: 0 auto; }
     .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
-    /* Clean Integrated Calendar Container Layout */
+    /* Calendar Box Layout */
     .calendar-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -115,8 +115,8 @@
     .calendar-cell {
       font-size: 13px;
       font-weight: 500;
-      height: 40px;
-      width: 40px;
+      height: 38px;
+      width: 38px;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -125,7 +125,7 @@
       position: relative;
     }
     
-    /* Authentic Solid Black Circle Day Highlight Layout */
+    /* Solid Black Circle Indicator */
     .calendar-cell.booked {
       background-color: #222222 !important;
       color: #ffffff !important;
@@ -171,7 +171,6 @@
     <div class="content-container">
       <div class="api-status-strip" id="status-msg">✅ Connection fully synchronized. Loaded logs from source spreadsheet.</div>
 
-      <!-- Integrated Calendar Section Layout Row -->
       <div class="calendar-container" id="calendar-wrapper"></div>
 
       <div class="metrics-row">
@@ -269,6 +268,7 @@
         .then(r => r.text())
         .then(raw => {
           var cleanJson = JSON.parse(raw.substr(47).slice(0, -2));
+          bookedDatesGlobal.clear(); // Reset before parsing fresh data
           processNaxosRows(cleanJson.table.rows);
           if (status) status.innerHTML = "✅ Connection fully synchronized. Loaded logs from source spreadsheet.";
         })
@@ -280,14 +280,20 @@
 
     function parseDatesIntoCalendar(dateStr) {
       try {
-        var parts = dateStr.split('-');
+        // Robust splitter handles hyphens (-), en-dashes (–), and spaces
+        var parts = dateStr.split(/[-–]/);
         if(parts.length < 2) return;
-        var startPart = parts[0].trim().split(' ');
+        
+        var startPart = parts[0].trim().split(/\s+/);
         var endDay = parseInt(parts[1].trim());
         var monthStr = startPart[0];
         var startDay = parseInt(startPart[1]);
 
-        var monthsMap = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 };
+        var monthsMap = { 
+          Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11,
+          January:0, February:1, March:2, April:3, May:4, June:5, July:6, August:7, September:8, October:9, November:10, December:11
+        };
+        
         var currentYear = 2026;
         var targetMonthIdx = monthsMap[monthStr];
 
@@ -297,7 +303,7 @@
             bookedDatesGlobal.add(dateKey);
           }
         }
-      } catch(err) { console.log("Date parser parsing bypass", err); }
+      } catch(err) { console.log("Date parsing exception bypass", err); }
     }
 
     function processNaxosRows(rows) {
@@ -337,7 +343,7 @@
           '<td>' + displayVal(4) + '</td>',
           '<td>' + displayVal(5) + '</td>',
           '<td>' + displayVal(6) + '</td>',
-          '<td>€' + displayVal(7) + '</td>'
+          '<td>' + displayVal(7) + '</td>'
         ].join('');
         body.appendChild(tr);
       });
