@@ -221,7 +221,7 @@
       wrapper.innerHTML = "";
 
       var baseYear = 2026;
-      var baseMonth = 5; // June 2026 perspective loop index anchor
+      var baseMonth = 5; // June anchor
 
       for (var i = 0; i < 2; i++) {
         var targetMonth = new Date(baseYear, baseMonth + i, 1);
@@ -263,8 +263,9 @@
     function fetchNaxosData() {
       var status = document.getElementById('status-msg');
       var cacheBust = new Date().getTime();
-      // Appending built-in sheet designation routing parameters fixes the visualization API mismatch error
-      var url = "https://docs.google.com/spreadsheets/d/" + BOOK_KEY + "/gviz/tq?tqx=out:json&sheet=Sheet1&cb=" + cacheBust;
+      
+      // EXPLICITLY TARGETING THE "Naxos Ops" TAB
+      var url = "https://docs.google.com/spreadsheets/d/" + BOOK_KEY + "/gviz/tq?tqx=out:json&sheet=Naxos%20Ops&cb=" + cacheBust;
 
       fetch(url)
         .then(r => r.text())
@@ -315,7 +316,7 @@
           var dateKey = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
           bookedDatesGlobal.add(dateKey);
         }
-      } catch(err) { console.log("Timeline sequence validation bypass", err); }
+      } catch(err) { console.log("Timeline sequence exception filter check", err); }
     }
 
     function processNaxosRows(rows) {
@@ -350,7 +351,7 @@
 
         var tr = document.createElement('tr');
         tr.innerHTML = [
-          '<td>' + refNum + '</td>',
+          '<td><a href="https://www.airbnb.com/hosting/reservations/details/' + refNum + '" target="_blank" style="color: var(--rose-primary); font-weight: 600; text-decoration: none;">' + refNum + '</a></td>',
           '<td>' + inDate + '</td>',
           '<td>' + outDate + '</td>',
           '<td>' + nightsVal + '</td>',
