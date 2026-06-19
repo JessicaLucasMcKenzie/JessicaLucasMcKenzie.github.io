@@ -80,15 +80,15 @@
     .content-container { display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; margin: 0 auto; }
     .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
-    /* Calendar Element Styles matching Naxos layout */
+    /* Spacious Integrated Calendar Container Layout */
     .calendar-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      gap: 60px;
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 24px;
+      padding: 32px;
     }
     .calendar-month {
       width: 100%;
@@ -97,34 +97,38 @@
       font-size: 16px;
       font-weight: 600;
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 24px;
       color: #0f172a;
     }
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      row-gap: 8px;
+      row-gap: 14px;
       text-align: center;
     }
     .calendar-day-label {
       font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
-      padding-bottom: 8px;
+      padding-bottom: 12px;
     }
     .calendar-cell {
       font-size: 13px;
       font-weight: 500;
-      height: 38px;
+      height: 40px;
+      width: 40px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #1e293b;
       position: relative;
     }
+    
+    /* Perfect Solid Black Circle Highlight Layout */
     .calendar-cell.booked {
-      background-color: #222222;
-      color: #ffffff;
+      background-color: #222222 !important;
+      color: #ffffff !important;
       font-weight: 600;
       border-radius: 50%;
     }
@@ -132,220 +136,4 @@
     .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .metric-card { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
     .metric-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-    .metric-value { font-size: 28px; font-weight: 700; color: #0f172a; }
-
-    .panel-title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; margin-top: 8px; }
-    .panel { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
-    
-    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .data-table th { padding: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid var(--border); background-color: #f8fafc; }
-    .data-table td { padding: 14px 12px; font-size: 12px; border-bottom: 1px solid var(--border); color: #334155; }
-  </style>
-</head>
-<body>
-
-  <aside class="sidebar">
-    <div class="logo-container">
-      <img src="airbnblogo.png" alt="Airbnb Logo" class="logo-img">
-      <h2>ROSEBAY DASHBOARD</h2>
-      <p>Airbnb Workspace 🇦🇺</p>
-      <hr class="meta-divider">
-      <div class="revision-block">REV. 1.0.2</div>
-    </div>
-    <ul class="sidebar-actions">
-      <li><button class="side-btn btn-active" onclick="fetchRosebayData()">🔄 Refresh Data</button></li>
-      <li><a href="https://docs.google.com/spreadsheets/d/1Pgg9OGAKEBLZoeXxbMeuaBbJ5o-_c52cVGJAm4t2Md0/edit" target="_blank" class="side-btn">📋 Operational Log</a></li>
-    </ul>
-  </aside>
-
-  <main class="main-viewport">
-    <header class="top-header">
-      <h1>ROSEBAY OPERATIONAL CONSOLE</h1>
-      <a href="hub.html" class="hub-matrix-btn">⚙️ Hub Matrix</a>
-    </header>
-
-    <div class="content-container">
-      <div class="api-status-strip" id="status-msg">✅ Connection fully synchronized. Loaded logs from source spreadsheet.</div>
-
-      <!-- Dynamic Two Months Calendar Component Slot -->
-      <div class="calendar-container" id="calendar-wrapper"></div>
-
-      <div class="metrics-row">
-        <div class="metric-card">
-          <div class="metric-label">Total Booked Stays</div>
-          <div class="metric-value" id="m-stays">—</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Total Nights Hosted</div>
-          <div class="metric-value" id="m-nights">—</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Gross Cleaning Costs</div>
-          <div class="metric-value" id="m-costs">—</div>
-        </div>
-      </div>
-
-      <div>
-        <div class="panel-title">Live Feed Data Log</div>
-        <section class="panel">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>REF #</th>
-                <th>STAY DATES</th>
-                <th>NIGHTS</th>
-                <th>GUEST NAME</th>
-                <th>GUESTS</th>
-                <th>CHECK-IN DETAILS</th>
-                <th>CHECK-OUT</th>
-                <th>CLEANING FEE</th>
-              </tr>
-            </thead>
-            <tbody id="rosebay-table-body">
-              <tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:30px;">Loading workspace feeds...</td></tr>
-            </tbody>
-          </table>
-        </section>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    var BOOK_KEY = "1Pgg9OGAKEBLZoeXxbMeuaBbJ5o-_c52cVGJAm4t2Md0";
-    var bookedDatesGlobal = new Set();
-
-    function generateCalendars() {
-      var wrapper = document.getElementById('calendar-wrapper');
-      if (!wrapper) return;
-      wrapper.innerHTML = "";
-
-      var now = new Date();
-      for (var i = 0; i < 2; i++) {
-        var targetMonth = new Date(now.getFullYear(), now.getMonth() + i, 1);
-        var monthHtml = buildMonthGrid(targetMonth);
-        wrapper.appendChild(monthHtml);
-      }
-    }
-
-    function buildMonthGrid(dateObj) {
-      var monthContainer = document.createElement('div');
-      monthContainer.className = "calendar-month";
-
-      var monthName = dateObj.toLocaleString('default', { month: 'long', year: 'numeric' });
-      
-      var headerHtml = '<div class="calendar-month-title">' + monthName + '</div>';
-      headerHtml += '<div class="calendar-grid">';
-      ["S", "M", "T", "W", "T", "F", "S"].forEach(day => {
-        headerHtml += '<div class="calendar-day-label">' + day + '</div>';
-      });
-
-      var firstDayIndex = new Date(dateObj.getFullYear(), dateObj.getMonth(), 1).getDay();
-      var totalDays = new Date(dateObj.getFullYear(), dateObj.getMonth() + 1, 0).getDate();
-
-      for (var b = 0; b < firstDayIndex; b++) {
-        headerHtml += '<div class="calendar-cell"></div>';
-      }
-
-      for (var d = 1; d <= totalDays; d++) {
-        var dateString = dateObj.getFullYear() + "-" + String(dateObj.getMonth() + 1).padStart(2, '0') + "-" + String(d).padStart(2, '0');
-        var isBookedClass = bookedDatesGlobal.has(dateString) ? ' booked' : '';
-        headerHtml += '<div class="calendar-cell' + isBookedClass + '">' + d + '</div>';
-      }
-
-      headerHtml += '</div>';
-      monthContainer.innerHTML = headerHtml;
-      return monthContainer;
-    }
-
-    function fetchRosebayData() {
-      var status = document.getElementById('status-msg');
-      var url = "https://docs.google.com/spreadsheets/d/" + BOOK_KEY + "/gviz/tq?tqx=out:json&sheet=Rosebay";
-
-      fetch(url)
-        .then(r => r.text())
-        .then(raw => {
-          var cleanJson = JSON.parse(raw.substr(47).slice(0, -2));
-          processRosebayRows(cleanJson.table.rows);
-          if (status) status.innerHTML = "✅ Connection fully synchronized. Loaded logs from source spreadsheet.";
-        })
-        .catch(e => {
-          console.error(e);
-          if (status) status.innerHTML = "❌ Cache synchronization failed.";
-        });
-    }
-
-    function parseDatesIntoCalendar(dateStr) {
-      try {
-        var parts = dateStr.split('-');
-        if(parts.length < 2) return;
-        var startPart = parts[0].trim().split(' ');
-        var endDay = parseInt(parts[1].trim());
-        var monthStr = startPart[0];
-        var startDay = parseInt(startPart[1]);
-
-        var monthsMap = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 };
-        var currentYear = 2026;
-        var targetMonthIdx = monthsMap[monthStr];
-
-        if(targetMonthIdx !== undefined) {
-          for(var d = startDay; d <= endDay; d++) {
-            var dateKey = currentYear + "-" + String(targetMonthIdx + 1).padStart(2, '0') + "-" + String(d).padStart(2, '0');
-            bookedDatesGlobal.add(dateKey);
-          }
-        }
-      } catch(err) { console.log("Date parser skip", err); }
-    }
-
-    function processRosebayRows(rows) {
-      var body = document.getElementById('rosebay-table-body');
-      if(!body || !rows) return;
-      body.innerHTML = "";
-
-      var totalStays = 0;
-      var totalNights = 0;
-      var totalCosts = 0;
-
-      rows.forEach((row, index) => {
-        if (index === 0) return;
-        var c = row.c;
-        if (!c || !c[0] || c[0].v === null) return;
-
-        totalStays++;
-        var nightsVal = (c[2] && typeof c[2].v === 'number') ? c[2].v : 0;
-        var costVal = (c[7] && typeof c[7].v === 'number') ? c[7].v : 0;
-
-        totalNights += nightsVal;
-        totalCosts += costVal;
-
-        var stayDatesStr = (c[1] && c[1].v) ? c[1].v.toString() : "";
-        if(stayDatesStr) {
-          parseDatesIntoCalendar(stayDatesStr);
-        }
-
-        var displayVal = function(i) { return (c[i] && c[i].v !== null) ? c[i].v.toString() : "—"; };
-
-        var tr = document.createElement('tr');
-        tr.innerHTML = [
-          '<td>##' + displayVal(0) + '</td>',
-          '<td>' + displayVal(1) + '</td>',
-          '<td>' + displayVal(2) + '</td>',
-          '<td><strong>' + displayVal(3) + '</strong></td>',
-          '<td>' + displayVal(4) + '</td>',
-          '<td>' + displayVal(5) + '</td>',
-          '<td>' + displayVal(6) + '</td>',
-          '<td>€' + displayVal(7) + '</td>'
-        ].join('');
-        body.appendChild(tr);
-      });
-
-      document.getElementById('m-stays').innerText = totalStays;
-      document.getElementById('m-nights').innerText = totalNights;
-      document.getElementById('m-costs').innerText = "€" + totalCosts;
-
-      generateCalendars();
-    }
-
-    window.onload = function() { fetchRosebayData(); };
-  </script>
-</body>
-</html>
+    .metric-value { font-size: 2
