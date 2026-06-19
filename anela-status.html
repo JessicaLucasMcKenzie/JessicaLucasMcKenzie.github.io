@@ -6,7 +6,7 @@
   <title>ANELA - CLEANING PROJECT STATUS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -58,9 +58,8 @@
     .project-details { flex: 1; }
     .project-date { font-size: 12px; font-weight: 700; color: var(--brand); text-transform: uppercase; margin-bottom: 4px; }
     .project-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-    .project-meta { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+    .project-meta { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
     
-    /* Dynamic Status Badges */
     .badge {
       padding: 6px 12px;
       border-radius: 20px;
@@ -122,7 +121,9 @@
         var checkOut = cleanStr(c[2]);
         var guestName = cleanStr(c[4]);
         
-        // Logical Status Determiner: If checkout date has passed, flag as complete
+        // Extract cleaning cost fee from Column J (Index 9)
+        var costVal = (c[9] && typeof c[9].v === 'number') ? c[9].v : 0;
+        
         var checkoutParts = checkOut.split('/');
         var checkoutDateObj = new Date(parseInt(checkoutParts[2]), parseInt(checkoutParts[0]) - 1, parseInt(checkoutParts[1]));
         
@@ -138,7 +139,8 @@
             <div class="project-title">🏠 Casa Nai Nai</div>
             <div class="project-meta">
               <strong>Incoming Guest:</strong> ${guestName}<br>
-              <strong>Assigned Crew:</strong> Anela Korone
+              <strong>Assigned Crew:</strong> Anela Korone<br>
+              <strong>COST/FEE:</strong> €${costVal}
             </div>
           </div>
           <div>
