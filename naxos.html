@@ -51,7 +51,8 @@
     .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
     .meta-divider { width: 100%; border: 0; height: 1px; background-color: var(--border); margin: 16px 0; }
-    .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-bottom: 16px; }
+    .revision-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; }
+    .timestamp-block { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #64748b; text-transform: uppercase; margin-bottom: 16px; text-align: center; line-height: 1.4; }
 
     .sidebar-actions { display: flex; flex-direction: column; gap: 12px; list-style: none; }
     .side-btn {
@@ -153,6 +154,8 @@
       <p>Airbnb Workspace 🇬🇷</p>
       <hr class="meta-divider">
       <div class="revision-block">REV. 1.0.2</div>
+      <!-- LIVE SYNCED TIMESTAMP BLOCK -->
+      <div class="timestamp-block" id="last-sync-time">Syncing...</div>
     </div>
     <ul class="sidebar-actions">
       <li><button class="side-btn btn-active" onclick="fetchNaxosData()">🔄 Refresh Data</button></li>
@@ -215,6 +218,20 @@
     var BOOK_KEY = "1TvZdAANoIITpGLbrWKGh7ujniEgPq3rgI2tNbi4yB1o";
     var bookedDatesGlobal = new Set();
 
+    function updateSyncTimestamp() {
+      var timeBox = document.getElementById('last-sync-time');
+      if (!timeBox) return;
+      
+      var current = new Date();
+      var optionsDate = { month: 'short', day: 'numeric', year: 'numeric' };
+      var optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+      
+      var formattedDate = current.toLocaleDateString('en-US', optionsDate);
+      var formattedTime = current.toLocaleTimeString('en-US', optionsTime);
+      
+      timeBox.innerHTML = "Last Updated:<br>" + formattedDate + " @ " + formattedTime;
+    }
+
     function generateCalendars() {
       var wrapper = document.getElementById('calendar-wrapper');
       if (!wrapper) return;
@@ -264,7 +281,6 @@
       var status = document.getElementById('status-msg');
       var cacheBust = new Date().getTime();
       
-      // EXPLICITLY TARGETING THE "Naxos Ops" TAB
       var url = "https://docs.google.com/spreadsheets/d/" + BOOK_KEY + "/gviz/tq?tqx=out:json&sheet=Naxos%20Ops&cb=" + cacheBust;
 
       fetch(url)
@@ -274,6 +290,7 @@
           bookedDatesGlobal.clear(); 
           processNaxosRows(cleanJson.table.rows);
           if (status) status.innerHTML = "✅ Connection fully synchronized. Loaded logs from source spreadsheet.";
+          updateSyncTimestamp(); // Push live update timestamp on perfect sync completion
         })
         .catch(e => {
           console.error(e);
@@ -316,7 +333,7 @@
           var dateKey = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
           bookedDatesGlobal.add(dateKey);
         }
-      } catch(err) { console.log("Timeline sequence exception filter check", err); }
+      } catch(err) { console.log("Timeline loop bypass", err); }
     }
 
     function processNaxosRows(rows) {
