@@ -51,7 +51,6 @@
     .logo-container p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
     .sidebar-meta-text { font-size: 12px; color: #475569; margin-top: 4px; line-height: 1.5; text-align: center; }
     
-    /* UPDATED: Cleaner Link styled bold and red */
     .cleaner-link {
       color: var(--rose-primary);
       text-decoration: underline;
@@ -221,7 +220,7 @@
       </div>
 
       <hr class="meta-divider">
-      <div class="revision-block">REV. 1.0.4</div>
+      <div class="revision-block">REV. 1.0.5</div>
       <div class="timestamp-block" id="last-sync-time">Syncing...</div>
     </div>
     <ul class="sidebar-actions">
@@ -369,42 +368,43 @@
         });
     }
 
+    // FIXED: Smart parser handling raw Google data arrays vs European text profiles
+    function parseGoogleCellToDate(cellObj) {
+      if (!cellObj) return null;
+      var valStr = cellObj.v ? cellObj.v.toString().trim() : "";
+      var formattedStr = cellObj.f ? cellObj.f.toString().trim() : "";
+
+      if (valStr.includes("Date(")) {
+        var matches = valStr.match(/\d+/g);
+        if (matches && matches.length >= 3) {
+          return new Date(parseInt(matches[0], 10), parseInt(matches[1], 10), parseInt(matches[2], 10));
+        }
+      }
+
+      var activeStr = formattedStr || valStr;
+      if (activeStr.includes("/")) {
+        var parts = activeStr.split('/');
+        if (parts.length >= 3) {
+          return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+        }
+      }
+      return null;
+    }
+
     function extractStringValue(cellObj) {
       if (!cellObj) return "";
       if (cellObj.f) return cellObj.f.toString().trim();
-      if (cellObj.v !== null && cellObj.v !== undefined) {
-        var valStr = cellObj.v.toString();
-        if (valStr.includes("Date(")) {
-          var matches = valStr.match(/\d+/g);
-          if (matches && matches.length >= 3) {
-            var y = matches[0];
-            var m = parseInt(matches[1]) + 1;
-            var d = matches[2];
-            return m + "/" + d + "/" + y;
-          }
-        }
-        return valStr.trim();
-      }
-      return "";
+      return cellObj.v !== null && cellObj.v !== undefined ? cellObj.v.toString().trim() : "";
     }
 
-    function processDatesIntoTimeline(inStr, outStr) {
+    function processDatesIntoTimeline(start, end) {
+      if (!start || !end) return;
       try {
-        if (!inStr || !outStr) return;
-        var startParts = inStr.split('/');
-        var endParts = outStr.split('/');
-        if (startParts.length < 3 || endParts.length < 3) return;
-        
-        var start = new Date(parseInt(startParts[2]), parseInt(startParts[0]) - 1, parseInt(startParts[1]));
-        var end = new Date(parseInt(endParts[2]), parseInt(endParts[0]) - 1, parseInt(endParts[1]));
-        
-        if (isNaN(start.getTime()) || isNaN(end.getTime())) return;
-
         for (var d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
           var dateKey = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
           bookedDatesGlobal.add(dateKey);
         }
-      } catch(err) { console.log("Timeline loop bypass", err); }
+      } catch(err) { console.log("Timeline generator bypass", err); }
     }
 
     function processNaxosRows(rows) {
@@ -421,11 +421,19 @@
         var c = row.c;
         if (!c || !c[0] || c[0].v === null) return;
 
+        var checkInDateObj = parseGoogleCellToDate(c[1]);
+        var checkOutDateObj = parseGoogleCellToDate(c[2]);
+
+        if (!checkInDateObj || !checkOutDateObj) return;
+
         totalStays++;
         
         var refNum = extractStringValue(c[0]) || "—";
-        var inDate = extractStringValue(c[1]) || "—";
-        var outDate = extractStringValue(c[2]) || "—";
+        
+        // Clean display text strings built directly from target dates
+        var inStr = checkInDateObj.getDate().toString().padStart(2, '0') + '/' + (checkInDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkInDateObj.getFullYear();
+        var outStr = checkOutDateObj.getDate().toString().padStart(2, '0') + '/' + (checkOutDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkOutDateObj.getFullYear();
+
         var nightsVal = (c[3] && typeof c[3].v === 'number') ? c[3].v : 0;
         var guestName = extractStringValue(c[4]) || "—";
         var totalGuests = extractStringValue(c[5]) || "—";
@@ -435,13 +443,13 @@
         totalNights += nightsVal;
         totalCosts += costVal;
 
-        processDatesIntoTimeline(inDate, outDate);
+        processDatesIntoTimeline(checkInDateObj, checkOutDateObj);
 
         var tr = document.createElement('tr');
         tr.innerHTML = [
           '<td><a href="https://www.airbnb.com/hosting/reservations/details/' + refNum + '" target="_blank" style="color: var(--rose-primary); font-weight: 600; text-decoration: none;">' + refNum + '</a></td>',
-          '<td>' + inDate + '</td>',
-          '<td>' + outDate + '</td>',
+          '<td>' + inStr + '</td>',
+          '<td>' + outStr + '</td>',
           '<td>' + nightsVal + '</td>',
           '<td><strong>' + guestName + '</strong></td>',
           '<td>' + totalGuests + '</td>',
