@@ -80,15 +80,15 @@
     .content-container { display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; margin: 0 auto; }
     .api-status-strip { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
-    /* Calendar Section Style Layout */
+    /* Clean Integrated Calendar Container Layout */
     .calendar-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      gap: 60px;
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 24px;
+      padding: 32px;
     }
     .calendar-month {
       width: 100%;
@@ -97,34 +97,38 @@
       font-size: 16px;
       font-weight: 600;
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 24px;
       color: #0f172a;
     }
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      row-gap: 8px;
+      row-gap: 14px;
       text-align: center;
     }
     .calendar-day-label {
       font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
-      padding-bottom: 8px;
+      padding-bottom: 12px;
     }
     .calendar-cell {
       font-size: 13px;
       font-weight: 500;
-      height: 38px;
+      height: 40px;
+      width: 40px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #1e293b;
       position: relative;
     }
+    
+    /* Authentic Solid Black Circle Day Highlight Layout */
     .calendar-cell.booked {
-      background-color: #222222;
-      color: #ffffff;
+      background-color: #222222 !important;
+      color: #ffffff !important;
       font-weight: 600;
       border-radius: 50%;
     }
@@ -167,10 +171,8 @@
     <div class="content-container">
       <div class="api-status-strip" id="status-msg">✅ Connection fully synchronized. Loaded logs from source spreadsheet.</div>
 
-      <!-- Two Months Matrix Calendar Framework Component -->
-      <div class="calendar-container" id="calendar-wrapper">
-        <!-- Rendered dynamically via internal scheduler block -->
-      </div>
+      <!-- Integrated Calendar Section Layout Row -->
+      <div class="calendar-container" id="calendar-wrapper"></div>
 
       <div class="metrics-row">
         <div class="metric-card">
@@ -222,7 +224,6 @@
       wrapper.innerHTML = "";
 
       var now = new Date();
-      // Generate current month and next month
       for (var i = 0; i < 2; i++) {
         var targetMonth = new Date(now.getFullYear(), now.getMonth() + i, 1);
         var monthHtml = buildMonthGrid(targetMonth);
@@ -234,7 +235,6 @@
       var monthContainer = document.createElement('div');
       monthContainer.className = "calendar-month";
 
-      var labels = ["August 2026", "September 2026"]; // Matches asset defaults or auto fallbacks
       var monthName = dateObj.toLocaleString('default', { month: 'long', year: 'numeric' });
       
       var headerHtml = '<div class="calendar-month-title">' + monthName + '</div>';
@@ -246,7 +246,6 @@
       var firstDayIndex = new Date(dateObj.getFullYear(), dateObj.getMonth(), 1).getDay();
       var totalDays = new Date(dateObj.getFullYear(), dateObj.getMonth() + 1, 0).getDate();
 
-      // Blank padding cells for layout alignments
       for (var b = 0; b < firstDayIndex; b++) {
         headerHtml += '<div class="calendar-cell"></div>';
       }
@@ -280,7 +279,6 @@
     }
 
     function parseDatesIntoCalendar(dateStr) {
-      // Parses structures like "Aug 17 - 22" or "Mar 19 - 21" into structured timeline arrays
       try {
         var parts = dateStr.split('-');
         if(parts.length < 2) return;
@@ -299,7 +297,7 @@
             bookedDatesGlobal.add(dateKey);
           }
         }
-      } catch(err) { console.log("Date parser skip", err); }
+      } catch(err) { console.log("Date parser parsing bypass", err); }
     }
 
     function processNaxosRows(rows) {
