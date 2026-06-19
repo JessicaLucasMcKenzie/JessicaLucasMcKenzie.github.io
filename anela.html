@@ -28,12 +28,33 @@
       margin: 0 auto;
     }
     header {
+      position: relative;
       text-align: center;
       margin-bottom: 20px;
       padding: 12px 0;
     }
     h1 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
     .subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    
+    /* Language Toggle Switch Button */
+    .lang-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+    }
+    .lang-btn:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
     
     .status-strip {
       background: #f0fdf4;
@@ -110,8 +131,9 @@
 <body>
 
   <header>
-    <h1>Anela's Schedule</h1>
-    <div class="subtitle">Casa Nai Nai Operational Feed 🇬🇷</div>
+    <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">🇬🇷 Ελληνικά</button>
+    <h1 id="main-title">Anela's Schedule</h1>
+    <div class="subtitle" id="main-sub">Casa Nai Nai Operational Feed 🇬🇷</div>
   </header>
 
   <div class="status-strip" id="sync-msg">⏳ Fetching schedule pipeline...</div>
@@ -121,6 +143,42 @@
   <script>
     var HOST_PHONE = "306982848456"; 
     var WORKBOOK_KEY = "1TvZdAANoIITpGLbrWKGh7ujniEgPq3rgI2tNbi4yB1o";
+    var currentLang = "en"; // Base layout tracker
+    var rawRowsGlobal = [];
+
+    // Dictionary mappings for instantaneous localized UI updates
+    var txt = {
+      en: {
+        title: "Anela's Schedule",
+        sub: "Casa Nai Nai Operational Feed 🇬🇷",
+        sync: "✅ Schedule Live & Synchronized",
+        err: "❌ Network connection sync error",
+        loading: "⏳ Fetching schedule pipeline...",
+        turnover: "Turnover Date: ",
+        guestOut: "Guest Checking Out:",
+        window: "Arrival Window:",
+        occupants: "Total Occupants:",
+        notes: "📋 Notes:",
+        btn: "🟢 ✅ Confirm Cleaned via WhatsApp",
+        empty: "No upcoming checkouts scheduled in the active pipeline frame.",
+        waMsg: "Hi! Just letting you know Casa Nai Nai is fully cleaned, turned over, and ready for the next guests. 👍"
+      },
+      el: {
+        title: "Πρόγραμμα της Ανέλας",
+        sub: "Ροή Εργασιών Casa Nai Nai 🇬🇷",
+        sync: "✅ Το πρόγραμμα ενημερώθηκε ζωντανά",
+        err: "❌ Σφάλμα σύνδεσης δικτύου",
+        loading: "⏳ Φόρτωση προγράμματος...",
+        turnover: "Ημερομηνία Καθαρισμού: ",
+        guestOut: "Αναχώρηση Επισκέπτη:",
+        window: "Διάστημα Άφιξης:",
+        occupants: "Συνολικά Άτομα:",
+        notes: "📋 Σημειώσεις:",
+        btn: "🟢 ✅ Επιβεβαίωση Καθαρισμού μέσω WhatsApp",
+        empty: "Δεν υπάρχουν προγραμματισμένες αναχωρήσεις για τις επόμενες ημέρες.",
+        waMsg: "Γεια σας! Σας ενημερώνω ότι το Casa Nai Nai είναι πλήρως καθαρισμένο, τακτοποιημένο και έτοιμο για τους επόμενους επισκέπτες. 👍"
+      }
+    };
 
     function fetchSchedule() {
       var cacheBust = new Date().getTime();
@@ -130,44 +188,44 @@
         .then(r => r.text())
         .then(raw => {
           var cleanJson = JSON.parse(raw.substr(47).slice(0, -2));
-          renderTasks(cleanJson.table.rows);
-          document.getElementById('sync-msg').innerText = "✅ Schedule Live & Synchronized";
+          rawRowsGlobal = cleanJson.table.rows;
+          renderTasks();
         })
         .catch(e => {
-          document.getElementById('sync-msg').innerText = "❌ Network connection sync error";
+          document.getElementById('sync-msg').innerText = txt[currentLang].err;
         });
     }
 
-    // Smart date parsing function that reads both Google Date formats and European text strings
+    function toggleLanguage() {
+      currentLang = (currentLang === "en") ? "el" : "en";
+      
+      // Update UI static words
+      document.getElementById('lang-toggle').innerText = (currentLang === "en") ? "🇬🇷 Ελληνικά" : "🇬🇧 English";
+      document.getElementById('main-title').innerText = txt[currentLang].title;
+      document.getElementById('main-sub').innerText = txt[currentLang].sub;
+      
+      renderTasks();
+    }
+
     function parseGoogleCellToDate(cellObj) {
       if (!cellObj) return null;
-      
       var valStr = cellObj.v ? cellObj.v.toString().trim() : "";
       var formattedStr = cellObj.f ? cellObj.f.toString().trim() : "";
 
-      // 1. Check if Google passed a raw Date object string: Date(2026,5,19)
       if (valStr.includes("Date(")) {
         var matches = valStr.match(/\d+/g);
         if (matches && matches.length >= 3) {
-          var y = parseInt(matches[0], 10);
-          var m = parseInt(matches[1], 10); // Google Sheets returns 0-indexed months already
-          var d = parseInt(matches[2], 10);
-          return new Date(y, m, d);
+          return new Date(parseInt(matches[0], 10), parseInt(matches[1], 10), parseInt(matches[2], 10));
         }
       }
 
-      // 2. Fall back to parsing a standard text string (DD/MM/YYYY)
       var activeStr = formattedStr || valStr;
       if (activeStr.includes("/")) {
         var parts = activeStr.split('/');
         if (parts.length >= 3) {
-          var d = parseInt(parts[0], 10);
-          var m = parseInt(parts[1], 10) - 1; // Convert to JS 0-indexed month
-          var y = parseInt(parts[2], 10);
-          return new Date(y, m, d);
+          return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
         }
       }
-
       return null;
     }
 
@@ -177,9 +235,12 @@
       return cell.v !== null ? cell.v.toString().trim() : "";
     }
 
-    function renderTasks(rows) {
+    function renderTasks() {
       var container = document.getElementById('task-feed');
+      if (!container || rawRowsGlobal.length === 0) return;
+      
       container.innerHTML = "";
+      document.getElementById('sync-msg').innerText = txt[currentLang].sync;
 
       var cutOffDate = new Date();
       cutOffDate.setDate(cutOffDate.getDate() - 3);
@@ -187,31 +248,28 @@
 
       var displayedCount = 0;
 
-      rows.forEach((row, idx) => {
+      rawRowsGlobal.forEach((row, idx) => {
         if (idx === 0) return;
         var c = row.c;
         if (!c || !c[1] || c[1].v === null) return;
 
-        // Use smart parsing for both check-in and check-out cells
         var checkInDateObj = parseGoogleCellToDate(c[1]);
         var checkOutDateObj = parseGoogleCellToDate(c[2]);
 
-        if (!checkInDateObj || !checkOutDateObj) return; // Skip if date is corrupt
+        if (!checkInDateObj || !checkOutDateObj) return;
 
-        // Format clean European date strings for displaying on cards
-        var checkInStr = checkInDateObj.getDate().toString().padStart(2, '0') + '/' + (checkInDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkInDateObj.getFullYear();
-        var checkOutStr = checkOutDateObj.getDate().toString().padStart(2, '0') + '/' + (checkOutDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkOutDateObj.getFullYear();
-
-        var guestName = cleanStr(c[4]);
-        var guestCount = cleanStr(c[5]);
-        var instructions = cleanStr(c[7]) || "Standard turnaround procedures.";
-
-        // Date window check evaluation
         if (checkOutDateObj >= cutOffDate) {
           displayedCount++;
-          var dateLabel = "Turnover Date: " + checkOutStr;
+          
+          var checkInStr = checkInDateObj.getDate().toString().padStart(2, '0') + '/' + (checkInDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkInDateObj.getFullYear();
+          var checkOutStr = checkOutDateObj.getDate().toString().padStart(2, '0') + '/' + (checkOutDateObj.getMonth() + 1).toString().padStart(2, '0') + '/' + checkOutDateObj.getFullYear();
 
-          var waMessage = encodeURIComponent("Hi! Just letting you know Casa Nai Nai is fully cleaned, turned over, and ready for the next guests. 👍");
+          var guestName = cleanStr(c[4]);
+          var guestCount = cleanStr(c[5]);
+          var instructions = cleanStr(c[7]) || (currentLang === "en" ? "Standard turnaround procedures." : "Τυπικές διαδικασίες καθαρισμού.");
+
+          var dateLabel = txt[currentLang].turnover + checkOutStr;
+          var waMessage = encodeURIComponent(txt[currentLang].waMsg);
           var waUrl = "https://api.whatsapp.com/send?phone=" + HOST_PHONE + "&text=" + waMessage;
 
           var card = document.createElement('div');
@@ -219,18 +277,18 @@
           card.innerHTML = `
             <div class="card-date">${dateLabel}</div>
             <div class="card-title">🏠 Casa Nai Nai</div>
-            <div class="info-line"><strong>Guest Checking Out:</strong> <span>${guestName}</span></div>
-            <div class="info-line"><strong>Arrival Window:</strong> <span>${checkInStr} → ${checkOutStr}</span></div>
-            <div class="info-line"><strong>Total Occupants:</strong> <span>${guestCount}</span></div>
-            <div class="notes-box"><strong>📋 Notes:</strong> ${instructions}</div>
-            <a href="${waUrl}" class="wa-btn" target="_blank">🟢 ✅ Confirm Cleaned via WhatsApp</a>
+            <div class="info-line"><strong>${txt[currentLang].guestOut}</strong> <span>${guestName}</span></div>
+            <div class="info-line"><strong>${txt[currentLang].window}</strong> <span>${checkInStr} → ${checkOutStr}</span></div>
+            <div class="info-line"><strong>${txt[currentLang].occupants}</strong> <span>${guestCount}</span></div>
+            <div class="notes-box"><strong>${txt[currentLang].notes}</strong> ${instructions}</div>
+            <a href="${waUrl}" class="wa-btn" target="_blank">${txt[currentLang].btn}</a>
           `;
           container.appendChild(card);
         }
       });
 
       if (displayedCount === 0) {
-        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:40px; font-size:14px;">No upcoming checkouts scheduled in the active pipeline frame.</p>`;
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:40px; font-size:14px;">${txt[currentLang].empty}</p>`;
       }
     }
 
